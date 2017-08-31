@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop
+  http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <context:property-placeholder location="classpath*:application.properties" file-encoding="utf-8"/>
+    <context:component-scan base-package="com.dcdt"/>
+
+    <!--AOP类日志  -->
+    <bean id="logAspect" class="com.dcdt.aop.LogAspect"></bean>
+    <aop:config>
+        <aop:aspect id="aspect" ref="logAspect">
+            <!--对哪些方法进行日志记录，此处屏蔽action内的set get方法  -->
+            <aop:pointcut id="logService" expression="(execution(* com.dcdt.doctorstation.controller.*.*(..) ))" />
+            <aop:before pointcut-ref="logService" method="doBefore"/>
+            <aop:after pointcut-ref="logService" method="doAfter"/>
+            <aop:around pointcut-ref="logService" method="doAround"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
