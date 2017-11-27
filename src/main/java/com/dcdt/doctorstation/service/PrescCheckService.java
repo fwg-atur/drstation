@@ -37,6 +37,7 @@ public class PrescCheckService {
         String url = checkServerUrl + "?tag=" + tag;
         String checkJson = HttpUtil.sendPost(url, data);
         logger.info(checkJson);
+        if (tag == 2) return new CheckMessage();
         return handleCheckJson(checkJson);
     }
 
@@ -63,7 +64,9 @@ public class PrescCheckService {
         int warnLevel = results.getHIGHEST_WARNING_LEVEL();
 
         //缓存审核结果,等到进入审核结果页面时再读取记录显示
-        CheckResultCache.putCheckResult(presId, results);
+        if (warnLevel != 0) {
+            CheckResultCache.putCheckResult(presId, results);
+        }
 
         //处理审核信息
         CheckMessage message = new CheckMessage();

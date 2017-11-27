@@ -10,6 +10,7 @@ public class Advice {
     private String REPEAT;
     private String DRUG_LO_NAME;
     private String DRUG_LO_ID;
+    private String drugLinked;    //药品说明书链接
     private String ADMINISTRATION;
     private String DOSAGE;
     private String DOSAGE_UNIT;
@@ -302,5 +303,13 @@ public class Advice {
 
     public void setBAK_05(String BAK_05) {
         this.BAK_05 = BAK_05;
+    }
+
+    public String getDrugLinked() {
+        return drugLinked;
+    }
+
+    public void setDrugLinked(String drugLinked) {
+        this.drugLinked = drugLinked;
     }
 }

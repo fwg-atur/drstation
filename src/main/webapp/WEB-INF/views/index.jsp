@@ -58,25 +58,12 @@
 <script language="javascript" type="text/javascript">
 
 </script>
->
 <div id="checkResult">
-    <%--<div id="bg">--%>
-    <%--</div>--%>
-    <%--<div id="show">--%>
-    <%--&lt;%&ndash;测试&ndash;%&gt;--%>
-    <%--&lt;%&ndash;<input id="btnclose" type="button" value="Close" onclick="hidediv();"/>&ndash;%&gt;--%>
-    <%--<div>--%>
-    <%--<iframe src="about:blank" name="left" height="650px" width="1000px"></iframe>--%>
-    <%--</div>--%>
-    <%--</div>--%>
-    <%--<a id="checkResultButton"--%>
-    <%--href="http://localhost:8080/DCStation/submit/checkResultPage?presId=000347828620150924000649&random=123"--%>
-    <%--target="left">在左框中打开链接</a>--%>
 </div>
 </body>
 
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>--%>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>--%>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>
 <%--<script type="text/javascript"--%>
 <%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>
 <script type="text/javascript">
