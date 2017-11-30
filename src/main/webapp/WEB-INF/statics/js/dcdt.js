@@ -70,6 +70,6 @@ function hidediv() {
 }
 
 function openDiscribLinked(code) {
-    var urlTemp = disUrl.replace("@code@",code);
-    window.location.href = urlTemp;
+    var urlTemp = disUrl.replace("@code@", code);
+    window.open(urlTemp, '药品说明书', ' left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 50) + ',scrollbars,resizable=yes,toolbar=no');
 }

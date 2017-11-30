@@ -143,7 +143,7 @@
                         <tr>
                             <th style="width: 140px">药品名称</th>
                             <th>适应症</th>
-                            <th>禁忌症<br>慎用症</th>
+                            <th>禁用症<br>慎用症</th>
                             <th>用法<br>用量</th>
                             <th>重复<br>用药</th>
                             <th>相互<br>作用</th>
@@ -199,7 +199,7 @@
 <script type="text/javascript">
     var checkResultJson = ${checkResultJson};
     var advises = checkResultJson.advices;
-    var problemType = ['适应症', '禁忌症慎用症', '用法用量', '重复用药', '相互作用', '配伍禁忌', '特殊人群', '药敏', '医院管理', '用药监测'];
+    var problemType = ['适应症', '禁用症慎用症', '用法用量', '重复用药', '相互作用', '配伍禁忌', '特殊人群', '药敏', '医院管理', '用药监测'];
     var problemLevel = ['disaster-problem', 'common-problem', 'common-problem', 'serious-problem'];
     var error_detail = $('#error_detail').html();
     $('#error_detail').html('');
