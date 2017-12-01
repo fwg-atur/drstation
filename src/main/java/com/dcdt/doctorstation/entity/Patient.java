@@ -16,7 +16,7 @@ public class Patient {
     private String HEPATICAL;
     private String RENAL;
     private String PANCREAS;
-    private String VISIT_ID;
+    private String VISIT_ID;    //住院次数
     private String PATIENT_PRES_ID;
     private String IDENTITY_TYPE;
     private String FEE_TYPE;
@@ -32,6 +32,47 @@ public class Patient {
     private String MEDICARE_03;
     private String MEDICARE_04;
     private String MEDICARE_05;
+
+    public Patient(String NAME, String ID, String GENDER, String BIRTH, String WEIGHT, String HEIGHT, String ALERGY_DRUGS, String PREGNANT, String LACT, String HEPATICAL, String RENAL, String PANCREAS, String VISIT_ID, String PATIENT_PRES_ID, String IDENTITY_TYPE, String FEE_TYPE, String SCR, String SCR_UNIT, String GESTATION_AGE, String PRETERM_BIRTH, String DRUG_HISTORY, String FAMILY_DISEASE_HISTORY, String GENETIC_DISEASE, String MEDICARE_01, String MEDICARE_02, String MEDICARE_03, String MEDICARE_04, String MEDICARE_05) {
+        this.NAME = NAME;
+        this.ID = ID;
+        this.GENDER = GENDER;
+        this.BIRTH = BIRTH;
+        this.WEIGHT = WEIGHT;
+        this.HEIGHT = HEIGHT;
+        this.ALERGY_DRUGS = ALERGY_DRUGS;
+        this.PREGNANT = PREGNANT;
+        this.LACT = LACT;
+        this.HEPATICAL = HEPATICAL;
+        this.RENAL = RENAL;
+        this.PANCREAS = PANCREAS;
+        this.VISIT_ID = VISIT_ID;
+        this.PATIENT_PRES_ID = PATIENT_PRES_ID;
+        this.IDENTITY_TYPE = IDENTITY_TYPE;
+        this.FEE_TYPE = FEE_TYPE;
+        this.SCR = SCR;
+        this.SCR_UNIT = SCR_UNIT;
+        this.GESTATION_AGE = GESTATION_AGE;
+        this.PRETERM_BIRTH = PRETERM_BIRTH;
+        this.DRUG_HISTORY = DRUG_HISTORY;
+        this.FAMILY_DISEASE_HISTORY = FAMILY_DISEASE_HISTORY;
+        this.GENETIC_DISEASE = GENETIC_DISEASE;
+        this.MEDICARE_01 = MEDICARE_01;
+        this.MEDICARE_02 = MEDICARE_02;
+        this.MEDICARE_03 = MEDICARE_03;
+        this.MEDICARE_04 = MEDICARE_04;
+        this.MEDICARE_05 = MEDICARE_05;
+    }
+
+    public Patient clone(){
+        Patient ret = new Patient(NAME, ID, GENDER, BIRTH, WEIGHT, HEIGHT,
+                ALERGY_DRUGS, PREGNANT, LACT, HEPATICAL, RENAL, PANCREAS,
+                VISIT_ID, PATIENT_PRES_ID, IDENTITY_TYPE, FEE_TYPE, SCR,
+                SCR_UNIT, GESTATION_AGE, PRETERM_BIRTH, DRUG_HISTORY,
+                FAMILY_DISEASE_HISTORY, GENETIC_DISEASE, MEDICARE_01,
+                MEDICARE_02, MEDICARE_03, MEDICARE_04, MEDICARE_05);
+        return ret;
+    }
 
     public String getNAME() {
         return NAME;

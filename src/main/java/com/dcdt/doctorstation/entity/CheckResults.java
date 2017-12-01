@@ -1,5 +1,6 @@
 package com.dcdt.doctorstation.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +13,17 @@ public class CheckResults {
     private List<Advice> advices;
     private int HIGHEST_WARNING_LEVEL;
     private int WARNING_COUNT;
+
+    public CheckResults clone() {
+        CheckResults ret = new CheckResults();
+        ret.setDoctor(doctor.clone());
+        ret.setPatient(patient.clone());
+        ret.setDiagnosis(diagnosis.clone());
+        ret.setAdvices(new ArrayList<Advice>());    //to-do
+        ret.setHIGHEST_WARNING_LEVEL(HIGHEST_WARNING_LEVEL);
+        ret.setWARNING_COUNT(WARNING_COUNT);
+        return ret;
+    }
 
     public Doctor getDoctor() {
         return doctor;
