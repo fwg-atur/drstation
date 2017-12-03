@@ -6,6 +6,14 @@ package com.dcdt.doctorstation.entity;
 public class Diagnosis {
     private String DIAGNOSISES;
 
+    public Diagnosis(String DIAGNOSISES) {
+        this.DIAGNOSISES = DIAGNOSISES;
+    }
+
+    public Diagnosis clone(){
+        return new Diagnosis(DIAGNOSISES);
+    }
+
     public String getDIAGNOSISES() {
         return DIAGNOSISES;
     }

@@ -25,9 +25,7 @@
         var cheServerPost = "8080";
         //药品说明书链接
         var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
-
         var presId = '${presId}';
-
         /********定义iframe模板********/
         var checkResultTemp =
                 '<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 90%;' +
@@ -42,7 +40,6 @@
                 '</div>' +
                 '<a style="display: none" id="checkResultButton" href="@(url)"target="showPlace">在左框中打开链接</a>';
         /********定义iframe模板********/
-
         function nextOrBack(val) {
             var xmlhttp;
             if (window.XMLHttpRequest) {
@@ -52,20 +49,17 @@
                 // IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-
             xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/setRetValue", false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
             xmlhttp.send('presId=' + presId + '&retVal=' + val);
             window.close();
         }
-
         function drawCheckResultElem(url) {
             var checkResultElem = document.getElementById("checkResult");
             checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
             document.getElementById("checkResultButton").click();
             showdiv();
         }
-
         function showdiv() {
             document.getElementById("bg").style.display = "block";
             document.getElementById("show").style.display = "block";
@@ -74,7 +68,6 @@
             document.getElementById("bg").style.display = 'none';
             document.getElementById("show").style.display = 'none';
         }
-
         function openDiscribLinked(code) {
             var urlTemp = disUrl.replace("@code@", code);
             drawCheckResultElem(urlTemp);
@@ -203,7 +196,6 @@
     var problemLevel = ['disaster-problem', 'common-problem', 'common-problem', 'serious-problem'];
     var error_detail = $('#error_detail').html();
     $('#error_detail').html('');
-
     for (var i = 0; i < advises.length; i++) {
         var advise = advises[i];
         var checkInfoList = advise.checkInfoList;
@@ -213,7 +205,6 @@
                 if (checkInfo.NAME == problemType[k]) {
                     var className = problemLevel[parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1];
                     var $chooseTd = $(".main-table tbody").children().eq(i).children().eq(k + 1);
-
                     $chooseTd.attr('class', className);
                     $chooseTd.click({row: i, col: k}, function (event) {
                         showProblemDetail(event.data)
@@ -222,16 +213,13 @@
             }
         }
     }
-
     function showProblemDetail(data) {
         var row = data.row;
         var col = data.col;
-
         var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '');
         var error_name = problemType[col];
         $("#error_detail").html('');
         var tempHtml = "<thead><tr><th>" + error_name + "</th></tr></thead>";
-
         for (var i = 0; i < advises.length; i++) {
             var advise = advises[i];
             if (advise.DRUG_LO_NAME != drug_name) {
@@ -249,20 +237,17 @@
             }
         }
         $("#error_detail").html(tempHtml);
+        showAppealBtn(drug_name, error_name, '${presId}');
     }
-
     (function isDisabled() {
         var t = ${checkResult.HIGHEST_WARNING_LEVEL};
         if (t == -1) {
             $("#next").attr('disabled', 'disabled');
-
             $("#next").css('background-image', 'url(http://localhost:8080/DCStation/image/nextdisabled.png)');
             $("#next").css('background-repeat', 'no-repeat');
             $("#next").css('background-position', 'center');
         }
     })();
-
-
     (function myBrowser() {
         var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
         if (userAgent.indexOf("Chrome") > -1) {
@@ -274,15 +259,22 @@
             });
         }
     })();
-
     function nextForChrome(val) {
         if (val == 0) {
             parent.check_for_next();
         } else if (val == -1) {
             parent.check_for_back();
         }
-
     }
+
+    function showAppealBtn(drugName, errorName, presId){
+        $("#appealBtn").show();
+        $("#appealBtn").unbind();//important
+        $("#appealBtn").bind('click',function(){
+            window.open("http://localhost:8080/DCStation/appeal/appeal?presId="+presId+"&drugName="+drugName+"&errorName="+errorName);
+        });
+    }
+
 </script>
 </body>
 </html>
