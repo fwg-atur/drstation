@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PrescCheckService {
-    @Value("checkServerIp")
+    @Value("${checkServerIp}")
     private String checkServerIp;
 
-    @Value("checkServerPort")
+    @Value("${checkServerPort}")
     private String checkServerPort;
 
     @Value("${checkServerUrl}")
