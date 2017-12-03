@@ -82,6 +82,10 @@ public class PrescCheckService {
     }
 
     public CheckResults findCheckResult(String presId) {
+        return CheckResultCache.findCheckResult(presId);
+    }
+
+    public CheckResults removeCheckResult(String presId){
         return CheckResultCache.removeCheckResult(presId);
     }
 
