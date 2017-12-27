@@ -52,6 +52,11 @@ public class SubmitPrescController {
         return service.findCheckResult(presId);
     }
 
+    @RequestMapping("/removeCheckResult")
+    public CheckResults removeCheckResult(String presId){
+        return service.removeCheckResult(presId);
+    }
+
     @ResponseBody
     @RequestMapping("/setRetValue")
     public void setRetValue(String presId, int retVal) {

@@ -3,6 +3,9 @@
  */
 var checkServerIp = "localhost";
 var cheServerPost = "8080";
+//说明书地址
+var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
+
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
@@ -50,6 +53,26 @@ function DoctorCheck(tag, xml) {
     return data;
 }
 
+function drawCheckResultElem(url) {
+    var checkResultElem = document.getElementById("checkResult");
+    checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+    document.getElementById("checkResultButton").click();
+    showdiv();
+}
+
+function showdiv() {
+    document.getElementById("bg").style.display = "block";
+    document.getElementById("show").style.display = "block";
+}
+function hidediv() {
+    document.getElementById("bg").style.display = 'none';
+    document.getElementById("show").style.display = 'none';
+}
+
+function openDiscribLinked(code) {
+    var urlTemp = disUrl.replace("@code@", code);
+    window.open(urlTemp, '药品说明书', ' left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 50) + ',scrollbars,resizable=yes,toolbar=no');
+}
 
 //药师站
 function testPharmacistCheck(tag) {

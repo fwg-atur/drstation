@@ -16,6 +16,26 @@ public class CheckInfo {
     private String LCSY;
     private String REGULAR_WARNING_LEVEL;
 
+    public CheckInfo(String COLOR, String NAME, String WARNING_LEVEL, String WARNING_INFO, String REF_SOURCE, String YPMC, String JSXX, String ZYJL, String TYSM, String LCSY, String REGULAR_WARNING_LEVEL) {
+        this.COLOR = COLOR;
+        this.NAME = NAME;
+        this.WARNING_LEVEL = WARNING_LEVEL;
+        this.WARNING_INFO = WARNING_INFO;
+        this.REF_SOURCE = REF_SOURCE;
+        this.YPMC = YPMC;
+        this.JSXX = JSXX;
+        this.ZYJL = ZYJL;
+        this.TYSM = TYSM;
+        this.LCSY = LCSY;
+        this.REGULAR_WARNING_LEVEL = REGULAR_WARNING_LEVEL;
+    }
+
+    public CheckInfo clone(){
+        CheckInfo ret = new CheckInfo(COLOR, NAME, WARNING_LEVEL, WARNING_INFO, REF_SOURCE,
+                YPMC, JSXX, ZYJL, TYSM, LCSY, REGULAR_WARNING_LEVEL);
+        return ret;
+    }
+
     public String getCOLOR() {
         return COLOR;
     }

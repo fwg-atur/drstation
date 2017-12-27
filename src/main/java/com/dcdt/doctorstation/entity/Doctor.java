@@ -11,6 +11,21 @@ public class Doctor {
     private String FKNF;
     private String DEPT_NAME;
 
+    public Doctor(String USER_ID, String NAME, String POSITION, String DEPT_CODE, String FKNF, String DEPT_NAME) {
+        this.USER_ID = USER_ID;
+        this.NAME = NAME;
+        this.POSITION = POSITION;
+        this.DEPT_CODE = DEPT_CODE;
+        this.FKNF = FKNF;
+        this.DEPT_NAME = DEPT_NAME;
+    }
+
+
+    protected Doctor clone(){
+        Doctor ret = new Doctor(USER_ID, NAME, POSITION, DEPT_CODE, FKNF, DEPT_NAME);
+        return ret;
+    }
+
     public String getUSER_ID() {
         return USER_ID;
     }

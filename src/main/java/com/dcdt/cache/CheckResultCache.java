@@ -24,7 +24,7 @@ public class CheckResultCache {
     }
 
     public static void putCheckResult(String presId, CheckResults checkResult) {
-        map.putIfAbsent(presId, checkResult);
+        map.put(presId, checkResult);
     }
 
     public static CheckResults removeCheckResult(String presId) {

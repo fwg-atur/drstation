@@ -1,5 +1,6 @@
 package com.dcdt.doctorstation.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +11,7 @@ public class Advice {
     private String REPEAT;
     private String DRUG_LO_NAME;
     private String DRUG_LO_ID;
+    private String drugLinked;    //药品说明书链接
     private String ADMINISTRATION;
     private String DOSAGE;
     private String DOSAGE_UNIT;
@@ -39,6 +41,51 @@ public class Advice {
     private String BAK_03;
     private String BAK_04;
     private String BAK_05;
+
+    public Advice( String REPEAT, String DRUG_LO_NAME, String DRUG_LO_ID, String ADMINISTRATION, String DOSAGE, String DOSAGE_UNIT, String FREQ_COUNT, String FREQ_INTERVAL, String FREQ_INTERVAL_UNIT, String START_DAY, String END_DAY, String DEPT_CODE, String DOCTOR_NAME, String ORDER_NO, String ORDER_SUB_NO, String AUTHORITY_LEVELS, String ALERT_LEVELS, String TITLE, String GROUP_ID, String USER_ID, String PRES_ID, String PRES_DATE, String PRES_SEQ_ID, String PK_ORDER_NO, String COURSE, String PKG_COUNT, String PKG_UNIT, String BAK_01, String BAK_02, String BAK_03, String BAK_04, String BAK_05) {
+        this.REPEAT = REPEAT;
+        this.DRUG_LO_NAME = DRUG_LO_NAME;
+        this.DRUG_LO_ID = DRUG_LO_ID;
+        this.ADMINISTRATION = ADMINISTRATION;
+        this.DOSAGE = DOSAGE;
+        this.DOSAGE_UNIT = DOSAGE_UNIT;
+        this.FREQ_COUNT = FREQ_COUNT;
+        this.FREQ_INTERVAL = FREQ_INTERVAL;
+        this.FREQ_INTERVAL_UNIT = FREQ_INTERVAL_UNIT;
+        this.START_DAY = START_DAY;
+        this.END_DAY = END_DAY;
+        this.DEPT_CODE = DEPT_CODE;
+        this.DOCTOR_NAME = DOCTOR_NAME;
+        this.ORDER_NO = ORDER_NO;
+        this.ORDER_SUB_NO = ORDER_SUB_NO;
+        this.AUTHORITY_LEVELS = AUTHORITY_LEVELS;
+        this.ALERT_LEVELS = ALERT_LEVELS;
+        this.TITLE = TITLE;
+        this.GROUP_ID = GROUP_ID;
+        this.USER_ID = USER_ID;
+        this.PRES_ID = PRES_ID;
+        this.PRES_DATE = PRES_DATE;
+        this.PRES_SEQ_ID = PRES_SEQ_ID;
+        this.PK_ORDER_NO = PK_ORDER_NO;
+        this.COURSE = COURSE;
+        this.PKG_COUNT = PKG_COUNT;
+        this.PKG_UNIT = PKG_UNIT;
+        this.BAK_01 = BAK_01;
+        this.BAK_02 = BAK_02;
+        this.BAK_03 = BAK_03;
+        this.BAK_04 = BAK_04;
+        this.BAK_05 = BAK_05;
+    }
+
+    public Advice clone(){
+        Advice ret = new Advice(REPEAT, DRUG_LO_NAME, DRUG_LO_ID, ADMINISTRATION, DOSAGE,
+                DOSAGE_UNIT, FREQ_COUNT, FREQ_INTERVAL, FREQ_INTERVAL_UNIT, START_DAY,
+                END_DAY, DEPT_CODE, DOCTOR_NAME, ORDER_NO, ORDER_SUB_NO,AUTHORITY_LEVELS,
+                ALERT_LEVELS, TITLE, GROUP_ID, USER_ID, PRES_ID, PRES_DATE, PRES_SEQ_ID,
+                PK_ORDER_NO, COURSE, PKG_COUNT, PKG_UNIT, BAK_01, BAK_02, BAK_03, BAK_04, BAK_05);
+        ret.setCheckInfoList(new ArrayList<CheckInfo>());   //to-do
+        return ret;
+    }
 
     public List<CheckInfo> getCheckInfoList() {
         return checkInfoList;
@@ -302,5 +349,13 @@ public class Advice {
 
     public void setBAK_05(String BAK_05) {
         this.BAK_05 = BAK_05;
+    }
+
+    public String getDrugLinked() {
+        return drugLinked;
+    }
+
+    public void setDrugLinked(String drugLinked) {
+        this.drugLinked = drugLinked;
     }
 }

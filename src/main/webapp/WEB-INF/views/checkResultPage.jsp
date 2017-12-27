@@ -19,10 +19,27 @@
     <script type="text/javascript"
             src="http://localhost:8080/DCStation/js/jquery.min.js"></script>
     <link href="http://localhost:8080/DCStation/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
+
     <script type="text/javascript">
         var checkServerIp = "localhost";
         var cheServerPost = "8080";
+        //药品说明书链接
+        var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
         var presId = '${presId}';
+        /********定义iframe模板********/
+        var checkResultTemp =
+                '<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 90%;' +
+                'height: 90%;background-color: black;z-index: 1001; -moz-opacity: 0.7;opacity: .70;' +
+                'filter: alpha(opacity=70);"></div>' +
+                '<div id="show" style=" display: none;position: absolute;margin:auto;' +
+                'top: 0; left: 0; bottom: 0; right: 0;width: 900px;' +
+                'height: 500px;padding: 20px 35px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;' +
+                '">' +
+                '<iframe src="about:blank" name="showPlace" frameborder=0 height=500 width=890 marginheight=0 marginwidth=0 scrolling=yes></iframe>' +
+                '<div class="button-area"><input type="button" value="关闭" onclick="hidediv()"/></div>' +
+                '</div>' +
+                '<a style="display: none" id="checkResultButton" href="@(url)"target="showPlace">在左框中打开链接</a>';
+        /********定义iframe模板********/
         function nextOrBack(val) {
             var xmlhttp;
             if (window.XMLHttpRequest) {
@@ -32,11 +49,29 @@
                 // IE6, IE5
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
             }
-
             xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/setRetValue", false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
             xmlhttp.send('presId=' + presId + '&retVal=' + val);
             window.close();
+        }
+        function drawCheckResultElem(url) {
+            var checkResultElem = document.getElementById("checkResult");
+            checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+            document.getElementById("checkResultButton").click();
+            showdiv();
+        }
+        function showdiv() {
+            document.getElementById("bg").style.display = "block";
+            document.getElementById("show").style.display = "block";
+        }
+        function hidediv() {
+            document.getElementById("bg").style.display = 'none';
+            document.getElementById("show").style.display = 'none';
+        }
+        function openDiscribLinked(code) {
+            var urlTemp = disUrl.replace("@code@", code);
+            drawCheckResultElem(urlTemp);
+//            window.open("http://localhost:8080/DCStation/home/index?drugCode=" + code, "mywin", "");
         }
     </script>
 
@@ -73,7 +108,7 @@
                 <div class="detail-info right-area">
                     <div class="head-info-sm"><p>使用说明</p></div>
                     <div class="detail-content">
-                        <table style="_margin-top: 20px">
+                        <table style="_margin-top: 50px">
                             <tr>
                                 <td>1、单击问题所在单元，可查看详细信息</td>
                             </tr>
@@ -101,7 +136,7 @@
                         <tr>
                             <th style="width: 140px">药品名称</th>
                             <th>适应症</th>
-                            <th>禁忌症<br>慎用症</th>
+                            <th>禁用症<br>慎用症</th>
                             <th>用法<br>用量</th>
                             <th>重复<br>用药</th>
                             <th>相互<br>作用</th>
@@ -119,7 +154,11 @@
                         <tbody>
                         <c:forEach var="item" items="${checkResult.advices}">
                             <tr>
-                                <td style="width: 132px;">${item.DRUG_LO_NAME}</td>
+                                <td style="width: 132px;">
+                                    <a onclick="openDiscribLinked('${item.DRUG_LO_ID}')">
+                                            ${item.DRUG_LO_NAME}
+                                    </a>
+                                </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -147,15 +186,16 @@
     </div>
 
 </div>
+<div id="checkResult">
+</div>
 
 <script type="text/javascript">
     var checkResultJson = ${checkResultJson};
     var advises = checkResultJson.advices;
-    var problemType = ['适应症', '禁忌症慎用症', '用法用量', '重复用药', '相互作用', '配伍禁忌', '特殊人群', '药敏', '医院管理', '用药监测'];
+    var problemType = ['适应症', '禁用症慎用症', '用法用量', '重复用药', '相互作用', '配伍禁忌', '特殊人群', '药敏', '医院管理', '用药监测'];
     var problemLevel = ['disaster-problem', 'common-problem', 'common-problem', 'serious-problem'];
     var error_detail = $('#error_detail').html();
     $('#error_detail').html('');
-
     for (var i = 0; i < advises.length; i++) {
         var advise = advises[i];
         var checkInfoList = advise.checkInfoList;
@@ -165,7 +205,6 @@
                 if (checkInfo.NAME == problemType[k]) {
                     var className = problemLevel[parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1];
                     var $chooseTd = $(".main-table tbody").children().eq(i).children().eq(k + 1);
-
                     $chooseTd.attr('class', className);
                     $chooseTd.click({row: i, col: k}, function (event) {
                         showProblemDetail(event.data)
@@ -174,16 +213,13 @@
             }
         }
     }
-
     function showProblemDetail(data) {
         var row = data.row;
         var col = data.col;
-
-        var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).html().replace(' ', '');
+        var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '');
         var error_name = problemType[col];
         $("#error_detail").html('');
         var tempHtml = "<thead><tr><th>" + error_name + "</th></tr></thead>";
-
         for (var i = 0; i < advises.length; i++) {
             var advise = advises[i];
             if (advise.DRUG_LO_NAME != drug_name) {
@@ -201,20 +237,17 @@
             }
         }
         $("#error_detail").html(tempHtml);
+        showAppealBtn(drug_name, error_name, '${presId}');
     }
-
     (function isDisabled() {
         var t = ${checkResult.HIGHEST_WARNING_LEVEL};
         if (t == -1) {
-            $("input[name='next']").attr('disabled', 'disabled');
-
-            $("input[name='next']").css('background-image', 'url(http://localhost:8080/DCStation/image/nextdisabled.png)');
-            $("input[name='next']").css('background-repeat', 'no-repeat');
-            $("input[name='next']").css('background-position', 'center');
+            $("#next").attr('disabled', 'disabled');
+            $("#next").css('background-image', 'url(http://localhost:8080/DCStation/image/nextdisabled.png)');
+            $("#next").css('background-repeat', 'no-repeat');
+            $("#next").css('background-position', 'center');
         }
     })();
-
-
     (function myBrowser() {
         var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
         if (userAgent.indexOf("Chrome") > -1) {
@@ -226,15 +259,22 @@
             });
         }
     })();
-
     function nextForChrome(val) {
         if (val == 0) {
             parent.check_for_next();
         } else if (val == -1) {
             parent.check_for_back();
         }
-
     }
+
+    function showAppealBtn(drugName, errorName, presId){
+        $("#appealBtn").show();
+        $("#appealBtn").unbind();//important
+        $("#appealBtn").bind('click',function(){
+            window.open("http://localhost:8080/DCStation/appeal/appeal?presId="+presId+"&drugName="+drugName+"&errorName="+errorName);
+        });
+    }
+
 </script>
 </body>
 </html>

@@ -75,8 +75,8 @@
 </div>
 </body>
 
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>--%>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>--%>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>
 <%--<script type="text/javascript"--%>
 <%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>
 <script type="text/javascript">
