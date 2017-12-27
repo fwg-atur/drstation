@@ -23,4 +23,14 @@ public class HomeController {
         //返回一个index.jsp这个视图
         return "index";
     }
+
+
+    @RequestMapping("/pharmacistIndex")
+    public  String pharmacistIndex(){
+        //输出日志文件
+        logger.info("the first jsp pages of pharmacistStation");
+        //返回pharmacistIndex.jsp这个视图
+        return "pharmacistIndex";
+    }
+
 }

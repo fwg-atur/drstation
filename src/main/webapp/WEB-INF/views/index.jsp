@@ -58,7 +58,7 @@
 <script language="javascript" type="text/javascript">
 
 </script>
->
+
 <div id="checkResult">
     <%--<div id="bg">--%>
     <%--</div>--%>
