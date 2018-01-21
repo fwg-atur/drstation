@@ -216,6 +216,7 @@
         }
     }
     function showProblemDetail(data) {
+        String.prototype.trim=function(){return this.replace(/(^\s*)|(\s*$)/g,"");}
         var row = data.row;
         var col = data.col;
         var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '').trim();
@@ -273,7 +274,7 @@
         $("#appealBtn").show();
         $("#appealBtn").unbind();//important
         $("#appealBtn").bind('click',function(){
-            window.open("http://localhost:8080/DCStation/appeal/appeal?presId="+presId+"&drugName="+drugName.trim()+"&errorName="+errorName);
+            window.open("http://localhost:8080/DCStation/appeal/appeal?presId="+encodeURIComponent(presId)+"&drugName="+encodeURIComponent(drugName)+"&errorName="+encodeURIComponent(errorName));
         });
     }
 
