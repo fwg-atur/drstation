@@ -177,6 +177,8 @@
             </div>
 
             <div class="button-area">
+                <input id="appealBtn" type="button" style="display: none" value="我要反馈"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="back" type="button" onclick="nextOrBack(-1)" value="返回"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="next" type="button" onclick="nextOrBack(0)" value="下一步"/>
@@ -214,9 +216,10 @@
         }
     }
     function showProblemDetail(data) {
+        String.prototype.trim=function(){return this.replace(/(^\s*)|(\s*$)/g,"");}
         var row = data.row;
         var col = data.col;
-        var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '');
+        var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '').trim();
         var error_name = problemType[col];
         $("#error_detail").html('');
         var tempHtml = "<thead><tr><th>" + error_name + "</th></tr></thead>";
@@ -271,7 +274,7 @@
         $("#appealBtn").show();
         $("#appealBtn").unbind();//important
         $("#appealBtn").bind('click',function(){
-            window.open("http://localhost:8080/DCStation/appeal/appeal?presId="+presId+"&drugName="+drugName+"&errorName="+errorName);
+            window.open("http://localhost:8080/DCStation/appeal/appeal?presId="+encodeURIComponent(presId)+"&drugName="+encodeURIComponent(drugName)+"&errorName="+encodeURIComponent(errorName));
         });
     }
 
