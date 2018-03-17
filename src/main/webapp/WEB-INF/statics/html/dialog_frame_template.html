@@ -1,0 +1,31 @@
+<div id="bg"></div>
+<div id="show" style="top: 10%;left: 10%;width: 80%;height: 80%;">
+    <div class="dialog-header">
+        <p>审方药师干预会话</p>
+    </div>
+    <div class="dialog-body">
+        <div>
+            <div style=" border: 1px solid #a7f1fd;height: 250px;overflow: auto;position:relative;">
+                <div class="bubble" id="talk-win">
+                </div>
+            </div>
+        </div>
+        <div class="clearfix" style="margin-top: 10px;">
+            <div class="">
+                <textarea id="message-area"
+                          style="border:1px solid #a7f1fd;float: left;height: auto;width: 80%;height: 80px"></textarea>
+            </div>
+            <div class="button-area">
+                <div style="margin: 5px auto;"><input type="button" value="发送" onclick="sendMessage()"/></div>
+                <div style="margin: 5px auto;"><input type="button" value="双签字发药" style="font-size: 14px;"
+                                                      onclick="acceptToDeliverDrug()"/></div>
+            </div>
+        </div>
+        <div class="button-area">
+            <input type="button" value="返回修改" onclick="nextOrBack(-1,true)"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="second-next" class="disable-problem"
+                   disabled="disabled" onclick="nextOrBack(0,true)" value="下一步"/>
+        </div>
+    </div>
+</div>
