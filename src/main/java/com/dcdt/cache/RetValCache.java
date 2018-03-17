@@ -21,6 +21,10 @@ public class RetValCache {
         return i == null ? -1 : i;
     }
 
+    public static boolean containsKey(String presId) {
+        return map.containsKey(presId);
+    }
+
     public static boolean isEmpty() {
         return map.isEmpty();
     }

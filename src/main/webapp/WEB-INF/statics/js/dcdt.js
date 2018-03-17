@@ -50,9 +50,14 @@ function DoctorCheck(tag, xml) {
 
     var data = xmlhttp.responseText;
     data = eval("(" + data + ")");
+
+    // if (isDirectClose(data)) return -1;
     return data;
 }
 
+function isDirectClose(data) {
+    return data == -2;
+}
 function drawCheckResultElem(url) {
     var checkResultElem = document.getElementById("checkResult");
     checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);

@@ -1,11 +1,16 @@
 package com.dcdt.doctorstation.controller;
 
+import com.dcdt.cache.Config;
 import com.dcdt.doctorstation.entity.CheckMessage;
 import com.dcdt.doctorstation.entity.CheckResults;
+import com.dcdt.doctorstation.service.CacheService;
 import com.dcdt.doctorstation.service.PrescCheckService;
+import com.dcdt.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -17,11 +22,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SubmitPrescController {
 
     private PrescCheckService service;
+    private Config config;
 
     @ResponseBody
     @RequestMapping("/sendCheck")
     public CheckMessage sendCheck(int tag, String xml) {
         return service.checkPresc(tag, xml);
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/beginIntervene")
+    public String beginIntervene(@RequestBody String presId) {
+        return service.checkPresc(presId);
     }
 
     /**
@@ -43,6 +56,7 @@ public class SubmitPrescController {
         model.addAttribute("checkResult", checkResult);
         model.addAttribute("checkResultJson", service.toJson(checkResult));
         model.addAttribute("presId", presId);
+        model.addAttribute("config", config);
         return "checkResultPage";
     }
 
@@ -53,7 +67,7 @@ public class SubmitPrescController {
     }
 
     @RequestMapping("/removeCheckResult")
-    public CheckResults removeCheckResult(String presId){
+    public CheckResults removeCheckResult(String presId) {
         return service.removeCheckResult(presId);
     }
 
@@ -73,4 +87,10 @@ public class SubmitPrescController {
     public void setService(PrescCheckService service) {
         this.service = service;
     }
+
+    @Autowired
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
 }

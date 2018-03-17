@@ -45,8 +45,8 @@
                 </textarea>
                 </form>
                 <p>
-                    <button onclick="testCheck(1);" class="btn btn-primary btn-large">预审处方 »</button>
-                    <button onclick="testCheck(2);" class="btn btn-primary btn-large">提交处方 »</button>
+                    <button onclick="testCheck(1);">预审处方 »</button>
+                    <button onclick="testCheck(2);">提交处方 »</button>
                 </p>
             </div>
 
@@ -62,14 +62,16 @@
 </div>
 </body>
 
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>--%>
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>--%>
 <%--<script type="text/javascript"--%>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
 <%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>
 <script type="text/javascript">
     function submitPresc() {
         res = testCheck(1);
     }
+
 </script>
 
 </html>

@@ -1,0 +1,17 @@
+<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 90%;
+                height: 90%;background-color: black;z-index: 1001; -moz-opacity: 0.7;opacity: .70;
+                filter: alpha(opacity=70);">
+</div>
+<div id="show" style="display: none;position: absolute;margin:auto;
+                top: 0; left: 0; bottom: 0; right: 0;width: 900px;
+                height: 500px;padding: 20px 35px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;">
+
+    <iframe src="about:blank" name="showPlace" frameborder="0" height="450px" width="890px"
+            marginheight="0" marginwidth="0" scrolling="yes">
+    </iframe>
+    <div class="button-area" style="display: none" id="closeButton">
+        <input type="button" value="关闭" onclick="hidediv()"/>
+    </div>
+</div>
+
+<a style="display: none" id="checkResultButton" href="@(url)" target="showPlace">在左框中打开链接</a>
