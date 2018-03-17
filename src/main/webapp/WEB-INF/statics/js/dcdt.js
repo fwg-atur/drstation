@@ -37,11 +37,17 @@ function DoctorCheck(tag, xml) {
     else if (check.hasProblem == 1) {
         var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
 
-        window.showModalDialog(url, '',
-            'resizable:yes;scroll:yes;status:no;' +
-            'dialogWidth=' + iWidth +
-            ';dialogHeight=' + iHeight +
-            ';center=yes;help=no');
+        if(navigator.userAgent.indexOf("Chrome") >0 ){
+            var winOption = "height="+iHeight+",width="+iWidth+"," +
+                "top=50,left=50,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,fullscreen=0";
+            window.open(url,window, winOption);
+        } else {
+            window.showModalDialog(url, '',
+                'resizable:yes;scroll:yes;status:no;' +
+                'dialogWidth=' + iWidth +
+                ';dialogHeight=' + iHeight +
+                ';center=yes;help=yes');
+        }
     }
 
     xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/getRetValue", false);

@@ -594,10 +594,12 @@
     }
 
     function showProblemDetail(data) {
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)|(\s*$)/g, "");
+        }
         var row = data.row;
         var col = data.col;
-
-        var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '');
+        var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '').trim();
         var error_name = problemType[col];
         $("#error_detail").html('');
         var tempHtml = "<thead><tr><th>" + error_name + "</th></tr></thead>";
@@ -646,10 +648,11 @@
 
     function showAppealBtn(drugName, errorName, presId) {
         $("#appealBtn").show();
-        $("#appealBtn").unbind();//important
+        $("#appealBtn").unbind();
+        //important
         $("#appealBtn").bind('click', function () {
             window.open("http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/appeal/appeal?presId=" + presId + "&drugName=" + drugName + "&errorName=" + errorName);
-        });
+        })
     }
 
 </script>
