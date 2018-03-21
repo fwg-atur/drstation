@@ -1,7 +1,7 @@
 /**
  * Created by on 2017/5/14.
  */
-var checkServerIp = "localhost";
+var checkServerIp = "223.3.121.92";
 var cheServerPost = "8080";
 //说明书地址
 var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
