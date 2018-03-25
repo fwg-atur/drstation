@@ -1,6 +1,9 @@
 package com.dcdt.doctorstation.controller;
 
+import com.dcdt.cache.Config;
+import com.dcdt.doctorstation.entity.Check;
 import com.dcdt.doctorstation.entity.CheckMessage;
+import com.dcdt.doctorstation.entity.CheckPresOutput;
 import com.dcdt.doctorstation.entity.CheckResults;
 import com.dcdt.doctorstation.service.PharmacistPrescCheckService;
 import com.dcdt.doctorstation.service.PrescCheckService;
@@ -18,26 +21,33 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PharmacistSubmitPresController{
 
     private PharmacistPrescCheckService service;
+    private Config config;
 
     @ResponseBody
     @RequestMapping("/sendPharmacistCheck")
-    public CheckMessage sendPharmacistCheck(int tag,String patientId,String presDate,String xml) {
-        return service.checkPharmacistPresc(tag,patientId,presDate,xml);
+    public CheckMessage sendPharmacistCheck(String patientID,String visitDate,String xml) {
+        return service.checkPharmacistPresc(patientID,visitDate,xml);
     }
 
     @RequestMapping("/pharmacistCheckResultPage")
     public String findPharmacistCheckResult(String presId,Model model){
-        CheckResults checkResult = service.findCheckResult(presId);
-        model.addAttribute("checkResult", checkResult);
-        model.addAttribute("checkResultJson", service.toJson(checkResult));
+        Check check = service.findPharmacistCheckResult(presId);
+        model.addAttribute("pharmacistCheckResult", check);
+        model.addAttribute("pharmacistCheckResultJson", service.toJson(check));
+//        model.addAttribute("pharmacistCheckResultJson", service.toJson(check));
+//        model.addAttribute("checkPresInput",check.getCheckPresInput());
+//        model.addAttribute("checkPresOutput",check.getCheckPresOutput());
+//        model.addAttribute("presInfos",check.getCheckPresOutput().getPrescInfos());
         model.addAttribute("presId", presId);
+        model.addAttribute("checkPharmacist",check.getCheckPharmacist());
+        model.addAttribute("config", config);
         return "pharmacistCheckResultPage";
     }
 
     @RequestMapping("findCheckResultJson")
     @ResponseBody
-    public CheckResults findCheckResultJson(String presId) {
-        return service.findCheckResult(presId);
+    public Check findCheckResultJson(String presId) {
+        return service.findPharmacistCheckResult(presId);
     }
 
     @ResponseBody
@@ -55,5 +65,10 @@ public class PharmacistSubmitPresController{
     @Autowired
     public void setService(PharmacistPrescCheckService service) {
         this.service = service;
+    }
+
+    @Autowired
+    public void setConfig(Config config) {
+        this.config = config;
     }
 }

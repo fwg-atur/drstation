@@ -31,11 +31,11 @@
                 <form id="queryForm" method="get">
                     <label>患者id</label>
                     <br>
-                    <input type="text" id="patientId" name="patientId">
+                    <input type="text" id="patientID" name="patientID">
                     <br>
-                    <label>患者id</label>
+                    <label>日期</label>
                     <br>
-                    <input type="text" id="presDate" name="presDate">
+                    <input type="text" id="visitDate" name="visitDate">
                     <br>
                     <label>数据字符串</label>
                     <br>
@@ -85,14 +85,10 @@
 </div>
 </body>
 
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>--%>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>--%>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>
 <%--<script type="text/javascript"--%>
 <%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>
-<script type="text/javascript">
-    function submitPresc() {
-        res = testCheck(1);
-    }
-</script>
+
 
 </html>

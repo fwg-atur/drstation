@@ -11,6 +11,10 @@ public class Doctor {
     private String FKNF;
     private String DEPT_NAME;
 
+    public Doctor(){
+
+    }
+
     public Doctor(String USER_ID, String NAME, String POSITION, String DEPT_CODE, String FKNF, String DEPT_NAME) {
         this.USER_ID = USER_ID;
         this.NAME = NAME;

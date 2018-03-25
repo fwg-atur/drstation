@@ -9,8 +9,8 @@
 
 .table-area-content {
     width: 907px;
-    height: 200px;
-    _height: 180px;
+    height: 140px;
+    _height: 120px;
     margin-left: 55px;
     _margin-left: 47px;
     overflow: auto;
@@ -40,6 +40,7 @@ table.main-table-head th {
     font-size: 16px;
 
     width: 75px;
+    _width: 75px;
 }
 
 table.main-table td {
@@ -48,9 +49,10 @@ table.main-table td {
     height: 40px;
     color: #005a5c;
     font-family: SourceHanSansCN-Bold, serif;
-    font-size: 16px;
+    font-size: 14px;
 
     width: 75px;
+    _width: 75px;
 }
 
 .main-table tbody tr:nth-child(even) td {
@@ -107,9 +109,9 @@ table.main-table td {
 }
 
 .detail-info {
-    width: 442px;
-    height: 200px;
-    _height: 220px;
+    width: 380px;
+    height: 170px;
+    _height: 190px;
     background-color: #f3fbfd;
 }
 
@@ -119,7 +121,25 @@ table.main-table td {
     font-family: SourceHanSansCN-Normal, serif;
     padding: 40px 10px;
     _padding: 20px 10px;
-    height: 140px;
+    height: 120px;
+    _height: 140px;
+    overflow: auto;
+}
+
+.down-detail-info {
+    width: 442px;
+    height: 130px;
+    _height: 150px;
+    background-color: #f3fbfd;
+}
+
+.down-detail-content {
+    color: #343434;
+    font-size: 14px;
+    font-family: SourceHanSansCN-Normal, serif;
+    padding: 40px 10px;
+    _padding: 20px 10px;
+    height: 100px;
     _height: 160px;
     overflow: auto;
 }

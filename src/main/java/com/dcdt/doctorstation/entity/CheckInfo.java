@@ -16,6 +16,10 @@ public class CheckInfo {
     private String LCSY;
     private String REGULAR_WARNING_LEVEL;
 
+    public CheckInfo(){
+
+    }
+
     public CheckInfo(String COLOR, String NAME, String WARNING_LEVEL, String WARNING_INFO, String REF_SOURCE, String YPMC, String JSXX, String ZYJL, String TYSM, String LCSY, String REGULAR_WARNING_LEVEL) {
         this.COLOR = COLOR;
         this.NAME = NAME;

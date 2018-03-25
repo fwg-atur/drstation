@@ -33,6 +33,10 @@ public class Patient {
     private String MEDICARE_04;
     private String MEDICARE_05;
 
+    public Patient(){
+
+    }
+
     public Patient(String NAME, String ID, String GENDER, String BIRTH, String WEIGHT, String HEIGHT, String ALERGY_DRUGS, String PREGNANT, String LACT, String HEPATICAL, String RENAL, String PANCREAS, String VISIT_ID, String PATIENT_PRES_ID, String IDENTITY_TYPE, String FEE_TYPE, String SCR, String SCR_UNIT, String GESTATION_AGE, String PRETERM_BIRTH, String DRUG_HISTORY, String FAMILY_DISEASE_HISTORY, String GENETIC_DISEASE, String MEDICARE_01, String MEDICARE_02, String MEDICARE_03, String MEDICARE_04, String MEDICARE_05) {
         this.NAME = NAME;
         this.ID = ID;

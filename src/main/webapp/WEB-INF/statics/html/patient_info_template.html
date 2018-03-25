@@ -1,0 +1,50 @@
+<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 100%;
+                height: 100%;background-color: black;z-index: 1001; -moz-opacity: 0.7;opacity: .70;
+                filter: alpha(opacity=70);">
+</div>
+<div id="show" style="display: none;position: absolute;margin:auto;
+                top: 0; left: 0; bottom: 0; right: 0;width: 900px;
+                height: 200px;padding: 20px 35px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;">
+    <div style="text-align: center;font-weight: bold">医生信息</div>
+    <br>
+    <table class="main-table-head">
+        <thead>
+        <tr>
+            <th>患者姓名</th>
+            <th>患者性别</th>
+            <th>出生日期</th>
+            <th>患者ID</th>
+            <th>门诊ID</th>
+            <th>患者身高</th>
+            <th>患者体重</th>
+            <th>药敏信息</th>
+            <th>是否妊娠</th>
+            <th>是否哺乳</th>
+            <th>是否肝功能不全</th>
+            <th>是否肾功能不全</th>
+            <th>是否胰腺功能不全</th>
+        </tr>
+        </thead>
+        <tbody style="text-align: center">
+        <tr>
+            <td>@(patient.NAME)</td>
+            <td>@(patient.GENDER)</td>
+            <td>@(patient.BIRTH)</td>
+            <td>@(patient.ID)</td>
+            <td>@(patient.VISIT_ID)</td>
+            <td>@(patient.HEIGHT)</td>
+            <td>@(patient.WEIGHT)</td>
+            <td>@(patient.ALERGY_DRUGS)</td>
+            <td>@(patient.PREGNANT)</td>
+            <td>@(patient.LACT)</td>
+            <td>@(patient.HEPATICAL)</td>
+            <td>@(patient.RENAL)</td>
+            <td>@(patient.PANCREAS)</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="button-area" id="closeButton">
+        <input type="button" value="关闭" onclick="hidediv()"/>
+    </div>
+</div>

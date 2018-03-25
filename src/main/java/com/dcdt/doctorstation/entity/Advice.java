@@ -42,6 +42,10 @@ public class Advice {
     private String BAK_04;
     private String BAK_05;
 
+    public Advice(){
+
+    }
+
     public Advice( String REPEAT, String DRUG_LO_NAME, String DRUG_LO_ID, String ADMINISTRATION, String DOSAGE, String DOSAGE_UNIT, String FREQ_COUNT, String FREQ_INTERVAL, String FREQ_INTERVAL_UNIT, String START_DAY, String END_DAY, String DEPT_CODE, String DOCTOR_NAME, String ORDER_NO, String ORDER_SUB_NO, String AUTHORITY_LEVELS, String ALERT_LEVELS, String TITLE, String GROUP_ID, String USER_ID, String PRES_ID, String PRES_DATE, String PRES_SEQ_ID, String PK_ORDER_NO, String COURSE, String PKG_COUNT, String PKG_UNIT, String BAK_01, String BAK_02, String BAK_03, String BAK_04, String BAK_05) {
         this.REPEAT = REPEAT;
         this.DRUG_LO_NAME = DRUG_LO_NAME;

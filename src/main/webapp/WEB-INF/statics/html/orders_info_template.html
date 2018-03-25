@@ -1,0 +1,88 @@
+<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 100%;
+                height: 100%;background-color: black;z-index: 1001; -moz-opacity: 0.7;opacity: .70;
+                filter: alpha(opacity=70);">
+</div>
+<div id="show" style="display: none;position: absolute;margin:auto;
+                top: 0; left: 0; bottom: 0; right: 0;width: 900px;
+                height: 500px;padding: 20px 35px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;">
+    <div style="text-align: center;font-weight: bold">医嘱信息</div>
+    <br>
+    <table class="main-table-head" style="width:3600px;">
+        <thead>
+        <tr>
+            <th>药品ID</th>
+            <th>药品名称</th>
+            <th>给药途径</th>
+            <th>剂量</th>
+            <th>剂量单位</th>
+            <th>频次</th>
+            <th>频次间隔</th>
+            <th>频次间隔单位</th>
+            <th>开始服药日期</th>
+            <th>结束服药日期</th>
+            <th>是否为长期医嘱</th>
+            <th>医嘱编号</th>
+            <th>子医嘱编号</th>
+            <th>科室代码</th>
+            <th>医生名称</th>
+            <th>医生职称</th>
+            <th>抗菌药授权级别</th>
+            <th>抗菌药警告列表</th>
+            <th>医嘱组号</th>
+            <th>医生ID</th>
+            <th>处方ID</th>
+            <th>处方日期</th>
+            <th>处方序列号</th>
+            <th>医嘱唯一编号</th>
+            <th>药品使用天数</th>
+            <th>发药包装数量</th>
+            <th>发药包装单位</th>
+            <th>备用标识1</th>
+            <th>备用标识2</th>
+            <th>备用标识3</th>
+            <th>备用标识4</th>
+            <th>备用标识5</th>
+        </tr>
+        </thead>
+        <tbody id="ordersTableBody" style="text-align: center">
+            <tr>
+                <td>@(DRUG_LO_ID)</td>
+                <td>@(DRUG_LO_NAME)</td>
+                <td>@(ADMINISTRATION)</td>
+                <td>@(DOSAGE)</td>
+                <td>@(DOSAGE_UNIT)</td>
+                <td>@(FREQ_COUNT)</td>
+                <td>@(FREQ_INTERVAL)</td>
+                <td>@(FREQ_INTERVAL_UNIT)</td>
+                <td>@(START_DAY)</td>
+                <td>@(END_DAY)</td>
+                <td>@(REPEAT)</td>
+                <td>@(ORDER_NO)</td>
+                <td>@(ORDER_SUB_NO)</td>
+                <td>@(DEPT_CODE)</td>
+                <td>@(DOCTOR_NAME)</td>
+                <td>@(TITLE)</td>
+                <td>@(AUTHORITY_LEVELS)</td>
+                <td>@(ALERT_LEVELS)</td>
+                <td>@(GROUP_ID)</td>
+                <td>@(USER_ID)</td>
+                <td>@(PRES_ID)</td>
+                <td>@(PRES_DATE)</td>
+                <td>@(PRES_SEQ_ID)</td>
+                <td>@(PK_ORDER_NO)</td>
+                <td>@(COURSE)</td>
+                <td>@(PKG_COUNT)</td>
+                <td>@(PKG_UNIT)</td>
+                <td>@(BAK_01)</td>
+                <td>@(BAK_02)</td>
+                <td>@(BAK_03)</td>
+                <td>@(BAK_04)</td>
+                <td>@(BAK_05)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="button-area" id="closeButton">
+        <input type="button" value="关闭" onclick="hidediv()"/>
+    </div>
+</div>

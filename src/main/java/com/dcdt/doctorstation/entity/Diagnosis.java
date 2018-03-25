@@ -6,6 +6,10 @@ package com.dcdt.doctorstation.entity;
 public class Diagnosis {
     private String DIAGNOSISES;
 
+    public Diagnosis(){
+
+    }
+
     public Diagnosis(String DIAGNOSISES) {
         this.DIAGNOSISES = DIAGNOSISES;
     }

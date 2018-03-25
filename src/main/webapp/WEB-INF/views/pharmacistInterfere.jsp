@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: wtwang
@@ -8,7 +9,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        实时审核Web版
+    </title>
+
+    <script type="text/javascript"
+            src="http://localhost:8080/DCStation/js/jquery.min.js"></script>
+    <link href="http://localhost:8080/DCStation/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
     <title>实时审核Web版</title>
+    <style type="text/css">
+        .selected {
+            background:#FF6500;
+            color:#fff;
+        }
+    </style>
+
+    <script type="javascript">
+        $(document).ready(function() {
+            /**
+             * 表格行被单击的时候改变背景色
+             */
+            $("#table tr:gt(0)").click(function() {
+                if ($(this).hasClass("selected")){
+                    $(this).removeClass("selected").find(":checkbox").attr("checked",false);//选中移除样式
+                }
+                else{
+                    $(this).addClass("selected").find(":checkbox").attr("checked",true);//未选中添加样式
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <div>
@@ -17,72 +49,106 @@
             <div class="head-top">
                 <%--<p></p>--%>
             </div>
-            <div class="head-info-lg">
-                <p>审查结果</p>
-            </div>
+
             <div class="info-area">
+                <label>医生姓名
+                    <s:textfield style="width:90px" name="doctorName"></s:textfield>
+                </label>
+                <label>患者ID
+                    <s:textfield style="width:90px" name="patientID"></s:textfield>
+                </label>
+                <label>患者姓名
+                    <s:textfield style="width:90px" name="patientName"></s:textfield>
+                </label>
 
-            </div>
+                <br>
 
-            <div class="table-area">
-                <div class="table-area-head">
-                    <table class="main-table-head">
-                        <thead>
-                        <tr>
-                            <th style="width: 140px">药品名称</th>
-                            <th>适应症</th>
-                            <th>禁忌症<br>慎用症</th>
-                            <th>用法<br>用量</th>
-                            <th>重复<br>用药</th>
-                            <th>相互<br>作用</th>
-                            <th>配伍<br>禁忌</th>
-                            <th>特殊<br>人群</th>
-                            <th>药敏</th>
-                            <th>医院<br>管理</th>
-                            <th>处方<br>ID</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="table-area-content">
-                    <table class="main-table">
-                        <tbody>
-                        <c:forEach var="item" items="${checkResult.advices}">
-                            <tr>
-                                <td style="width: 132px;">${item.DRUG_LO_NAME}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
+                <label>药师姓名
+                    <s:textfield style="width:90px" name="pharmacistName"></s:textfield>
+                </label>
+                <label>药师工号
+                    <s:textfield style="width:90px" name="pharmacistID"></s:textfield>
+                </label>
+                <label>联系电话
+                    <s:textfield style="width:90px" name="telephone"></s:textfield>
+                </label>
             </div>
 
             <div class="info-area">
-                <div class="detail-info left-area">
-                    <div class="head-info-sm"><p>审方医生与医生沟通结果</p></div>
-                    <div class="detail-content" style="padding: 10px;_padding:20px 10px;">
-
+                <div style="float: left;width: 45%">
+                   <label>问题分类</label>
+                    <div style="overflow-x: auto;overflow-y: auto;height: 400px;width: 400px;">
+                       <table class="table" align="left" width="500px" height="500px">
+                           <thead align="left">
+                           <tr>
+                               <th width="40px">ID</th>
+                               <th>问题分类</th>
+                           </tr>
+                           </thead>
+                           <tbody align="left">
+                           <tr>
+                               <th><input type="checkbox" name="checkbox1">1</th>
+                               <th>应注明皮试结果，未注明；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox2">2</th>
+                               <th>药品超剂量使用未注明原因和再次签名；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox3">3</th>
+                               <th>开具处方未写临床诊断或临床诊断书写不全；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox4">4</th>
+                               <th>门急诊处方超疗程（急三慢七，慢病延长）；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox5">5</th>
+                               <th>遴选的药品不适宜；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox6">6</th>
+                               <th>特殊人群禁忌使用；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox7">7</th>
+                               <th>用药与性别不符；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox8">8</th>
+                               <th>禁忌症；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox9">9</th>
+                               <th>重复给药；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox10">10</th>
+                               <th>用法、用量不适宜（包括剂型、给药途径、用药途径）；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox11">11</th>
+                               <th>联合用药不适宜或者不良相互作用；</th>
+                           </tr>
+                           <tr>
+                               <th><input type="checkbox" name="checkbox12">12</th>
+                               <th>有配伍禁忌或者溶媒选择不适宜；</th>
+                           </tr>
+                           </tbody>
+                       </table>
                     </div>
                 </div>
-                <div class="detail-info right-area">
-                    <div class="head-info-sm"><p>干预情况</p></div>
-                    <div class="detail-content">
+                <div style="float: right;height:400px;width: 45%">
+                    <label>问题描述</label>
+                    <s:textarea>
 
-                    </div>
+                    </s:textarea>
                 </div>
             </div>
 
-            <div class="button-area">
+
+
+            <div class="button-area" style="clear: both">
                 <input id="back" type="button" onclick="nextOrBack(-1)" value="返回"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="next" type="button" onclick="nextOrBack(0)" value="提交"/>
@@ -94,3 +160,5 @@
 </div>
 </body>
 </html>
+
+

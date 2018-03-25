@@ -577,12 +577,11 @@
                 if (checkInfo.NAME == problemType[k]) {
                     var problemLevel = parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1;
                     var $chooseTd = $(".main-table tbody").children().eq(i).children().eq(k + 1);
-
                     //如果问题等级是-1（拦截）或者问题等级大于当前等级，则更改图标
-                    if (problemLevel == -1 || curProblemLevel < problemLevel) {
+                    if (problemLevel == 0 || curProblemLevel < problemLevel) {
                         var className = problemLevelClassName[problemLevel];
                         $chooseTd.attr('class', className);
-                        curProblemLevel = problemLevel == -1 ? 10 : problemLevel;
+                        curProblemLevel = problemLevel == 0 ? 10 : problemLevel;
                     }
 
                     $chooseTd.click({row: i, col: k}, function (event) {

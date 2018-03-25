@@ -2,9 +2,9 @@
  * Created by on 2017/5/14.
  */
 var checkServerIp = "localhost";
-var cheServerPost = "8080";
+var checkServerPort = "8090";
 //说明书地址
-var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
+var disUrl = 'http://localhost:8090/DCStation/home/index?drugCode=@code@';
 
 
 function testCheck(tag) {
@@ -25,17 +25,18 @@ function DoctorCheck(tag, xml) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/sendCheck", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
-    var check = eval("(" + checkData + ")");
+    var s = "("+checkData+")";
+    var check = eval(s);
     if (tag == 2 || check.hasProblem == 0) {
         return 0;
     }
     else if (check.hasProblem == 1) {
-        var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
 
         if(navigator.userAgent.indexOf("Chrome") >0 ){
             var winOption = "height="+iHeight+",width="+iWidth+"," +
@@ -50,7 +51,7 @@ function DoctorCheck(tag, xml) {
         }
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/getRetValue", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/getRetValue", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send('presId=' + check.presId);
 
@@ -87,17 +88,17 @@ function openDiscribLinked(code) {
 
 //药师站
 function testPharmacistCheck(tag) {
-    var patientId = document.getElementById("patientId").value;
-    var presDate = document.getElementById("presDate").value;
+    var patientID = document.getElementById("patientID").value;
+    var visitDate = document.getElementById("visitDate").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck(tag,patientId,presDate,dcdtXml);
+    PharmacistCheck(tag,patientID,visitDate,dcdtXml);
 }
 
-function PharmacistCheck(tag,patientId,presDate,xml) {
+function PharmacistCheck(tag,patientID,visitDate,xml) {
     var iWidth = '1000px';
     var iHeight = '650px';
     var xmlhttp;
-    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientId=' + patientId + '&' + 'presDate=' + presDate;
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
     if (window.XMLHttpRequest) {
         //  IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();
@@ -106,7 +107,7 @@ function PharmacistCheck(tag,patientId,presDate,xml) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
 
@@ -116,16 +117,22 @@ function PharmacistCheck(tag,patientId,presDate,xml) {
         return 0;
     }
     else if (check.hasProblem == 1) {
-        var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
 
-        window.showModalDialog(url, '',
-            'resizable:yes;scroll:yes;status:no;' +
-            'dialogWidth=' + iWidth +
-            ';dialogHeight=' + iHeight +
-            ';center=yes;help=no');
+        if(navigator.userAgent.indexOf("Chrome") >0 ){
+            var winOption = "height="+iHeight+",width="+iWidth+"," +
+                "top=50,left=50,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,fullscreen=0";
+            window.open(url,window, winOption);
+        } else {
+            window.showModalDialog(url, '',
+                'resizable:yes;scroll:yes;status:no;' +
+                'dialogWidth=' + iWidth +
+                ';dialogHeight=' + iHeight +
+                ';center=yes;help=yes');
+        }
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/pharmacistSubmit/getRetValue", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/getRetValue", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send('presId=' + check.presId);
 
