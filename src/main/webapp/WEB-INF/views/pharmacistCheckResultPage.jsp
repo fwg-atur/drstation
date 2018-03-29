@@ -28,7 +28,7 @@
         var doctorInfo = pharmacistCheckResultJson.checkPresInput.doctor;
         //患者信息
         var patientInfo = pharmacistCheckResultJson.checkPresInput.patient;
-        //医嘱信息
+        //处方信息
         var orders = pharmacistCheckResultJson.checkPresInput.advices;
 
         /********定义iframe模板********/
@@ -296,13 +296,13 @@
             <div class="info-area">
                 <div class="down-detail-info left-area">
                     <div class="head-info-sm"><p>干预操作说明</p></div>
-                    <div class="down-detail-content" style="padding: 10px;_padding:20px 10px;">
+                    <div class="down-detail-content" style="margin-top: -30px">
                         实施干预步骤：1）鼠标左键单击要干预的药品的问题；2）点击“汇总”按钮；3）如果有多个问题要干预，则重复步骤1）和2）；4）点击“实施干预”按钮。
                     </div>
                 </div>
                 <div class="down-detail-info right-area">
                     <div class="head-info-sm"><p>干预情况</p></div>
-                    <div class="down-detail-content">
+                    <div class="down-detail-content" >
                         ${checkPharmacist.pharmacistCheck}
                     </div>
                 </div>
@@ -313,7 +313,7 @@
 
                 <input id="patientInfo" type="button" value="患者信息" onclick="drawPatientInfoElem()"/>
 
-                <input id="orderInfo" type="button" value="医嘱信息" onclick="drawOrdersInfoElem()"/>
+                <input id="orderInfo" type="button" value="处方信息" onclick="drawOrdersInfoElem()"/>
 
 
                 <input id="help" type="button" value="帮助"/>

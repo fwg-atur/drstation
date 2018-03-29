@@ -139,8 +139,8 @@ table.main-table td {
     font-family: SourceHanSansCN-Normal, serif;
     padding: 40px 10px;
     _padding: 20px 10px;
-    height: 100px;
-    _height: 160px;
+    height: 20px;
+    _height: 30px;
     overflow: auto;
 }
 
