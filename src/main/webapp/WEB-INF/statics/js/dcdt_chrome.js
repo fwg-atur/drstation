@@ -69,14 +69,13 @@ function sendAjaxRequest(data, url) {
 }
 function DoctorCheckForChrome(tag, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
-    var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/sendCheck";
+    var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/sendCheckForTest";
     var checkData = sendAjaxRequest(data, url);
 
     var check = eval("(" + checkData + ")");
     if (tag == 2 || check.hasProblem == 0) {
         return 0;
-    }
-    else if (check.hasProblem == 1) {
+    } else if (check.hasProblem == 1) {
         var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
         presId = check.presId;
         drawCheckResultElem(url);

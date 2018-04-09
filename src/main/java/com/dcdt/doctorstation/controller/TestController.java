@@ -19,7 +19,7 @@ public class TestController {
     @RequestMapping("/testCheck1")
     public String sendCheck(@RequestBody String xml) {
         System.out.println(xml);
-        return "<Response FUN='1'>\n" +
+        return "<Response FUN='2'>\n" +
                 "<Output PRES_STATE='0' MAX_MESSAGE_NO='1' />\n</Response>";
     }
 

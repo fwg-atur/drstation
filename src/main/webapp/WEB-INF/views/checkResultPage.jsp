@@ -138,6 +138,7 @@
         function showdiv() {
             document.getElementById("bg").style.display = "block";
             document.getElementById("show").style.display = "block";
+            document.getElementById("closeButton").style.display = "block";
         }
         function hidediv() {
             document.getElementById("bg").style.display = 'none';
@@ -519,7 +520,7 @@
                         <tbody>
                         <c:forEach var="item" items="${checkResult.advices}">
                             <tr>
-                                <td style="width: 132px;">
+                                <td style="width: 129px;_width:127px">
                                     <a onclick="openDiscribLinked('${item.DRUG_LO_ID}')">
                                             ${item.DRUG_LO_NAME}
                                     </a>
