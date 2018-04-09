@@ -9,10 +9,29 @@ var disUrl = 'http://localhost:8090/DCStation/home/index?drugCode=@code@';
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    DoctorCheck(tag, dcdtXml);
+    DoctorCheck(tag, dcdtXml,1);
+}
+/**
+ *
+ * @param tag
+ * @param xml
+ * @param inHosFlag 住院门诊标识，1住院，0门诊 。默认使用住院医生站。
+ * @constructor
+ */
+function DoctorCheck(tag, xml, inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 1;
+    }
+    if (inHosFlag == 0) {
+        return sendCheck(tag, xml, checkServerIpOutHos, cheServerPostOutHos);
+    } else if (inHosFlag == 1) {
+        return sendCheck(tag, xml, checkServerIpInHos, cheServerPostInHos);
+    } else {
+        alert("error:未识别的住院标识！");
+    }
 }
 
-function DoctorCheck(tag, xml) {
+function sendCheck(tag, xml, checkServerIp, cheServerPost) {
     var iWidth = '1000px';
     var iHeight = '650px';
     var xmlhttp;
