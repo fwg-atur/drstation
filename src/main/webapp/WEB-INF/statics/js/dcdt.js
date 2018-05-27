@@ -1,10 +1,23 @@
 /**
  * Created by on 2017/5/14.
  */
-var checkServerIp = "localhost";
-var checkServerPort = "8090";
+/**
+ * 住院医生站ip，端口。
+ * 如果是旧接口，即住院和门诊是分开的两个文件，则checkServerIpInHos等同于原来的checkServerIp。
+ * checkServerPortInHos等同于原来的checkServerPort。
+ * DoctorCheck函数的调用和原来相同。
+ * @type {string}
+ */
+var checkServerIpInHos = "localhost";
+var cheServerPortInHos = "8080";
+/**
+ * 门诊医生站ip，端口
+ * @type {string}
+ */
+var checkServerIpOutHos = "localhost";
+var cheServerPortOutHos = "8080";
 //说明书地址
-var disUrl = 'http://localhost:8090/DCStation/home/index?drugCode=@code@';
+var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
 
 
 function testCheck(tag) {
@@ -23,15 +36,15 @@ function DoctorCheck(tag, xml, inHosFlag) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendCheck(tag, xml, checkServerIpOutHos, cheServerPostOutHos);
+        return sendCheck(tag, xml, checkServerIpOutHos, cheServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendCheck(tag, xml, checkServerIpInHos, cheServerPostInHos);
+        return sendCheck(tag, xml, checkServerIpInHos, cheServerPortInHos);
     } else {
         alert("error:未识别的住院标识！");
     }
 }
 
-function sendCheck(tag, xml, checkServerIp, cheServerPost) {
+function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     var iWidth = '1000px';
     var iHeight = '650px';
     var xmlhttp;
@@ -44,7 +57,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPost) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheckForTest", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
 
@@ -54,12 +67,12 @@ function sendCheck(tag, xml, checkServerIp, cheServerPost) {
         return 0;
     }
     else if (check.hasProblem == 1) {
-        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+        var url = "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
 
-        if(navigator.userAgent.indexOf("Chrome") >0 ){
-            var winOption = "height="+iHeight+",width="+iWidth+"," +
+        if (navigator.userAgent.indexOf("Chrome") > 0) {
+            var winOption = "height=" + iHeight + ",width=" + iWidth + "," +
                 "top=50,left=50,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,fullscreen=0";
-            window.open(url,window, winOption);
+            window.open(url, window, winOption);
         } else {
             window.showModalDialog(url, '',
                 'resizable:yes;scroll:yes;status:no;' +
@@ -69,7 +82,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPost) {
         }
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/getRetValue", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/getRetValue", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send('presId=' + check.presId);
 

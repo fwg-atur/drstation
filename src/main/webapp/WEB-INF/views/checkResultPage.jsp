@@ -51,14 +51,14 @@
         var agreeToNextStrs = ['同意双签字发药', '同意医师观点'];
 
         var requestMessage = "<Request FUN='@fun@'>" +
-                "<Input PATIENT_ID='${checkResult.patient.ID}' " +
-                "PRES_ID='@presId@' " +
-                "PRES_DATE='${checkResult.advices[0].PRES_DATE}' " +
-                "MESSAGE_NO='@message_no@' " +
-                "WEB_DC='1' " +
-                "MESSAGE_TEXT='@message_text@' " +
-                "MESSAGE_TIME='@message_time@' />" +
-                "</Request>";
+            "<Input PATIENT_ID='${checkResult.patient.ID}' " +
+            "PRES_ID='@presId@' " +
+            "PRES_DATE='${checkResult.advices[0].PRES_DATE}' " +
+            "MESSAGE_NO='@message_no@' " +
+            "WEB_DC='1' " +
+            "MESSAGE_TEXT='@message_text@' " +
+            "MESSAGE_TIME='@message_time@' />" +
+            "</Request>";
 
         /********定义iframe模板********/
         var checkResultTemp = getTemplateByName("check_result_template");
@@ -72,10 +72,11 @@
         var dialog_frame = getTemplateByName('dialog_frame_template');
 
         var drMessage = '<div class="demo clearfix fr"><span class="triangle"></span>' +
-                '<div class="article">@message@</div></div>'
+            '<div class="article">@message@</div></div>'
 
         var phMessage = '<div class="demo clearfix"><span class="triangle"></span>' +
-                '<div class="article">@message@</div></div>'
+            '<div class="article">@message@</div></div>'
+
         /**************            *****************/
 
         function getRequestMessage(fun, message_text) {
@@ -83,13 +84,14 @@
                 message_text = "";
             }
             return requestMessage.replace('@fun@', fun).replace("@message_no@", message_no)
-                    .replace("@message_text@", message_text);
+                .replace("@message_text@", message_text);
         }
 
         function getTemplateByName(name) {
             var url = 'http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/html/' + name + ".html";
             return sendAjaxRequest(url, '', "GET");
         }
+
         function sendQuitMessage(val) {
             if (val == -1) {
                 sendRealMessage("修改处方");
@@ -135,15 +137,18 @@
             document.getElementById("checkResultButton").click();
             showdiv();
         }
+
         function showdiv() {
             document.getElementById("bg").style.display = "block";
             document.getElementById("show").style.display = "block";
             document.getElementById("closeButton").style.display = "block";
         }
+
         function hidediv() {
             document.getElementById("bg").style.display = 'none';
             document.getElementById("show").style.display = 'none';
         }
+
         function openDiscribLinked(code) {
             var urlTemp = disUrl.replace("@code@", code);
             drawCheckResultElem(urlTemp);
@@ -262,6 +267,7 @@
                 }
             }
         }
+
         function printPharmMessageList(messageList) {
             for (index in messageList) {
                 var temp_message_no = messageList[index].messageNo;
@@ -275,6 +281,7 @@
                 addMessageToWin(realMessage);
             }
         }
+
         function checkPharmMessage() {
             var args = getRequestMessage('2');
             var data = sendAjaxRequest(checkInterveneMessageURL, args);
@@ -287,6 +294,7 @@
         function checkMessage() {
             checkInterveneMessage = window.setInterval("checkPharmMessage()", checkMessageInterval);
         }
+
         var beginTalk = function () {
             var checkResultElem = document.getElementById("checkResult");
             checkResultElem.innerHTML = dialog_frame;
@@ -328,6 +336,7 @@
             window.clearInterval(checkInterveneState);
             window.clearInterval(checkInterveneMessage);
         }
+
         /*****      进度条js      ****/
 
         function run() {
@@ -353,6 +362,7 @@
                 return;
             }
         }
+
         function isDirectClose() {
             return directCloseFlag == 1;
         }
@@ -585,6 +595,11 @@
                         curProblemLevel = problemLevel == 0 ? 10 : problemLevel;
                     }
 
+                    //判断是否抗菌药登记
+                    // if (checkInfo.NAME == '用法用量') {
+                    //     $chooseTd.html($chooseTd.html() + "未登记");
+                    // }
+
                     $chooseTd.click({row: i, col: k}, function (event) {
                         showProblemDetail(event.data)
                     });
@@ -612,11 +627,12 @@
             }
             var temp = error_detail;
             tempHtml += temp.replace('@(drug_name)', drug_name).replace('@(warning_info)', checkInfo.WARNING_INFO)
-                    .replace('@(ref_source)', checkInfo.REF_SOURCE);
+                .replace('@(ref_source)', checkInfo.REF_SOURCE);
         }
         $("#error_detail").html(tempHtml);
         showAppealBtn(drug_name, error_name, '${presId}');
     }
+
     (function isDisabled() {
         var t = ${checkResult.HIGHEST_WARNING_LEVEL};
         if (t == -1) {
