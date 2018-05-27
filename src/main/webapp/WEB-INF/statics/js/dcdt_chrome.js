@@ -1,9 +1,30 @@
 /**
  * Created by on 2017/5/14.
  */
-var checkServerIp = "localhost";
-var cheServerPost = "8080";
 var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
+
+/**
+ * 住院医生站ip，端口。
+ * 如果是旧接口，即住院和门诊是分开的两个文件，则checkServerIpInHos等同于原来的checkServerIp。
+ * checkServerPortInHos等同于原来的checkServerPort。
+ * DoctorCheck函数的调用和原来相同。
+ * @type {string}
+ */
+var checkServerIpInHos = "localhost";
+var cheServerPortInHos = "8080";
+/**
+ * 门诊医生站ip，端口
+ * @type {string}
+ */
+var checkServerIpOutHos = "localhost";
+var cheServerPortOutHos = "8090";
+
+/**
+ * 存放临时变量
+ * @type {string}
+ */
+var checkServerIpTemp;
+var cheServerPortTemp;
 
 var checkResultTemp =
     '<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 100%;' +
@@ -26,16 +47,36 @@ var checkIsQuitState = null;
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    DoctorCheck(tag, dcdtXml, test_next, 1, test_back, 2);
+    DoctorCheck(tag, dcdtXml, test_next, 1, test_back, 2, 1);
 }
 
-function DoctorCheck(tag, xml, next_func_name, next_fun_args, back_func_name, back_func_args) {
+function setInHosFlag(inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 1;
+    }
+    if (inHosFlag == 0) {
+        checkServerIpTemp = checkServerIpOutHos;
+        cheServerPortTemp = cheServerPortOutHos;
+    } else if (inHosFlag == 1) {
+        checkServerIpTemp = checkServerIpInHos;
+        cheServerPortTemp = cheServerPortInHos;
+    } else {
+        alert("error:未识别的住院标识！");
+    }
+}
+
+function DoctorCheck(tag, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
+    setInHosFlag(inHosFlag);
     loacl_next_func(next_func_name, next_fun_args, back_func_name, back_func_args);
     DoctorCheckForChrome(tag, xml);
 }
 
+function getRetValUrl() {
+    return "http://" + checkServerIpTemp + ":" + cheServerPortTemp + "/DCStation/submit/getRetValue";
+}
+
 function checkIsQuit() {
-    var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/getRetValue";
+    var url = getRetValUrl();
     var data = 'presId=' + presId;
     var checkData = sendAjaxRequest(data, url);
 
@@ -67,16 +108,28 @@ function sendAjaxRequest(data, url) {
     var checkData = xmlhttp.responseText;
     return checkData;
 }
+
+function getSendCheckUrl() {
+    return "http://" + checkServerIpTemp + ":" + cheServerPortTemp + "/DCStation/submit/sendCheckForTest";
+}
+
+function getCheckResultPageUrl(check) {
+    return "http://" + checkServerIpTemp + ":" + cheServerPortTemp + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+}
+
 function DoctorCheckForChrome(tag, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
-    var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/sendCheckForTest";
+    var url = getSendCheckUrl();
     var checkData = sendAjaxRequest(data, url);
 
     var check = eval("(" + checkData + ")");
-    if (tag == 2 || check.hasProblem == 0) {
+    if (tag == 2) {
         return 0;
+    }
+    if (check.hasProblem == 0) {
+        global_next_func_name(global_next_func_args);
     } else if (check.hasProblem == 1) {
-        var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+        var url = getCheckResultPageUrl(check);
         presId = check.presId;
         drawCheckResultElem(url);
         checkIsQuitState = window.setInterval("checkIsQuit()", 500);
@@ -94,6 +147,7 @@ function showdiv() {
     document.getElementById("bg").style.display = "block";
     document.getElementById("show").style.display = "block";
 }
+
 function hidediv() {
     document.getElementById("bg").style.display = 'none';
     document.getElementById("show").style.display = 'none';
@@ -122,6 +176,25 @@ function test_next(val) {
 
 function test_back(val) {
     alert("back:" + val);
+}
+
+function test(tag) {
+    var inHosFlag = 1;
+    var dcdtXml = '<CheckInput INPATIENT="否" TAG="1">' +
+        '<Doctor NAME="王**" POSITION="住院医师" USER_ID="3947" DEPT_NAME="麻醉科手术室" DEPT_CODE="126" />' +
+        '<Patient NAME="王**" ID="1902964" VISIT_ID="" PATIENT_PRES_ID="2018010500**5" BIRTH="20151101" HEIGHT="" ' +
+        'WEIGHT="" GENDER="女" PREGNANT="" LACT="" HEPATICAL="" RENAL="" PANCREAS="" ALERGY_DRUGS="" IDENTITY_TYPE="" ' +
+        'FEE_TYPE="" SCR="" SCR_UNIT="umol/L" GESTATION_AGE="" PRETERM_BIRTH="" DRUG_HISTORY="" FAMILY_DISEASE_HISTORY="" ' +
+        'GENETIC_DISEASE="" MEDICARE_01="" MEDICARE_02="" MEDICARE_03="" MEDICARE_04="" MEDICARE_05="" />' +
+        '<Diagnosises DIAGNOSISES="病毒性感冒" />' +
+        '<Advices><Advice DRUG_LO_ID="1602" DRUG_LO_NAME="硫酸氨基葡萄糖钾胶囊" ' +
+        'ADMINISTRATION=" po" DOSAGE="0.25" DOSAGE_UNIT="g" FREQ_COUNT="2" FREQ_INTERVAL="1" FREQ_INTERVAL_UNIT="日" ' +
+        'START_DAY="20180105" END_DAY="" REPEAT="" ORDER_NO="1" ORDER_SUB_NO="1" DEPT_CODE="126" DOCTOR_NAME="王健" ' +
+        'TITLE="住院医师" AUTHORITY_LEVELS="" ALERT_LEVELS="" GROUP_ID="1" USER_ID="3947" PRES_ID="2018010500655" ' +
+        'PRES_DATE="20180105" PRES_SEQ_ID="" PK_ORDER_NO="" COURSE="10" PKG_COUNT="20" PKG_UNIT="粒" BAK_01="" BAK_02="" ' +
+        'BAK_03="胶囊剂" BAK_04="0.25g*20" BAK_05="山西康宝生物制品股分有限公司" />' +
+        '</Advices></CheckInput>"';
+    DoctorCheck(tag, dcdtXml, test_next, 1, test_back, 2, inHosFlag);
 }
 
 function openDiscribLinked(code) {

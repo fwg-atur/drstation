@@ -9,13 +9,13 @@
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-var cheServerPostInHos = "8080";
+var cheServerPortInHos = "8080";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var cheServerPostOutHos = "8080";
+var cheServerPortOutHos = "8080";
 //说明书地址
 var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
 
@@ -36,15 +36,15 @@ function DoctorCheck(tag, xml, inHosFlag) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendCheck(tag, xml, checkServerIpOutHos, cheServerPostOutHos);
+        return sendCheck(tag, xml, checkServerIpOutHos, cheServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendCheck(tag, xml, checkServerIpInHos, cheServerPostInHos);
+        return sendCheck(tag, xml, checkServerIpInHos, cheServerPortInHos);
     } else {
         alert("error:未识别的住院标识！");
     }
 }
 
-function sendCheck(tag, xml, checkServerIp, cheServerPost) {
+function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     var iWidth = '1000px';
     var iHeight = '650px';
     var xmlhttp;
@@ -57,7 +57,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPost) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/sendCheckForTest", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheckForTest", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
 
@@ -67,7 +67,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPost) {
         return 0;
     }
     else if (check.hasProblem == 1) {
-        var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+        var url = "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
 
         if (navigator.userAgent.indexOf("Chrome") > 0) {
             var winOption = "height=" + iHeight + ",width=" + iWidth + "," +
@@ -82,7 +82,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPost) {
         }
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/getRetValue", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/getRetValue", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send('presId=' + check.presId);
 
