@@ -47,6 +47,10 @@
         var ordersInfoTemp = getTemplateByName("orders_info_template");
         /********定义ordersInfo模板********/
 
+        /********定义interfereInfo模板********/
+        var interfereInfoTemp = getTemplateByName("interfere_info_template");
+        /********定义interfereInfo模板********/
+
 
         function getTemplateByName(name) {
             var url = 'http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/html/' + name + ".html";
@@ -95,6 +99,19 @@
                 }
             }
             ordersTableBodyElem.innerHTML = temp;
+            showdiv();
+        }
+
+        function drawInterfereInfoElem() {
+            var interfereInfoElem = document.getElementById("checkResult");
+            interfereInfoElem.innerHTML = interfereInfoTemp;
+            var temp = interfereInfoTemp;
+            temp = temp.replace('@(DOCTOR_NAME)',doctorInfo.NAME);
+            temp = temp.replace('@(PATIENT_ID)',patientInfo.ID);
+            temp = temp.replace('@(PATIENT_NAME)',patientInfo.NAME);
+            temp = temp.replace('@(PHARMACIST_NAME)',doctorInfo.NAME);
+
+            interfereInfoElem.innerHTML = temp;
             showdiv();
         }
 
@@ -204,8 +221,8 @@
     </script>
 
     <script type="text/javascript"
-            src="http://localhost:8090/DCStation/js/jquery.min.js"></script>
-    <link href="http://localhost:8090/DCStation/css/pharmacistCheckResultPage.css" rel="stylesheet" type="text/css"/>
+            src="http://localhost:80/DCStation/js/jquery.min.js"></script>
+    <link href="http://localhost:80/DCStation/css/pharmacistCheckResultPage.css" rel="stylesheet" type="text/css"/>
 
     <style type="text/css">
     </style>
@@ -223,7 +240,7 @@
             <div class="info-area">
                 <div class="detail-info left-area">
                     <div class="head-info-sm"><p>详细信息</p></div>
-                    <div class="detail-content" style="padding: 10px;_padding:20px 10px;">
+                    <div class="detail-content-left" style="padding: 10px;_padding:20px 10px;">
                         <table id="error_detail">
                             <tr>
                                 <td>[问题药品]&nbsp;@(drug_name)</td>
@@ -237,15 +254,18 @@
                         </table>
                     </div>
                 </div>
-                <%--<input id="sum" type="button" value="汇总" />--%>
-                <%--<input id="clear" type="button" value="清空" />--%>
 
                 <div class="detail-info right-area">
                     <div class="head-info-sm"><p>问题汇总</p></div>
-                    <div class="detail-content">
+                    <div class="detail-content-right" id="sum_errors">
 
                     </div>
                 </div>
+            </div>
+
+            <div class="button-area">
+                <input id="sum" type="button" value="汇总" style="margin-top: 30px" onclick="sumUpProblems()"/>
+                <input id="clear" type="button" value="清空" style="margin-top: 30px" onclick="clearProblems()"/>
             </div>
 
             <div class="table-area">
@@ -317,7 +337,7 @@
 
 
                 <input id="help" type="button" value="帮助"/>
-                <input id="interfere" type="button" value="实施干预"/>
+                <input id="interfere" type="button" value="实施干预" onclick="drawInterfereInfoElem()"/>
                 <input id="back" type="button" onclick="nextOrBack(-1)" value="返回"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="next" type="button" onclick="nextOrBack(0)" value="下一步"/>
@@ -396,6 +416,17 @@
             }
         }
         $("#error_detail").html(tempHtml);
+    }
+
+    function sumUpProblems() {
+        var error_detail = $("#error_detail").html();
+        var sum_errors = $("#sum_errors").html();
+        sum_errors += error_detail;
+        $("#sum_errors").html(sum_errors);
+    }
+
+    function clearProblems() {
+        $("#sum_errors").html('');
     }
 
     (function isDisabled() {

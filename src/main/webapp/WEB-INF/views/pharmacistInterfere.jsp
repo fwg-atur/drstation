@@ -16,8 +16,8 @@
     </title>
 
     <script type="text/javascript"
-            src="http://localhost:8080/DCStation/js/jquery.min.js"></script>
-    <link href="http://localhost:8080/DCStation/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
+            src="http://localhost:80/DCStation/js/jquery.min.js"></script>
+    <link href="http://localhost:80/DCStation/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
     <title>实时审核Web版</title>
     <style type="text/css">
         .selected {
@@ -52,25 +52,25 @@
 
             <div class="info-area">
                 <label>医生姓名
-                    <s:textfield style="width:90px" name="doctorName"></s:textfield>
+                    <input type="text" style="width: 90px" readonly="readonly" name="doctorName" value="">
                 </label>
                 <label>患者ID
-                    <s:textfield style="width:90px" name="patientID"></s:textfield>
+                    <input type="text" style="width: 90px" readonly="readonly" name="patientId" value="">
                 </label>
                 <label>患者姓名
-                    <s:textfield style="width:90px" name="patientName"></s:textfield>
+                    <input type="text" style="width: 90px" readonly="readonly" name="patientName" value="">
                 </label>
 
                 <br>
 
                 <label>药师姓名
-                    <s:textfield style="width:90px" name="pharmacistName"></s:textfield>
+                    <input type="text" style="width: 90px" readonly="readonly" name="pharmacistName" value="">
                 </label>
                 <label>药师工号
-                    <s:textfield style="width:90px" name="pharmacistID"></s:textfield>
+                    <input type="text" style="width: 90px" readonly="readonly" name="pharmacistID" value="">
                 </label>
                 <label>联系电话
-                    <s:textfield style="width:90px" name="telephone"></s:textfield>
+                    <input type="text" style="width: 90px" readonly="readonly" name="telephone" value="">
                 </label>
             </div>
 
@@ -140,9 +140,7 @@
                 </div>
                 <div style="float: right;height:400px;width: 45%">
                     <label>问题描述</label>
-                    <s:textarea>
 
-                    </s:textarea>
                 </div>
             </div>
 

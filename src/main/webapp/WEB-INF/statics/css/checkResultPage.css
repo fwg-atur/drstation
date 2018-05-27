@@ -62,19 +62,19 @@ table.main-table td {
 }
 
 .common-problem {
-    background: url(http://localhost:8090/DCStation/image/common-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/common-problem-big.png) no-repeat center;
 }
 
 .serious-problem {
-    background: url(http://localhost:8090/DCStation/image/serious-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/serious-problem-big.png) no-repeat center;
 }
 
 .disaster-problem {
-    background: url(http://localhost:8090/DCStation/image/disaster-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/disaster-problem-big.png) no-repeat center;
 }
 
 .disable-problem {
-    background: url(http://localhost:8090/DCStation/image/nextdisabled.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/nextdisabled.png) no-repeat center;
 }
 
 .button-area {
@@ -84,7 +84,7 @@ table.main-table td {
 }
 
 .button-area input {
-    background: transparent url(http://localhost:8090/DCStation/image/circlerectangle.png);
+    background: transparent url(http://localhost:80/DCStation/image/circlerectangle.png);
     border: none;
     color: white;
     text-align: center;
@@ -158,7 +158,7 @@ table.main-table td {
 
 .head-top {
     height: 43px;
-    background: url(http://localhost:8090/DCStation/image/titleTJJK.png) center;
+    background: url(http://localhost:80/DCStation/image/titleTJJK.png) center;
 }
 
 #error_detail th {

@@ -64,19 +64,19 @@ table.main-table td {
 }
 
 .common-problem {
-    background: url(http://localhost:8090/DCStation/image/common-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/common-problem-big.png) no-repeat center;
 }
 
 .serious-problem {
-    background: url(http://localhost:8090/DCStation/image/serious-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/serious-problem-big.png) no-repeat center;
 }
 
 .disaster-problem {
-    background: url(http://localhost:8090/DCStation/image/disaster-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/disaster-problem-big.png) no-repeat center;
 }
 
 .disable-problem {
-    background: url(http://localhost:8090/DCStation/image/nextdisabled.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/nextdisabled.png) no-repeat center;
 }
 
 .button-area {
@@ -86,7 +86,7 @@ table.main-table td {
 }
 
 .button-area input {
-    background: transparent url(http://localhost:8090/DCStation/image/circlerectangle.png);
+    background: transparent url(http://localhost:80/DCStation/image/circlerectangle.png);
     border: none;
     color: white;
     text-align: center;
@@ -115,14 +115,25 @@ table.main-table td {
     background-color: #f3fbfd;
 }
 
-.detail-content {
+.detail-content-left {
     color: #343434;
-    font-size: 14px;
+    font-size: 15px;
     font-family: SourceHanSansCN-Normal, serif;
     padding: 40px 10px;
     _padding: 20px 10px;
     height: 120px;
     _height: 140px;
+    overflow: auto;
+}
+
+.detail-content-right {
+    color: #343434;
+    font-size: 15px;
+    font-family: SourceHanSansCN-Normal, serif;
+    padding: 40px 10px;
+    _padding: 20px 10px;
+    height: 60px;
+    _height: 70px;
     overflow: auto;
 }
 
@@ -135,7 +146,7 @@ table.main-table td {
 
 .down-detail-content {
     color: #343434;
-    font-size: 14px;
+    font-size: 15px;
     font-family: SourceHanSansCN-Normal, serif;
     padding: 40px 10px;
     _padding: 20px 10px;
@@ -178,7 +189,7 @@ table.main-table td {
 
 .head-top {
     height: 43px;
-    background: url(http://localhost:8090/DCStation/image/titleTJJK.png) center;
+    background: url(http://localhost:80/DCStation/image/titleTJJK.png) center;
 }
 
 #error_detail th {
@@ -189,7 +200,7 @@ table.main-table td {
 }
 
 #error_detail td {
-    font-size: 18px;
+    font-size: 15px;
     font-family: SourceHanSansCN-Normal, serif;
     color: #005a5c;
 }

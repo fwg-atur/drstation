@@ -31,25 +31,23 @@
                 <form id="queryForm" method="get">
                     <label>患者id</label>
                     <br>
-                    <input type="text" id="patientID" name="patientID">
+                    <input type="text" id="patientID" name="patientID" value="1">
                     <br>
                     <label>日期</label>
                     <br>
-                    <input type="text" id="visitDate" name="visitDate">
+                    <input type="text" id="visitDate" name="visitDate" value="20180326">
                     <br>
                     <label>数据字符串</label>
                     <br>
                     <textarea id="dcdt" name="dcdt" style="min-height: 400px;width: 100%">
-                            &lt;CheckInput TAG="1"&gt;
-                                &lt;Doctor NAME="王雁" POSITION="主治医师" USER_ID="000683" DEPT_NAME="呼吸科" DEPT_CODE="FKNF" /&gt;
-                                &lt;Patient NAME="朱永东" ID="0003478286" VISIT_ID="1" PATIENT_PRES_ID="000347828620150924000649" BIRTH="19651105" HEIGHT="165" WEIGHT="60" GENDER="男" PREGNANT="" LACT="" HEPATICAL="" RENAL="" PANCREAS="" ALERGY_DRUGS="" IDENTITY_TYPE="" FEE_TYPE="" SCR="" SCR_UNIT="" GESTATION_AGE="" PRETERM_BIRTH="" DRUG_HISTORY="" FAMILY_DISEASE_HISTORY="" GENETIC_DISEASE="" MEDICARE_01="" MEDICARE_02="" MEDICARE_03="" MEDICARE_04="" MEDICARE_05="" /&gt;
-                                &lt;Diagnosises DIAGNOSISES="呼吸道感染" /&gt;
-                                &lt;Advices&gt;
-                                    &lt;Advice DRUG_LO_ID="MED00003" DRUG_LO_NAME="布洛芬缓释胶囊" ADMINISTRATION="991013" DOSAGE="800" DOSAGE_UNIT="mg" FREQ_COUNT="3" FREQ_INTERVAL="" FREQ_INTERVAL_UNIT="" START_DAY="20150924" END_DAY="" REPEAT="1" ORDER_NO="70285312" ORDER_SUB_NO="" DEPT_CODE="HX" DOCTOR_NAME="王雁" TITLE="" AUTHORITY_LEVELS="" ALERT_LEVELS="" GROUP_ID="" USER_ID="000648" PRES_ID="0003478286_2016:11:16:16:55:34" PRES_DATE="20150924" PRES_SEQ_ID="11170097620150924" PK_ORDER_NO="111700976" COURSE="1" PKG_COUNT="0" PKG_UNIT="盒" BAK_01="2" BAK_02="否" BAK_03="" BAK_04="" BAK_05="" /&gt;
-                                    &lt;Advice DRUG_LO_ID="MED00009" DRUG_LO_NAME="头孢拉定胶囊" ADMINISTRATION="991013" DOSAGE="500" DOSAGE_UNIT="ml" FREQ_COUNT="3" FREQ_INTERVAL="" FREQ_INTERVAL_UNIT="" START_DAY="20150924" END_DAY="" REPEAT="1" ORDER_NO="70285314" ORDER_SUB_NO="" DEPT_CODE="HX" DOCTOR_NAME="王雁" TITLE="" AUTHORITY_LEVELS="" ALERT_LEVELS="" GROUP_ID="" USER_ID="000648" PRES_ID="0003478286_2016:11:16:16:55:34" PRES_DATE="20150924" PRES_SEQ_ID="11170097620150924" PK_ORDER_NO="111700976" COURSE="1" PKG_COUNT="101" PKG_UNIT="盒" BAK_01="2" BAK_02="否" BAK_03="" BAK_04="" BAK_05="" /&gt;
-                                    &lt;Advice DRUG_LO_ID="MED00223" DRUG_LO_NAME="氯沙坦钾氢氯噻嗪片" ADMINISTRATION="991013" DOSAGE="500" DOSAGE_UNIT="ml" FREQ_COUNT="3" FREQ_INTERVAL="" FREQ_INTERVAL_UNIT="" START_DAY="20150924" END_DAY="" REPEAT="1" ORDER_NO="70285314" ORDER_SUB_NO="" DEPT_CODE="HX" DOCTOR_NAME="王雁" TITLE="" AUTHORITY_LEVELS="" ALERT_LEVELS="" GROUP_ID="" USER_ID="000683" PRES_ID="0003478286_2016:11:16:16:55:34" PRES_DATE="20150924" PRES_SEQ_ID="11170097620150924" PK_ORDER_NO="111700976" COURSE="1" PKG_COUNT="9" PKG_UNIT="盒" BAK_01="2" BAK_02="否" BAK_03="" BAK_04="" BAK_05="" /&gt;
-                                    &lt;Advice DRUG_LO_ID="MED00238" DRUG_LO_NAME="马来酸依那普利片" ADMINISTRATION="991013" DOSAGE="500" DOSAGE_UNIT="ml" FREQ_COUNT="3" FREQ_INTERVAL="" FREQ_INTERVAL_UNIT="" START_DAY="20150924" END_DAY="" REPEAT="1" ORDER_NO="70285314" ORDER_SUB_NO="" DEPT_CODE="HX" DOCTOR_NAME="王雁" TITLE="" AUTHORITY_LEVELS="" ALERT_LEVELS="" GROUP_ID="" USER_ID="000683" PRES_ID="0003478286_2016:11:16:16:55:34" PRES_DATE="20150924" PRES_SEQ_ID="11170097620150924" PK_ORDER_NO="111700976" COURSE="1" PKG_COUNT="9" PKG_UNIT="盒" BAK_01="2" BAK_02="否" BAK_03="" BAK_04="" BAK_05="" /&gt;
-                                    &lt;Advice DRUG_LO_ID="MED00168" DRUG_LO_NAME="注射用美罗培南" ADMINISTRATION="030101" DOSAGE="20" DOSAGE_UNIT="mg" FREQ_COUNT="3" FREQ_INTERVAL="" FREQ_INTERVAL_UNIT="" START_DAY="20150114" END_DAY="20150114" REPEAT="0" ORDER_NO="32325701" ORDER_SUB_NO="" DEPT_CODE="XW  " DOCTOR_NAME="李晓丽" TITLE="" AUTHORITY_LEVELS="" ALERT_LEVELS="" GROUP_ID="" USER_ID="002329" PRES_ID="31388291" PRES_DATE="20150114" PRES_SEQ_ID="3138829120150114" PK_ORDER_NO="" COURSE="1" PKG_COUNT="" PKG_UNIT="" BAK_01="" BAK_02="" BAK_03="" BAK_04="" BAK_05=""/&gt;
+                            &lt;CheckInput TAG="2"&gt;
+                                &lt;Doctor POSITION="副主任医师" NAME="门急诊医生" DEPT_CODE="030401" DEPT_NAME="骨科" USER_ID="123" /&gt;
+                                &lt;Patient NAME="门急诊病人1" ID="1" GENDER="男" BIRTH="19840908" WEIGHT="20" HEIGHT="100" ALERGY_DRUGS="选择性5-HT3受体抑制药类" PREGNANT="是" LACT="是" HEPATICAL="是" RENAL="否" PANCREAS="否" VISIT_ID="1233" PATIENT_PRES_ID="1" IDENTITY_TYPE="军人" FEE_TYPE="医保" WARD_CODE="11" WARD_NAME="病区22" BED_NO="1" /&gt;
+                                &lt;Diagnosises DIAGNOSISES="_感染" />
+                                &lt;Advices>
+                                    &lt;Advice DRUG_LO_ID="0101003CP0" DRUG_LO_NAME="阿莫西林胶囊" ADMINISTRATION="静滴" DOSAGE="5" DOSAGE_UNIT="粒" FREQ_COUNT="1" FREQ_INTERVAL="1" FREQ_INTERVAL_UNIT="日" START_DAY="20150114" END_DAY="20150114" REPEAT="0" ORDER_NO="1" ORDER_SUB_NO="2" DEPT_CODE="2426" DOCTOR_NAME="闫洪生" TITLE="副主任医师" AUTHORITY_LEVELS="" ALERT_LEVELS="1,2" GROUP_ID="" USER_ID="123" PRES_ID="1" PRES_DATE="20150114" PRES_SEQ_ID="3138829120150114" PK_ORDER_NO="" COURSE="" PKG_COUNT="101" PKG_UNIT="粒" BAK_01="" BAK_02="" BAK_03="胶囊" BAK_04="0.25g" BAK_05="昆明贝克诺" SELF_DRUG="自" DOCTOR_COMMENT="多吃" /&gt;
+
+                                    &lt;Advice DRUG_LO_ID="3012302CP0" DRUG_LO_NAME="安替可胶囊" ADMINISTRATION="" DOSAGE="100" DOSAGE_UNIT="" FREQ_COUNT="5" FREQ_INTERVAL="1" FREQ_INTERVAL_UNIT="日" START_DAY="20150114" END_DAY="20150114" REPEAT="0" ORDER_NO="6" ORDER_SUB_NO="1" DEPT_CODE="骨科" DOCTOR_NAME="朱宏勋" TITLE="主任医师" AUTHORITY_LEVELS="" ALERT_LEVELS="1,2" GROUP_ID="" USER_ID="009284" PRES_ID="1" PRES_DATE="20150114" PRES_SEQ_ID="3138829120150114" PK_ORDER_NO="" COURSE="" PKG_COUNT="2" PKG_UNIT="" BAK_01="" BAK_02="" BAK_03="" BAK_04="0.22g" BAK_05="" SELF_DRUG="自" DOCTOR_COMMENT="多吃" /&gt;
                                 &lt;/Advices&gt;
                             &lt;/CheckInput&gt;
                     </textarea>
@@ -85,8 +83,8 @@
 </div>
 </body>
 
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>--%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>--%>
 <%--<script type="text/javascript"--%>
 <%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>
 
