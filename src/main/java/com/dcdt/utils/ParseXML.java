@@ -17,7 +17,9 @@ public class ParseXML {
 
     public void parseXML(String xml){
         Document document = null;
-        xml = xml.substring(38);
+        if(xml.length() > 38) {
+            xml = xml.substring(38);
+        }
         try {
             document = XmlUtil.readDocumentFromStr(xml.trim());
         } catch (Exception e) {

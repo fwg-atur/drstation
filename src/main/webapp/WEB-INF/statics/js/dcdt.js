@@ -17,7 +17,7 @@ var cheServerPortInHos = "8080";
 var checkServerIpOutHos = "localhost";
 var cheServerPortOutHos = "8080";
 //说明书地址
-var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
+var disUrl = 'http://localhost:8090/DCStation/home/index?drugCode=@code@';
 
 
 function testCheck(tag) {
@@ -122,10 +122,23 @@ function testPharmacistCheck(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck(tag,patientID,visitDate,dcdtXml);
+    PharmacistCheck(tag,patientID,visitDate,dcdtXml,1);
 }
 
-function PharmacistCheck(tag,patientID,visitDate,xml) {
+function PharmacistCheck(tag,patientID,visitDate,xml,inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 1;
+    }
+    if (inHosFlag == 0) {
+        return sendPharmacistCheck(tag, xml, patientID, visitDate, checkServerIpOutHos, cheServerPortOutHos);
+    } else if (inHosFlag == 1) {
+        return sendPharmacistCheck(tag, xml, patientID, visitDate, checkServerIpInHos, cheServerPortInHos);
+    } else {
+        alert("error:未识别的住院标识！");
+    }
+}
+
+function sendPharmacistCheck(tag,patientID,visitDate,xml,checkServerIp, checkServerPort){
     var iWidth = '1000px';
     var iHeight = '650px';
     var xmlhttp;
