@@ -2,7 +2,7 @@
  * Created by on 2017/5/14.
  */
 var checkServerIp = "localhost";
-var cheServerPost = "8080";
+var checkServerPort = "8080";
 var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
 
 /**
@@ -210,11 +210,23 @@ function testPharmacistCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
     PharmacistCheck(tag, patientID, visitDate, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
 }
+function testPharmacistCheckSilent(tag) {
+    var patientID = document.getElementById("patientID").value;
+    var visitDate = document.getElementById("visitDate").value;
+    var dcdtXml = document.getElementById("dcdt").value;
+    PharmacistCheckSilent(tag, patientID, visitDate, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
+}
 
 function PharmacistCheck(tag, patientID, visitDate, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
     setInHosFlag(inHosFlag);
     local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
     PharmacistCheckForChrome(tag, patientID, visitDate, xml);
+}
+
+function PharmacistCheckSilent(tag, patientID, visitDate, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
+    setInHosFlag(inHosFlag);
+    local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
+    PharmacistCheckSilentForChrome(tag, patientID, visitDate, xml);
 }
 
 function PharmacistCheckForChrome(tag, patientID, visitDate, xml) {
@@ -233,6 +245,19 @@ function PharmacistCheckForChrome(tag, patientID, visitDate, xml) {
         pharmacist_presId = check.presId;
         drawPharmacistCheckResultElem(url);
         pharmacistCheckIsQuitState = window.setInterval("pharmacistCheckIsQuit()", 500);
+    }
+}
+function PharmacistCheckSilentForChrome(tag, patientID, visitDate, xml) {
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
+    var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
+    var checkData = sendAjaxRequest(data, url);
+
+    var check = eval("(" + checkData + ")");
+    if (tag == 2 || check.hasProblem == 0) {
+        return 0;
+    }
+    else if (check.hasProblem == 1) {
+        return -1;
     }
 }
 
