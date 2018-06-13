@@ -1,6 +1,8 @@
 /**
  * Created by on 2017/5/14.
  */
+var checkServerIp = "localhost";
+var checkServerPort = "8080";
 var disUrl = 'http://116.90.80.66:8221/drugs/@code@?source=dcdt_web&hospital_id=cdsdyrmyy&show_navbar=true';
 
 /**
@@ -202,5 +204,111 @@ function openDiscribLinked(code) {
     window.open(urlTemp, '药品说明书', ' left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 50) + ',scrollbars,resizable=yes,toolbar=no');
 }
 
+function testPharmacistCheck(tag) {
+    var patientID = document.getElementById("patientID").value;
+    var visitDate = document.getElementById("visitDate").value;
+    var dcdtXml = document.getElementById("dcdt").value;
+    PharmacistCheck(tag, patientID, visitDate, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
+}
+
+function testPharmacistCheckSilent(tag) {
+    var patientID = document.getElementById("patientID").value;
+    var visitDate = document.getElementById("visitDate").value;
+    var dcdtXml = document.getElementById("dcdt").value;
+    PharmacistCheckSilent(tag, patientID, visitDate, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
+}
+
+function PharmacistCheck(tag, patientID, visitDate, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
+    setInHosFlag(inHosFlag);
+    local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
+    PharmacistCheckForChrome(tag, patientID, visitDate, xml);
+}
+
+function PharmacistCheckSilent(tag, patientID, visitDate, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
+    setInHosFlag(inHosFlag);
+    local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
+    PharmacistCheckSilentForChrome(tag, patientID, visitDate, xml);
+}
+
+function PharmacistCheckForChrome(tag, patientID, visitDate, xml) {
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
+    var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
+    var checkData = sendAjaxRequest(data, url);
+
+    var check = eval("(" + checkData + ")");
+    if (tag == 2) {
+        return 0;
+    }
+    if (check.hasProblem == 0) {
+        check_for_next();
+    } else if (check.hasProblem == 1) {
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
+        pharmacist_presId = check.presId;
+        drawPharmacistCheckResultElem(url);
+        pharmacistCheckIsQuitState = window.setInterval("pharmacistCheckIsQuit()", 500);
+    }
+}
+
+function PharmacistCheckSilentForChrome(tag, patientID, visitDate, xml) {
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
+    var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
+    var checkData = sendAjaxRequest(data, url);
+
+    var check = eval("(" + checkData + ")");
+    if (tag == 2 || check.hasProblem == 0) {
+        return 0;
+    }
+    else if (check.hasProblem == 1) {
+        return -1;
+    }
+}
+
+function drawPharmacistCheckResultElem(url) {
+    var checkResultElem = document.getElementById("checkResult");
+    checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+    document.getElementById("checkResultButton").click();
+    showdiv();
+}
+
+function pharmacistCheckIsQuit() {
+    var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/getRetValue";
+    var data = 'presId=' + pharmacist_presId;
+    var checkData = sendAjaxRequest(data, url);
+
+    checkData = eval("(" + checkData + ")");
+
+    if (checkData == 0) {
+        window.clearInterval(pharmacistCheckIsQuitState);
+        pharmacistCheck_for_next()
+    } else if (checkData == -1) {
+        window.clearInterval(pharmacistCheckIsQuitState);
+        pharmacistCheck_for_back();
+    }
+}
+
+function pharmacistCheck_for_next() {
+    hidediv();
+    pharmacist_global_next_func_name(pharmacist_global_next_func_args);
+}
+
+function pharmacistCheck_for_back() {
+    hidediv();
+    pharmacist_global_back_func_name(pharmacist_global_back_func_args);
+}
+
+function local_next_func_pharmacist(next_func_name, next_func_args, back_func_name, back_func_args) {
+    pharmacist_global_next_func_name = eval(next_func_name);
+    pharmacist_global_next_func_args = next_func_args;
+    pharmacist_global_back_func_name = eval(back_func_name);
+    pharmacist_global_back_func_args = back_func_args;
+}
+
+function test_pharmacistNext(val) {
+    alert("pharmacistNext:" + val);
+}
+
+function test_pharmacistBack(val) {
+    alert("pharmacistBack:" + val);
+}
 
 

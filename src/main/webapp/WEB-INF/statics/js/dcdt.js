@@ -134,6 +134,43 @@ function testPharmacistCheck(tag) {
 }
 
 function PharmacistCheck(tag, patientID, visitDate, xml) {
+    PharmacistCheck(tag, patientID, visitDate, dcdtXml, 1);
+}
+
+function testPharmacistCheckSilent(tag) {
+    var patientID = document.getElementById("patientID").value;
+    var visitDate = document.getElementById("visitDate").value;
+    var dcdtXml = document.getElementById("dcdt").value;
+    PharmacistCheckSilent(tag, patientID, visitDate, dcdtXml, 1);
+}
+
+function PharmacistCheck(tag, patientID, visitDate, xml, inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 1;
+    }
+    if (inHosFlag == 0) {
+        return sendPharmacistCheck(tag, xml, patientID, visitDate, checkServerIpOutHos, cheServerPortOutHos);
+    } else if (inHosFlag == 1) {
+        return sendPharmacistCheck(tag, xml, patientID, visitDate, checkServerIpInHos, cheServerPortInHos);
+    } else {
+        alert("error:未识别的住院标识！");
+    }
+}
+
+function pharmacistCheckSilent(tag, patientID, visitDate, xml, inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 1;
+    }
+    if (inHosFlag == 0) {
+        return sendPharmacistCheckSilent(tag, xml, patientID, visitDate, checkServerIpOutHos, cheServerPortOutHos);
+    } else if (inHosFlag == 1) {
+        return sendPharmacistCheckSilent(tag, xml, patientID, visitDate, checkServerIpInHos, cheServerPortInHos);
+    } else {
+        alert("error:未识别的住院标识！");
+    }
+}
+
+function sendPharmacistCheck(tag, patientID, visitDate, xml, checkServerIp, checkServerPort) {
     var iWidth = '1000px';
     var iHeight = '650px';
     var xmlhttp;
@@ -178,5 +215,30 @@ function PharmacistCheck(tag, patientID, visitDate, xml) {
     var data = xmlhttp.responseText;
     data = eval("(" + data + ")");
     return data;
+}
+
+function sendPharmacistCheckSilent(tag, patientID, visitDate, xml, checkServerIp, checkServerPort) {
+    var xmlhttp;
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send(data);
+
+    var checkData = xmlhttp.responseText;
+    var check = eval("(" + checkData + ")");
+    if (tag == 2 || check.hasProblem == 0) {
+        return 0;
+    }
+    else if (check.hasProblem == 1) {
+        return -1;
+    }
 }
 
