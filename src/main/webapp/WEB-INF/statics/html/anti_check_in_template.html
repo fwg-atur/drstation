@@ -1,79 +1,161 @@
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-    <!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8">-->
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-    <!--<title>-->
-        <!--实时审核Web版-->
-    <!--</title>-->
-<!--</head>-->
+<style>
+    input[type='text'] {
+        width: 70%;
+        height: 80%;
+    }
+</style>
+
+<script type="text/javascript">
+</script>
 <div id="bg" style="display: block;position: absolute;top: 0%;left: 0%;width: 100%;
-                height: 100%;background-color: black;z-index: 1001; -moz-opacity: 0.7;opacity: .70;
+                height: 98%;background-color: black;z-index: 1001; -moz-opacity: 0.7;opacity: .70;
                 filter: alpha(opacity=70);">
 </div>
 <div id="show" style="display: block;position: absolute;margin:auto;
                 top: 0; left: 0; bottom: 0; right: 0;width: 900px;
                 height: 500px;padding: 20px 35px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;">
-    <div class="table-area-content">
-        <table class="main-table">
+    <div class="table-area-content" style="width: 90%;height:90%">
+        <table class="main-table" style="width: 100%">
             <tr>
-                <td colspan="1">预防用药</td>
-                <td colspan="1">治疗用药</td>
-                <td colspan="10">&nbsp</td>
+                <td colspan="1" id="preventiveMedicationTd"
+                    onclick="$('#preventiveMedication').show();
+                    $('#therapeuticMedication').hide();
+                    $('#therapeuticMedicationTd').css('background-color','#f3fbfd');
+                    $(this).css('background-color','#8FD6FD');">
+                    预防用药
+                </td>
+                <td colspan="1" id="therapeuticMedicationTd"
+                    onclick="$('#preventiveMedication').hide();
+                    $('#therapeuticMedication').show();
+                    $('#preventiveMedicationTd').css('background-color','#f3fbfd');
+                    $(this).css('background-color','#8FD6FD');">
+                    治疗用药
+                </td>
+                <td colspan="10" style="border: none;background-color: white">&nbsp</td>
             </tr>
         </table>
+        <br/>
 
-        <table>
-            <tr>
-                <th>医院药品ID:</th>
-                <td><input type="text" name="drug_id"/></td>
-                <th>医院药品名称:</th>
-                <td><input type="text" name="drug_name"/></td>
-            </tr>
-            <tr>
-                <th>手术用药:</th>
-                <td>
-                    <input type="radio" name="op_drug" value="0"/>是
-                    <input type="radio" name="op_drug" value="1"/>否
-                </td>
-                <th>手术切口类型:</th>
-                <td>
-                    <select>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>拟施手术*:</th>
-                <td>
-                    <input type="text" name="op_name"/>
-                </td>
-                <th>用药理由*:</th>
-                <td>
-                    <input type="text" name="drug_reason"/>
-                </td>
-            </tr>
-            <tr>
-                <th>药物过敏史:</th>
-                <td>
-                    <input type="text" name="drug_allergic_history"/>
-                </td>
-                <th>抗菌药过敏史:</th>
-                <td>
-                    <input type="text" name="anti_allergic_history"/>
-                </td>
-            </tr>
-            <tr>
-                <th>危险因素:</th>
-                <td>
-                    <input type="text" name="hazards"/>
-                </td>
-            </tr>
-        </table>
+        <div id="preventiveMedication">
+            <table class="main-table" style="width: 100%">
+                <tr>
+                    <td>医院药品ID:</td>
+                    <td><input type="text" name="drugId" value="@(drugId)" disabled="disabled"/></td>
+                    <td>医院药品名称:</td>
+                    <td><input type="text" name="drugName" value="@(drugName)" disabled="disabled"/></td>
+                </tr>
+                <tr>
+                    <td>手术用药:</td>
+                    <td>
+                        <input type="radio" name="opDrug" value="0"/>是
+                        <input type="radio" name="opDrug" value="1"/>否
+                    </td>
+                    <td>手术切口类型:</td>
+                    <td>
+                        <select id="opertor_type">
+                            <option value="1">I型</option>
+                            <option value="2">II型</option>
+                            <option value="3">III型</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>拟施手术*:</td>
+                    <td>
+                        <input type="text" name="opName"/>
+                    </td>
+                    <td>用药理由*:</td>
+                    <td>
+                        <input type="text" name="YF_USE_DRUG_YJ"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>药物过敏史:</td>
+                    <td>
+                        <input type="text" name="GMS"/>
+                    </td>
+                    <td>抗菌药过敏史:</td>
+                    <td>
+                        <input type="text" name="BTGMS"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>危险因素:</td>
+                    <td>
+                        <input type="text" name="WXYS"/>
+                    </td>
+                </tr>
+            </table>
 
-        <span>操作因素：必须填写拟施手术、用药理由，否则不能提交</span>
+            <br/>
+            <span>操作因素：必须填写拟施手术、用药理由，否则不能提交</span>
+
+            <div class="button-area">
+                <input type="button" value="取消" onclick="hidediv()"/>
+                <input type="button" value="提交" onclick="submitPrevMedic()"/>
+            </div>
+        </div>
+
+        <div id="therapeuticMedication" style="display: none">
+            <table class="main-table" style="width: 100%">
+                <tbody>
+                <tr>
+                    <td>医院药品ID:</td>
+                    <td><input type="text" name="drugId" value="@(drugId)" disabled="disabled"/></td>
+                    <td>医院药品名称:</td>
+                    <td><input type="text" name="drugName" value="@(drugName)" disabled="disabled"/></td>
+                </tr>
+                <tr>
+                    <td>体温时间:</td>
+                    <td><input type="text" name="TWDATE"></td>
+                    <td>体温值（摄氏度）:</td>
+                    <td><input type="text" name="TWVALUE"></td>
+                </tr>
+                <tr>
+                    <td>中性粒细胞值（%）:</td>
+                    <td><input type="text" name="ZXLVALUE"></td>
+                    <td>体温正常</td>
+                    <td><input type="checkbox" name="TWOK"></td>
+                </tr>
+                <tr>
+                    <td>血常规时间:</td>
+                    <td><input type="text" name="XXDATE"></td>
+                    <td>C反应蛋白（mq/L）:</td>
+                    <td><input type="text" name="CVALUE"></td>
+                </tr>
+                <tr>
+                    <td>白细胞值（10^9/L）:</td>
+                    <td><input type="text" name="XXVALUE"></td>
+                    <td>血象正常</td>
+                    <td><input type="checkbox" name="XXOK"></td>
+                </tr>
+                <tr>
+                    <td>用药理由*：</td>
+                    <td colspan="3"><input type="text" name="YYLY"></td>
+                </tr>
+                <tr>
+                    <td>治疗分类：</td>
+                    <td colspan="3"><input type="text" name="ZLFL"></td>
+                </tr>
+                <tr>
+                    <td>感染部位*：</td>
+                    <td colspan="3"><input type="text" name="GRBW"></td>
+                </tr>
+                <tr>
+                    <td>诊断依据*：</td>
+                    <td colspan="3"><input type="text" name="ZDYJ"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <br/>
+            <span>操作提示：必须填写用药理由、感染部位、诊断依据，否则不能提交</span>
+            <div class="button-area">
+                <input type="button" value="取消" onclick="hidediv()"/>
+                <input type="button" value="提交" onclick="submitTherapMedic()"/>
+            </div>
+        </div>
+
     </div>
 
 </div>

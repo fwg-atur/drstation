@@ -1,7 +1,7 @@
 /**
  * Created by on 2017/5/14.
  */
-var disUrl = 'http://localhost:8080/DCStation/home/index?drugCode=@code@';
+var disUrl = 'http://116.90.80.66:8221/drugs/@code@?source=dcdt_web&hospital_id=cdsdyrmyy&show_navbar=true';
 
 /**
  * 住院医生站ip，端口。

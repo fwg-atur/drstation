@@ -41,12 +41,13 @@ public class Advice {
     private String BAK_03;
     private String BAK_04;
     private String BAK_05;
+    private String anti_drug_register;
 
-    public Advice(){
+    public Advice() {
 
     }
 
-    public Advice( String REPEAT, String DRUG_LO_NAME, String DRUG_LO_ID, String ADMINISTRATION, String DOSAGE, String DOSAGE_UNIT, String FREQ_COUNT, String FREQ_INTERVAL, String FREQ_INTERVAL_UNIT, String START_DAY, String END_DAY, String DEPT_CODE, String DOCTOR_NAME, String ORDER_NO, String ORDER_SUB_NO, String AUTHORITY_LEVELS, String ALERT_LEVELS, String TITLE, String GROUP_ID, String USER_ID, String PRES_ID, String PRES_DATE, String PRES_SEQ_ID, String PK_ORDER_NO, String COURSE, String PKG_COUNT, String PKG_UNIT, String BAK_01, String BAK_02, String BAK_03, String BAK_04, String BAK_05) {
+    public Advice(String REPEAT, String DRUG_LO_NAME, String DRUG_LO_ID, String ADMINISTRATION, String DOSAGE, String DOSAGE_UNIT, String FREQ_COUNT, String FREQ_INTERVAL, String FREQ_INTERVAL_UNIT, String START_DAY, String END_DAY, String DEPT_CODE, String DOCTOR_NAME, String ORDER_NO, String ORDER_SUB_NO, String AUTHORITY_LEVELS, String ALERT_LEVELS, String TITLE, String GROUP_ID, String USER_ID, String PRES_ID, String PRES_DATE, String PRES_SEQ_ID, String PK_ORDER_NO, String COURSE, String PKG_COUNT, String PKG_UNIT, String BAK_01, String BAK_02, String BAK_03, String BAK_04, String BAK_05) {
         this.REPEAT = REPEAT;
         this.DRUG_LO_NAME = DRUG_LO_NAME;
         this.DRUG_LO_ID = DRUG_LO_ID;
@@ -81,10 +82,10 @@ public class Advice {
         this.BAK_05 = BAK_05;
     }
 
-    public Advice clone(){
+    public Advice clone() {
         Advice ret = new Advice(REPEAT, DRUG_LO_NAME, DRUG_LO_ID, ADMINISTRATION, DOSAGE,
                 DOSAGE_UNIT, FREQ_COUNT, FREQ_INTERVAL, FREQ_INTERVAL_UNIT, START_DAY,
-                END_DAY, DEPT_CODE, DOCTOR_NAME, ORDER_NO, ORDER_SUB_NO,AUTHORITY_LEVELS,
+                END_DAY, DEPT_CODE, DOCTOR_NAME, ORDER_NO, ORDER_SUB_NO, AUTHORITY_LEVELS,
                 ALERT_LEVELS, TITLE, GROUP_ID, USER_ID, PRES_ID, PRES_DATE, PRES_SEQ_ID,
                 PK_ORDER_NO, COURSE, PKG_COUNT, PKG_UNIT, BAK_01, BAK_02, BAK_03, BAK_04, BAK_05);
         ret.setCheckInfoList(new ArrayList<CheckInfo>());   //to-do
@@ -361,5 +362,13 @@ public class Advice {
 
     public void setDrugLinked(String drugLinked) {
         this.drugLinked = drugLinked;
+    }
+
+    public String getAnti_drug_register() {
+        return anti_drug_register;
+    }
+
+    public void setAnti_drug_register(String anti_drug_register) {
+        this.anti_drug_register = anti_drug_register;
     }
 }

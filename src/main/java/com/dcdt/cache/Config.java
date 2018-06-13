@@ -32,6 +32,21 @@ public class Config {
     @Value("${interveneFlag}")
     private int interveneFlag;
 
+    @Value("${phoneNumber}")
+    private String phoneNumber;
+
+    @Value("${email}")
+    private String email;
+
+    @Value("${inHosFlag}")
+    private int inHosFlag;
+
+    @Value("${antiCheckInFlag}")
+    private int antiCheckInFlag;
+
+    @Value("${antiCheckInURL}")
+    private String antiCheckInURL;
+
     public String getDrStationServerIp() {
         return drStationServerIp;
     }
@@ -62,5 +77,45 @@ public class Config {
 
     public int getInterveneFlag() {
         return interveneFlag;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getInHosFlag() {
+        return inHosFlag;
+    }
+
+    public void setInHosFlag(int inHosFlag) {
+        this.inHosFlag = inHosFlag;
+    }
+
+    public int getAntiCheckInFlag() {
+        return antiCheckInFlag;
+    }
+
+    public void setAntiCheckInFlag(int antiCheckInFlag) {
+        this.antiCheckInFlag = antiCheckInFlag;
+    }
+
+    public String getAntiCheckInURL() {
+        return antiCheckInURL;
+    }
+
+    public void setAntiCheckInURL(String antiCheckInURL) {
+        this.antiCheckInURL = antiCheckInURL;
     }
 }

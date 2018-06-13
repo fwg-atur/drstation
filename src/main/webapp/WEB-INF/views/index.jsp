@@ -47,6 +47,7 @@
                 <p>
                     <button onclick="testCheck(1);">预审处方 »</button>
                     <button onclick="testCheck(2);">提交处方 »</button>
+                    <button onclick="openDiscribLinked('MED00003');">药品说明书 »</button>
                 </p>
             </div>
 

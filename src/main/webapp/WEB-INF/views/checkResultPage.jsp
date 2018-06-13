@@ -37,9 +37,16 @@
         var checkInterveneStateURL = '${config.checkInterveneStateURL}';
         var checkInterveneMessageURL = '${config.checkInterveneMessageURL}';
         var interveneFlag = '${config.interveneFlag}';
+        var highestWarningLevel = ${checkResult.HIGHEST_WARNING_LEVEL};
         var message_no = 1;
         var dr_message_no = 0;
         var directCloseFlag = 1;
+
+        var antiCheckNumber = 0;
+        var checkResultJson = ${checkResultJson};
+        var advises = checkResultJson.advices;
+        var patient = checkResultJson.patient;
+        var doctor = checkResultJson.doctor;
 
         /*查询干预状态时，轮询停止标识。如果查询结果为零，则停止轮询*/
         var stop_flag = false
@@ -60,6 +67,7 @@
             "MESSAGE_TIME='@message_time@' />" +
             "</Request>";
 
+
         /********定义iframe模板********/
         var checkResultTemp = getTemplateByName("check_result_template");
         /********定义iframe模板********/
@@ -76,6 +84,11 @@
 
         var phMessage = '<div class="demo clearfix"><span class="triangle"></span>' +
             '<div class="article">@message@</div></div>'
+
+        /**************            *****************/
+
+        /**************  抗菌药登记模板 *****************/
+        var antiCheckInInfo = getTemplateByName("anti_check_in_template");
 
         /**************            *****************/
 
@@ -132,16 +145,28 @@
         }
 
         function drawCheckResultElem(url) {
+            // var checkResultElem = document.getElementById("checkResult");
+            // checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+            // document.getElementById("checkResultButton").click();
+            // showdiv();
+            var fn = function (checkResultElem) {
+                checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+                document.getElementById("checkResultButton").click();
+            }
+
+            showCheckResult(fn);
+        }
+
+        function showCheckResult(fn) {
             var checkResultElem = document.getElementById("checkResult");
-            checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
-            document.getElementById("checkResultButton").click();
+            fn(checkResultElem);
             showdiv();
         }
 
         function showdiv() {
             document.getElementById("bg").style.display = "block";
             document.getElementById("show").style.display = "block";
-            document.getElementById("closeButton").style.display = "block";
+            // document.getElementById("closeButton").style.display = "block";
         }
 
         function hidediv() {
@@ -149,7 +174,7 @@
             document.getElementById("show").style.display = 'none';
         }
 
-        function openDiscribLinked(code) {
+        function openDescribLinked(code) {
             var urlTemp = disUrl.replace("@code@", code);
             drawCheckResultElem(urlTemp);
         }
@@ -393,6 +418,169 @@
             }
         })();
 
+        function sendSQLToServer(args) {
+            var url = '${config.antiCheckInURL}';
+            sendAjaxRequest(url, args);
+        }
+
+        function changeAntiState() {
+            var drugId = $("input[name='drugId']").eq(0).val();
+            antiCheckedInValue[drugId] = true;
+            $chooseTd.attr('class', $chooseTd.attr('class').replace('@', ''));
+            $chooseTd.html("");
+            antiCheckNumber--;
+            checkCanBeNext();
+        }
+
+        var preMediatorSql = "<Check>" +
+            "INSERT INTO ANTI_DRUG_USE_REC_YF " +
+            "(PATIENT_ID,VISIT_ID,DEPT_CODE,DEPT_NAME,DOCTOR_NAME,NAME,SEX,AGE," +
+            "WEIGHT,DRUG_CODE,DRUG_NAME,DOSAGE,DOSAGE_UNITS,ADMINISTRATION,OPERTOR_DATE," +
+            "OPERTOR_NAME,OPERTOR_TYPE,OPERTOR_USE_TIME,DRUG_USE_TIME,GMS," +
+            "BTGMS,WXYS,KNDZBJ,KLJLANJL,YF_USE_DRUG_YJ,TSYQ,REC_DATE," +
+            "IS_EXCEEDING,IS_OPERATION_DRUG,ORDER_NO,ORDER_SUB_NO," +
+            "REPEAT_INDICATOR,ORDER_START_TIME,ORDER_STOP_TIME,INPATIENT) " +
+            "VALUES('" + patient.ID + "','" + patient.VISIT_ID + "','" + doctor.DEPT_CODE + "','" + doctor.DEPT_NAME +
+            "','" + doctor.NAME + "','" + patient.NAME +
+            "','" + patient.GENDER + "','patient.BIRTH','" + patient.WEIGHT +
+            "','@{DRUG_CODE}','@{DRUG_NAME}','@{DOSAGE}','@{DOSAGE_UNITS}','@{ADMINISTRATION}','@{OPERTOR_DATE}'," +
+            "'@{OPERTOR_NAME}','@{OPERTOR_TYPE}','@{OPERTOR_USE_TIME}','@{DRUG_USE_TIME}','@{GMS}'," +
+            "'@{BTGMS}','@{WXYS}','@{KNDZBJ}','@{KLJLANJL}','@{YF_USE_DRUG_YJ}','@{TSYQ}','@{REC_DATE}'," +
+            "'@{IS_EXCEEDING}','@{IS_OPERATION_DRUG}','@{ORDER_NO}','@{ORDER_SUB_NO}'," +
+            "'@{REPEAT_INDICATOR}',to_date('@{ORDER_START_TIME}','yyyymmdd'),to_date('@{ORDER_STOP_TIME}','yyyymmdd'),'@{INPATIENT}')" +
+            "</Check>";
+
+        function getTodayDate() {
+            var date = new Date();
+            var REC_DATE = date.getFullYear() + '-' +
+                (date.getMonth() + 1) + '-' + date.getDate();
+            return REC_DATE;
+        }
+
+        function getPrevMedicSQL() {
+            var advice = checkInAdvice;
+            var opName = $('input[name="opName"]').val();
+            var opertor_type = $('#opertor_type option:selected').text();
+            var opertor_use_time = '';
+            var drug_use_time = '';
+            var GMS = $('input[name="GMS"]').val();
+            var BTGMS = $('input[name="BTGMS"]').val();
+            var WXYS = $('input[name="WXYS"]').val();
+            var YF_USE_DRUG_YJ = $('input[name="YF_USE_DRUG_YJ"]').val();
+            var KNDZBJ = '';
+            var KLJLANJL = '';
+            var TSYQ = '';
+            var REC_DATE = getTodayDate();
+            var IS_EXCEEDING = 1;
+            var IS_OPERATION_DRUG = 0;
+            var INPATIENT = ${config.inHosFlag};
+            var sql = preMediatorSql.replace('@{DRUG_CODE}', advice.DRUG_LO_ID).replace('@{DRUG_NAME}', advice.DRUG_LO_NAME)
+                .replace('@{DOSAGE}', advice.DOSAGE).replace('@{DOSAGE_UNITS}', advice.DOSAGE_UNIT)
+                .replace('@{ADMINISTRATION}', advice.ADMINISTRATION).replace('@{OPERTOR_DATE}', '')
+                .replace('@{OPERTOR_NAME}', opName).replace('@{OPERTOR_TYPE}', opertor_type)
+                .replace('@{OPERTOR_USE_TIME}', opertor_use_time).replace('@{DRUG_USE_TIME}', drug_use_time)
+                .replace('@{GMS}', GMS).replace('@{BTGMS}', BTGMS).replace('@{WXYS}', WXYS)
+                .replace('@{KNDZBJ}', KNDZBJ).replace('@{KLJLANJL}', KLJLANJL)
+                .replace('@{YF_USE_DRUG_YJ}', YF_USE_DRUG_YJ).replace('@{TSYQ}', TSYQ)
+                .replace('@{REC_DATE}', REC_DATE).replace('@{IS_EXCEEDING}', IS_EXCEEDING)
+                .replace('@{IS_OPERATION_DRUG}', IS_OPERATION_DRUG).replace('@{ORDER_NO}', advice.ORDER_NO)
+                .replace('@{ORDER_SUB_NO}', advice.ORDER_SUB_NO).replace('@{REPEAT_INDICATOR}', advice.REPEAT)
+                .replace('@{ORDER_START_TIME}', advice.START_DAY).replace('@{ORDER_STOP_TIME}', advice.END_DAY)
+                .replace('@{INPATIENT}', INPATIENT);
+            return sql;
+        }
+
+        var therapMediatorSql = "<Check>" +
+            "INSERT INTO ANTI_DRUG_USE_REC_ZL " +
+            "(PATIENT_ID,VISIT_ID,DEPT_CODE,DEPT_NAME,DOCTOR_NAME,NAME,SEX,AGE," +
+            "WEIGHT,YYLY,ZLFL,GRBW,ZDYJ,KNDZBJ," +
+            "DRUG_CODE,DRUG_NAME,DOSAGE,DOSAGE_UNITS,ADMINISTRATION," +
+            "REC_DATE,TWDATE,TWVALUE,TWOK,XXDATE,XXVALUE,CVALUE,XXOK," +
+            "IS_EXCEEDING,ORDER_NO,ORDER_SUB_NO," +
+            "REPEAT_INDICATOR,ORDER_START_TIME,ORDER_STOP_TIME,INPATIENT) " +
+            "VALUES('" + patient.ID + "','" + patient.VISIT_ID + "','" + doctor.DEPT_CODE + "','" + doctor.DEPT_NAME +
+            "','" + doctor.NAME + "','" + patient.NAME +
+            "','" + patient.GENDER + "','" + patient.BIRTH + "','" + patient.WEIGHT +
+            "','@{YYLY}','@{ZLFL}','@{GRBW}','@{ZDYJ}','@{KNDZBJ}'," +
+            "'@{DRUG_CODE}','@{DRUG_NAME}','@{DOSAGE}','@{DOSAGE_UNITS}','@{ADMINISTRATION}'," +
+            "'@{REC_DATE}','@{TWDATE}','@{TWVALUE}','@{TWOK}','@{XXDATE}','@{XXVALUE}','@{CVALUE}','@{XXOK}'," +
+            "'@{IS_EXCEEDING}','@{ORDER_NO}','@{ORDER_SUB_NO}'," +
+            "'@{REPEAT_INDICATOR}',to_date('@{ORDER_START_TIME}','yyyymmdd'),to_date('@{ORDER_STOP_TIME}','yyyymmdd'),'@{INPATIENT}')" +
+            "</Check>";
+
+        function getTherapMedicSQL() {
+            var advice = checkInAdvice;
+            var YYLY = $('input[name="YYLY"]').val();
+            var ZLFL = $('input[name="ZLFL"]').val();
+            var GRBW = $('input[name="GRBW"]').val();
+            var ZDYJ = $('input[name="ZDYJ"]').val();
+            var TWDATE = $('input[name="TWDATE"]').val();
+            var TWVALUE = $('input[name="TWVALUE"]').val();
+            var TWOK = 0;
+            if ($('input[name="TWOK"]').attr('checked')) {
+                TWOK = 1;
+            }
+
+            var XXDATE = $('input[name="XXDATE"]').val();
+            var XXVALUE = $('input[name="XXVALUE"]').val();
+            var CVALUE = $('input[name="CVALUE"]').val();
+            var XXOK = 0;
+            if ($('input[name="XXOK"]').attr('checked')) {
+                XXOK = 1;
+            }
+            var ZXLVALUE = $('input[name="ZXLVALUE"]').val();
+            var KNDZBJ = '';
+            var REC_DATE = getTodayDate();
+            var IS_EXCEEDING = 1;
+            var INPATIENT = ${config.inHosFlag};
+            var sql = therapMediatorSql.replace('@{YYLY}', YYLY).replace('@{ZLFL}', ZLFL).replace('@{GRBW}', GRBW)
+                .replace('@{ZDYJ}', ZDYJ).replace('@{KNDZBJ}', KNDZBJ)
+                .replace('@{DRUG_CODE}', advice.DRUG_LO_ID).replace('@{DRUG_NAME}', advice.DRUG_LO_NAME)
+                .replace('@{DOSAGE}', advice.DOSAGE).replace('@{DOSAGE_UNITS}', advice.DOSAGE_UNIT)
+                .replace('@{ADMINISTRATION}', advice.ADMINISTRATION)
+                .replace('@{TWDATE}', TWDATE).replace('@{TWVALUE}', TWVALUE)
+                .replace('@{TWOK}', TWOK).replace('@{XXDATE}', XXDATE)
+                .replace('@{XXVALUE}', XXVALUE).replace('@{CVALUE}', CVALUE)
+                .replace('@{XXOK}', XXOK)
+                .replace('@{REC_DATE}', REC_DATE).replace('@{IS_EXCEEDING}', IS_EXCEEDING)
+                .replace('@{ORDER_NO}', advice.ORDER_NO).replace('@{ZXLVALUE}', ZXLVALUE)
+                .replace('@{ORDER_SUB_NO}', advice.ORDER_SUB_NO).replace('@{REPEAT_INDICATOR}', advice.REPEAT)
+                .replace('@{ORDER_START_TIME}', advice.START_DAY).replace('@{ORDER_STOP_TIME}', advice.END_DAY)
+                .replace('@{INPATIENT}', INPATIENT);
+            return sql;
+
+        }
+
+        function submitPrevMedic() {
+            if ($("input[name='opName']").val() == '' ||
+                $("input[name='YF_USE_DRUG_YJ']").eq(0).val() == '') {
+                alert("必须填写拟施手术、用药理由！");
+
+                return;
+            }
+            var args = getPrevMedicSQL();
+            sendSQLToServer(args);
+            hidediv();
+
+            changeAntiState();
+        }
+
+        function submitTherapMedic() {
+            if ($("input[name='YYLY']").eq(1).val() == ''
+                || $("input[name='GRBW']").val() == ''
+                || $("input[name='ZDYJ']").val() == '') {
+
+                alert("必须填写用药理由、感染部位、诊断依据！");
+                return;
+            }
+
+            var args = getTherapMedicSQL();
+            sendSQLToServer(args);
+            hidediv();
+
+            changeAntiState();
+        }
+
     </script>
 
     <style type="text/css">
@@ -500,6 +688,9 @@
                             <tr>
                                 <td>3、单击药品名称，可查看说明书</td>
                             </tr>
+                            <tr>
+                                <td>问题反馈。电子邮箱：${config.email}。电话：${config.phoneNumber}</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -519,7 +710,7 @@
                             <th>配伍<br>禁忌</th>
                             <th>特殊<br>人群</th>
                             <th>药敏</th>
-                            <th>用药<br>管理</th>
+                            <th style="width: 80px">用药<br>管理</th>
                             <th>用药<br>监测</th>
                         </tr>
                         </thead>
@@ -531,7 +722,7 @@
                         <c:forEach var="item" items="${checkResult.advices}">
                             <tr>
                                 <td style="width: 129px;_width:127px">
-                                    <a onclick="openDiscribLinked('${item.DRUG_LO_ID}')">
+                                    <a onclick="openDescribLinked('${item.DRUG_LO_ID}')">
                                             ${item.DRUG_LO_NAME}
                                     </a>
                                 </td>
@@ -543,7 +734,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
+                                <td style="width: 75px;"></td>
                                 <td></td>
                             </tr>
                         </c:forEach>
@@ -572,12 +763,55 @@
 </div>
 
 <script type="text/javascript">
-    var checkResultJson = ${checkResultJson};
-    var advises = checkResultJson.advices;
     var problemType = ['适应症', '禁用症慎用症', '用法用量', '重复用药', '相互作用', '配伍禁忌', '特殊人群', '药敏', '医院管理', '用药监测'];
     var problemLevelClassName = ['disaster-problem', 'common-problem', 'common-problem', 'serious-problem'];
     var error_detail = $('#error_detail').html();
     $('#error_detail').html('');
+
+    /**
+     * 判断是否需要抗菌药登记
+     * @param checkInfo
+     * @returns {boolean}
+     */
+    function needAntiCheckIn(checkInfo, advise) {
+        var flag = ('${config.antiCheckInFlag}' == 1)
+            && advise.anti_drug_register == 1
+            && checkInfo.NAME == '医院管理';
+        if (flag) {
+            antiCheckNumber++;
+        }
+        return flag;
+    }
+
+    /**
+     * 隐藏背景图片。在class name后添加@的方式。登记后删除@，就能恢复背景图片
+     * @param $chooseTd
+     */
+    function hideBackground($chooseTd) {
+        $chooseTd.attr('class', $chooseTd.attr('class') + '@');
+    }
+
+    /**
+     * 设置抗菌药登记入口样式
+     * @param $chooseTd
+     */
+    function setAntiCheckInInfo($chooseTd) {
+        $chooseTd.html($chooseTd.html() + "未登记");
+        hideBackground($chooseTd);
+    }
+
+    var checkInAdvice = null;
+
+    function showAntiCheckInInfo(advise) {
+        checkInAdvice = advise;
+        var fn = function (checkResultElem) {
+            checkResultElem.innerHTML =
+                antiCheckInInfo.replace(/@\(drugId\)/g, advise.DRUG_LO_ID)
+                    .replace(/@\(drugName\)/g, advise.DRUG_LO_NAME);
+        };
+        showCheckResult(fn);
+    }
+
     for (var i = 0; i < advises.length; i++) {
         var advise = advises[i];
         var checkInfoList = advise.checkInfoList;
@@ -595,18 +829,23 @@
                         curProblemLevel = problemLevel == 0 ? 10 : problemLevel;
                     }
 
-                    //判断是否抗菌药登记
-                    // if (checkInfo.NAME == '用法用量') {
-                    //     $chooseTd.html($chooseTd.html() + "未登记");
-                    // }
+                    var antiCheckInFlag = needAntiCheckIn(checkInfo, advise);
+                    if (antiCheckInFlag) {
+                        setAntiCheckInInfo($chooseTd);
+                    }
 
-                    $chooseTd.click({row: i, col: k}, function (event) {
-                        showProblemDetail(event.data)
-                    });
+                    $chooseTd.click(
+                        {row: i, col: k, antiCheckInFlag: antiCheckInFlag, obj: $chooseTd},
+                        function (event) {
+                            showProblemDetail(event.data)
+                        });
                 }
             }
         }
     }
+
+    var $chooseTd = null;
+    var antiCheckedInValue = {};
 
     function showProblemDetail(data) {
         String.prototype.trim = function () {
@@ -614,6 +853,8 @@
         }
         var row = data.row;
         var col = data.col;
+        var antiCheckInFlag = data.antiCheckInFlag;
+        $chooseTd = data.obj;
         var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '').trim();
         var error_name = problemType[col];
         $("#error_detail").html('');
@@ -630,17 +871,24 @@
                 .replace('@(ref_source)', checkInfo.REF_SOURCE);
         }
         $("#error_detail").html(tempHtml);
+
+        if (antiCheckInFlag && !antiCheckedInValue[advise.DRUG_LO_ID]) {
+            showAntiCheckInInfo(advise);
+        }
         showAppealBtn(drug_name, error_name, '${presId}');
     }
 
-    (function isDisabled() {
-        var t = ${checkResult.HIGHEST_WARNING_LEVEL};
-        if (t == -1) {
+    function checkCanBeNext() {
+        if (highestWarningLevel == -1 || antiCheckNumber > 0) {
             $("#next").attr('disabled', 'disabled');
             $("#next").css('background-image', 'url(http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/image/nextdisabled.png)');
             $("#next").css('background-repeat', 'no-repeat');
             $("#next").css('background-position', 'center');
         }
+    }
+
+    (function isDisabled() {
+        checkCanBeNext();
     })();
 
     //    (function myBrowser() {

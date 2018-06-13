@@ -49,4 +49,14 @@ public class TestController {
         System.out.println(response);
         return response;
     }
+
+
+    @ResponseBody
+    @RequestMapping("/testSQL")
+    public String putSQL(@RequestBody String xml) {
+        System.out.println(xml);
+        return "OK";
+    }
+
+
 }

@@ -62,14 +62,14 @@ public class PrescCheckService {
                 "\"\",\"GENETIC_DISEASE\":\"\",\"MEDICARE_01\":\"\",\"MEDICARE_02\":\"\",\"MEDICARE_03\":\"\",\"MEDICARE_04\":\"\",\"MEDICARE_05\":\"\"},\"diagnosis\":\n" +
                 "{\"DIAGNOSISES\":\"恶性贫血\"},\"advices\":[{\"checkInfoList\":[{\"COLOR\":\"黄色\",\"NAME\":\"用法用量\",\"WARNING_LEVEL\":\"慎用\",\n" +
                 "\"WARNING_INFO\":\"疗程超限。药品疗程超过天。处方的疗程为1天。科室编码：10001。科室名称：\",\"REF_SOURCE\":\"药品说明书及医院相关规定\",\n" +
-                "\"YPMC\":\"\",\"JSXX\":\"\",\"ZYJL\":\"\",\"TYSM\":\"\",\"LCSY\":\"\",\"REGULAR_WARNING_LEVEL\":1}],\"REPEAT\":\"\",\"DRUG_LO_NAME\":\"10%氯化钠注射液\",\"DRUG_LO_ID\":\"280154007\",\n" +
+                "\"YPMC\":\"\",\"JSXX\":\"\",\"ZYJL\":\"\",\"TYSM\":\"\",\"LCSY\":\"\",\"REGULAR_WARNING_LEVEL\":0}],\"REPEAT\":\"\",\"DRUG_LO_NAME\":\"10%氯化钠注射液\",\"DRUG_LO_ID\":\"280154007\",\n" +
                 "\"ADMINISTRATION\":\"ivdrip\",\"DOSAGE\":\"10\",\"DOSAGE_UNIT\":\"ml\",\"FREQ_COUNT\":\"qd\",\"FREQ_INTERVAL\":\"\",\"FREQ_INTERVAL_UNIT\":\"\",\"START_DAY\":\"20180121\",\"END_DAY\":\"\",\n" +
                 "\"DEPT_CODE\":\"10001\",\"DOCTOR_NAME\":\"科大6\",\"ORDER_NO\":\"1\",\"ORDER_SUB_NO\":\"1\",\"AUTHORITY_LEVELS\":\"\",\"ALERT_LEVELS\":\"\",\"TITLE\":\"其他\",\"GROUP_ID\":\"1\",\n" +
                 "\"USER_ID\":\"kd6\",\"PRES_ID\":\"499263\",\"PRES_DATE\":\"20180121\",\"PRES_SEQ_ID\":\"499263\",\"PK_ORDER_NO\":\"1114774\",\"COURSE\":\"1\",\"PKG_COUNT\":\"2\",\"PKG_UNIT\":\n" +
                 "\"支\",\"BAK_01\":\"\",\"BAK_02\":\"\",\"BAK_03\":\"注射剂\",\"BAK_04\":\"10ml\",\"BAK_05\":\"国药容生\",\"HIGHEST_WARNING_LEVEL\":1},\n" +
-                "{\"checkInfoList\":[{\"COLOR\":\"黄色\",\"NAME\":\"用法用量\",\"WARNING_LEVEL\":\"慎用\",\"WARNING_INFO\":\"疗程超限。药品疗程超过天。处方的疗程为4天。\n" +
+                "{\"checkInfoList\":[{\"COLOR\":\"黄色\",\"NAME\":\"医院管理\",\"WARNING_LEVEL\":\"慎用\",\"WARNING_INFO\":\"疗程超限。药品疗程超过天。处方的疗程为4天。\n" +
                 "科室编码：10001。科室名称：\",\"REF_SOURCE\":\"药品说明书及医院相关规定\",\"YPMC\":\"\",\"JSXX\":\"\",\"ZYJL\":\"\",\"TYSM\":\"\",\"LCSY\":\"\",\n" +
-                "\"REGULAR_WARNING_LEVEL\":1}],\"REPEAT\":\"\",\"DRUG_LO_NAME\":\"氨茶碱片\",\"DRUG_LO_ID\":\"230131005\",\"ADMINISTRATION\":\"口服\",\"DOSAGE\":\"0.1\",\n" +
+                "\"REGULAR_WARNING_LEVEL\":-1}],\"REPEAT\":\"\",\"DRUG_LO_NAME\":\"氨茶碱片\",\"DRUG_LO_ID\":\"230131005\",\"ADMINISTRATION\":\"口服\",\"DOSAGE\":\"0.1\",\n" +
                 "\"DOSAGE_UNIT\":\"g\",\"FREQ_COUNT\":\"tid\",\"FREQ_INTERVAL\":\"\",\"FREQ_INTERVAL_UNIT\":\"\",\"START_DAY\":\"20180121\",\"END_DAY\":\"\",\n" +
                 "\"DEPT_CODE\":\"10001\",\"DOCTOR_NAME\":\"科大6\",\"ORDER_NO\":\"2\",\"ORDER_SUB_NO\":\"1\",\"AUTHORITY_LEVELS\":\"\",\n" +
                 "\"ALERT_LEVELS\":\"\",\"TITLE\":\"其他\",\"GROUP_ID\":\"2\",\"USER_ID\":\"kd6\",\"PRES_ID\":\"499263\",\"PRES_DATE\":\"20180121\",\"PRES_SEQ_ID\":\"499263\",\n" +
