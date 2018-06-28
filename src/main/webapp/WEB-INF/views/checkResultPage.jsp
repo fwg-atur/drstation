@@ -71,6 +71,9 @@
         /********定义iframe模板********/
         var checkResultTemp = getTemplateByName("check_result_template");
         /********定义iframe模板********/
+        /********定义药品说明书模板********/
+        var drug_specification = getTemplateByName("drug_specification_template");
+        /********定义药品说明书模板********/
 
         /**************  进度条模板 *****************/
         var progress_bar = getTemplateByName("progress_bar_template");
@@ -150,10 +153,9 @@
             // document.getElementById("checkResultButton").click();
             // showdiv();
             var fn = function (checkResultElem) {
-                checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+                checkResultElem.innerHTML = drug_specification.replace('@(url)', url);
                 document.getElementById("checkResultButton").click();
             }
-
             showCheckResult(fn);
         }
 
@@ -701,7 +703,7 @@
                     <table class="main-table-head">
                         <thead>
                         <tr>
-                            <th style="width: 140px">药品名称</th>
+                            <th id="drug_name_th" style="width: 132px">药品名称</th>
                             <th>适应症</th>
                             <th>禁用症<br>慎用症</th>
                             <th>用法<br>用量</th>
@@ -721,7 +723,7 @@
                         <tbody>
                         <c:forEach var="item" items="${checkResult.advices}">
                             <tr>
-                                <td style="width: 129px;_width:127px">
+                                <td id="drug_name_td" style="width: 132px;_width:127px">
                                     <a onclick="openDescribLinked('${item.DRUG_LO_ID}')">
                                             ${item.DRUG_LO_NAME}
                                     </a>
@@ -734,7 +736,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td style="width: 75px;"></td>
+                                <td style="width: 80px;"></td>
                                 <td></td>
                             </tr>
                         </c:forEach>
@@ -920,5 +922,15 @@
     }
 
 </script>
+
+<%--<script>--%>
+    <%--window.onload = function () {--%>
+        <%--alert("start");--%>
+        <%--var width_th = document.getElementById("drug_name_th").style.width;--%>
+        <%--var width_td = document.getElementById("drug_name_td").style.width;--%>
+        <%--alert("th:" + width_th + "\n" + "td:" + width_td);--%>
+    <%--}--%>
+<%--</script>--%>
+
 </body>
 </html>

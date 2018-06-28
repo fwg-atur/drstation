@@ -22,6 +22,8 @@
         //药品说明书链接
         var disUrl = '${config.drugDescriptionURL}';
         var presId = '${presId}';
+        //药师信息
+        var pharmacistInfo = ${pharmacistInfo};
         var pharmacistCheckResultJson = ${pharmacistCheckResultJson};
         //医生信息
         var doctorInfo = pharmacistCheckResultJson.checkPresInput.doctor;
@@ -29,6 +31,15 @@
         var patientInfo = pharmacistCheckResultJson.checkPresInput.patient;
         //处方信息
         var orders = pharmacistCheckResultJson.checkPresInput.advices;
+
+        var date = '${date}'
+
+        var problemNameList = new Array();
+        var case_type_pharmacist;
+        var case_description;
+        var case_type_engin;
+
+        var interfereInputXML = "";
 
         /********定义iframe模板********/
         var checkResultTemp = getTemplateByName("check_result_template");
@@ -108,9 +119,25 @@
             temp = temp.replace('@(DOCTOR_NAME)',doctorInfo.NAME);
             temp = temp.replace('@(PATIENT_ID)',patientInfo.ID);
             temp = temp.replace('@(PATIENT_NAME)',patientInfo.NAME);
-            temp = temp.replace('@(PHARMACIST_NAME)',doctorInfo.NAME);
-
+            temp = temp.replace('@(PHARMACIST_ID)',pharmacistInfo.pharmacist_id);
+            temp = temp.replace('@(PHARMACIST_NAME)',pharmacistInfo.pharmacist_name);
+            temp = temp.replace('@(TELEPHONE)',pharmacistInfo.telephone);
             interfereInfoElem.innerHTML = temp;
+            $("#problemDescribe").html($("#sum_errors").html());
+            case_description = $("#problemDescribe").text();
+            //去掉空格
+            case_description = case_description.replace(/\ +/g,"");
+            //去掉回车换行
+            case_description = case_description.replace(/[\r\n]/g,"");
+            checkForProblemType();
+
+            interfereInputXML = "<Request FUN='1'>" +
+                    "<Input DOCTOR_ID='"+doctorInfo.USER_ID+"'" +
+                    " DOCTOR_NAME='"+doctorInfo.NAME+"' PHARMACIST_ID='"+ pharmacistInfo.pharmacist_id +"' PHARMACIST_NAME='"+ pharmacistInfo.pharmacist_name +"'" +
+                    " PHARMACIST_PHONE='"+ pharmacistInfo.telephone +"'PATIENT_ID='"+patientInfo.ID+"'PATIENT_NAME='"+patientInfo.NAME+"'" +
+                    " PRES_ID='"+presId+"' APPLY_DATE='"+date+"' CASE_TYPE_PHARMACIST='"+case_type_pharmacist+"'" +
+                    " CASE_DESCRIPTION='"+case_description+"' CASE_TYPE_ENGIN='"+case_type_engin+"'/>" +
+                    "</Request>";
             showdiv();
         }
 
@@ -396,7 +423,7 @@
         var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '');
         var error_name = problemType[col];
         $("#error_detail").html('');
-        var tempHtml = "<thead><tr><th>" + error_name + "</th></tr></thead>";
+        var tempHtml = "<thead id='problemName'><tr><th>" + error_name + "</th></tr></thead>";
 
         for (var i = 0; i < prescInfos.length; i++) {
             var prescInfo = prescInfos[i];
@@ -420,13 +447,36 @@
     function sumUpProblems() {
         var error_detail = $("#error_detail").html();
         var sum_errors = $("#sum_errors").html();
+        var problemName = document.getElementById("problemName").innerText;
+        //去掉空格
+        problemName = problemName.replace(/\ +/g,"");
+        //去掉回车换行
+        problemName = problemName.replace(/[\r\n]/g,"");
+        problemNameList.push(problemName);
         sum_errors += error_detail;
         $("#sum_errors").html(sum_errors);
     }
 
     function clearProblems() {
         $("#sum_errors").html('');
+        problemNameList.length = 0;
     }
+
+    function checkForProblemType() {
+        var trs = document.getElementById("problemTypeTbody");
+        case_type_engin = "";
+        case_type_pharmacist = "";
+        for(var j=0;j<problemNameList.length;j++) {
+            case_type_engin += problemNameList[j] + ";";
+            for (var i = 0; i < trs.rows.length; i++) {
+                if (trs.rows[i].cells[1].innerText.indexOf(problemNameList[j]) >= 0){
+                    case_type_pharmacist += trs.rows[i].cells[1].innerText;
+                    trs.rows[i].cells[0].children[0].checked = true;
+                }
+            }
+        }
+    }
+
 
     (function isDisabled() {
         var t = '${checkResult.HIGHEST_WARNING_LEVEL}';
@@ -461,4 +511,5 @@
     }
 </script>
 </body>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>
 </html>

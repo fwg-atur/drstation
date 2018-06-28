@@ -278,6 +278,23 @@ public class ParseXML {
         return checkPresInput;
     }
 
+    public PharmacistInfo parsePharmacistInfo(String xml){
+        Document document = null;
+        try {
+            document = XmlUtil.readDocumentFromStr(xml.trim());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Element root = document.getRootElement();
+        Object pharmacistObject = root.getChild("PharmacistInfo");
+        Element pharmacistElement = (Element) pharmacistObject;
+        PharmacistInfo pharmacistInfo = new PharmacistInfo();
+        pharmacistInfo.setPharmacist_id(pharmacistElement.getAttributeValue("PHARMACIST_ID"));
+        pharmacistInfo.setPharmacist_name(pharmacistElement.getAttributeValue("PHARMACIST_NAME"));
+        pharmacistInfo.setTelephone(pharmacistElement.getAttributeValue("TELEPHONE"));
+        return pharmacistInfo;
+    }
+
     public CheckPresInput getCheckPresInput() {
         return checkPresInput;
     }

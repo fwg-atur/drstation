@@ -11,15 +11,16 @@
     width: 907px;
     height: 200px;
     _height: 180px;
-    margin-left: 55px;
-    _margin-left: 47px;
-    overflow: auto;
+    /*margin-left: 55px;*/
+    /*_margin-left: 47px;*/
+    /*overflow: auto;*/
 }
 
 table.main-table {
     width: 890px;
     border: 1px #a7f1fd;
     border-collapse: collapse;
+    margin-left: 55px;
 }
 
 table.main-table-head {
@@ -27,30 +28,29 @@ table.main-table-head {
     border-collapse: collapse;
     width: 890px;
     height: 40px;
-    margin: 0 auto;
+    margin-left: 55px;
 }
 
 table.main-table-head th {
-    padding: 8px;
+    padding: 2px;
     border: 1px solid #a7f1fd;
     background-color: #06bfc7;
-    height: 40px;
     color: #ffffff;
     font-family: SourceHanSansCN-Bold, serif;
     font-size: 16px;
 
-    width: 75px;
+    width: 70px;
 }
 
 table.main-table td {
-    padding: 8px;
+    padding: 2px;
     border: 1px solid #a7f1fd;
-    height: 40px;
     color: #005a5c;
     font-family: SourceHanSansCN-Bold, serif;
     font-size: 16px;
+    height: 30px;
 
-    width: 75px;
+    width: 70px;
 }
 
 .main-table tbody tr:nth-child(even) td {
@@ -62,19 +62,19 @@ table.main-table td {
 }
 
 .common-problem {
-    background: url(http://localhost:8080/DCStation/image/common-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/common-problem-big.png) no-repeat center;
 }
 
 .serious-problem {
-    background: url(http://localhost:8080/DCStation/image/serious-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/serious-problem-big.png) no-repeat center;
 }
 
 .disaster-problem {
-    background: url(http://localhost:8080/DCStation/image/disaster-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/disaster-problem-big.png) no-repeat center;
 }
 
 .disable-problem {
-    background: url(http://localhost:8080/DCStation/image/nextdisabled.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/nextdisabled.png) no-repeat center;
 }
 
 .button-area {
@@ -84,7 +84,7 @@ table.main-table td {
 }
 
 .button-area input {
-    background: transparent url(http://localhost:8080/DCStation/image/circlerectangle.png);
+    background: transparent url(http://localhost:80/DCStation/image/circlerectangle.png);
     border: none;
     color: white;
     text-align: center;
@@ -158,8 +158,14 @@ table.main-table td {
 
 .head-top {
     height: 43px;
-    background: url(http://localhost:8080/DCStation/image/titleTJJK.png) center;
+    background: url(http://localhost:80/DCStation/image/titleTJJK.png) center;
 }
+
+/*.iframe-area {*/
+    /*border: 0px;*/
+    /*height: 500px;*/
+    /*width: 890px;*/
+/*}*/
 
 #error_detail th {
     font-size: 24px;
@@ -215,4 +221,6 @@ table.main-table td {
     z-index: 1002;
     overflow: auto;
 }
+
+
 

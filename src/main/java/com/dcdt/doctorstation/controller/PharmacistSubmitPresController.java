@@ -25,8 +25,13 @@ public class PharmacistSubmitPresController{
 
     @ResponseBody
     @RequestMapping("/sendPharmacistCheck")
-    public CheckMessage sendPharmacistCheck(String patientID,String visitDate,String xml) {
-        return service.checkPharmacistPresc(patientID,visitDate,xml);
+    public CheckMessage sendPharmacistCheck(String patientID,String visitDate,String pharmacistInfo,String xml) {
+        return service.checkPharmacistPresc(patientID,visitDate,pharmacistInfo,xml);
+    }
+
+    @RequestMapping("/sendPharmacistInterfere")
+    public String sendPharmacistInterfere(String xml) {
+        return service.checkPharmacistInterfere(xml);
     }
 
     @RequestMapping("/pharmacistCheckResultPage")
@@ -41,6 +46,8 @@ public class PharmacistSubmitPresController{
         model.addAttribute("presId", presId);
         model.addAttribute("checkPharmacist",check.getCheckPharmacist());
         model.addAttribute("config", config);
+        model.addAttribute("pharmacistInfo",service.toJson(service.getPharmacistInfo()));
+        model.addAttribute("date",service.getDate());
         return "pharmacistCheckResultPage";
     }
 

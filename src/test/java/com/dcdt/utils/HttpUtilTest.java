@@ -12,7 +12,7 @@ public class HttpUtilTest {
     @Test
     public void testPost() {
 //        String url = "http://www.baidu.com/s";
-        String url = "http://localhost:8081/service/api/checkFromXmlToJson.do?tag=1";
+        String url = "http://localhost:80/service/api/checkFromXmlToJson.do?tag=1";
         String para = "<CheckInput TAG=\"2\">\n" +
                 "    <Doctor NAME=\"王雁\" POSITION=\"主治医师\" USER_ID=\"000683\" DEPT_NAME=\"呼吸科\" DEPT_CODE=\"FKNF\" />\n" +
                 "    <Patient NAME=\"朱永东\" ID=\"0003478286\" VISIT_ID=\"1\" PATIENT_PRES_ID=\"000347828620150924000648\" BIRTH=\"19651105\" HEIGHT=\"165\" WEIGHT=\"60\" GENDER=\"男\" PREGNANT=\"\" LACT=\"\" HEPATICAL=\"\" RENAL=\"\" PANCREAS=\"\" ALERGY_DRUGS=\"\" IDENTITY_TYPE=\"\" FEE_TYPE=\"\" \n" +

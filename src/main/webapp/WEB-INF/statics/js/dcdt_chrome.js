@@ -2,8 +2,8 @@
  * Created by on 2017/5/14.
  */
 var checkServerIp = "localhost";
-var checkServerPort = "8080";
-var disUrl = 'http://116.90.80.66:8221/drugs/@code@?source=dcdt_web&hospital_id=cdsdyrmyy&show_navbar=true';
+var checkServerPort = "80";
+var disUrl = 'http://localhost:80/DCStation/home/index?drugCode=@code@';
 
 /**
  * 住院医生站ip，端口。
@@ -13,13 +13,13 @@ var disUrl = 'http://116.90.80.66:8221/drugs/@code@?source=dcdt_web&hospital_id=
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-var cheServerPortInHos = "8080";
+var cheServerPortInHos = "80";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var cheServerPortOutHos = "8090";
+var cheServerPortOutHos = "80";
 
 /**
  * 存放临时变量
@@ -37,7 +37,7 @@ var checkResultTemp =
     'height: 580px;padding: 8px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;' +
     '">' +
     '<iframe src="about:blank" name="showPlace" frameborder=0 height=600 width=1000 marginheight=0 marginwidth=0 scrolling=no></iframe>' +
-    '</div></div>' +
+    '</div>' +
     '<a style="display: none" id="checkResultButton" href="@(url)"target="showPlace">在左框中打开链接</a>';
 
 var global_next_func_name;
@@ -207,10 +207,10 @@ function openDiscribLinked(code) {
 function testPharmacistCheck(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
+    var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck(tag, patientID, visitDate, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
+    PharmacistCheck(tag, patientID, visitDate, pharmacistInfo, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
 }
-
 function testPharmacistCheckSilent(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
@@ -218,10 +218,10 @@ function testPharmacistCheckSilent(tag) {
     PharmacistCheckSilent(tag, patientID, visitDate, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
 }
 
-function PharmacistCheck(tag, patientID, visitDate, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
+function PharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
     setInHosFlag(inHosFlag);
     local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
-    PharmacistCheckForChrome(tag, patientID, visitDate, xml);
+    PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml);
 }
 
 function PharmacistCheckSilent(tag, patientID, visitDate, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
@@ -230,8 +230,8 @@ function PharmacistCheckSilent(tag, patientID, visitDate, xml, next_func_name, n
     PharmacistCheckSilentForChrome(tag, patientID, visitDate, xml);
 }
 
-function PharmacistCheckForChrome(tag, patientID, visitDate, xml) {
-    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
+function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml) {
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
     var checkData = sendAjaxRequest(data, url);
 
@@ -248,7 +248,6 @@ function PharmacistCheckForChrome(tag, patientID, visitDate, xml) {
         pharmacistCheckIsQuitState = window.setInterval("pharmacistCheckIsQuit()", 500);
     }
 }
-
 function PharmacistCheckSilentForChrome(tag, patientID, visitDate, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";

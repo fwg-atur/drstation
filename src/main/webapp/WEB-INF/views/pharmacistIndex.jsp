@@ -37,9 +37,16 @@
                     <br>
                     <input type="text" id="visitDate" name="visitDate" value="20180326">
                     <br>
+                    <label>药师信息</label>
+                    <br>
+                    <textarea id="pharmacistInfo" name="pharmacistInfo" style="min-height: 100px;width: 100%">
+                        &lt;Pharmacist&gt;
+                            &lt;PharmacistInfo PHARMACIST_ID="1" PHARMACIST_NAME="药师" TELEPHONE="123" /&gt;
+                        &lt;/Pharmacist&gt;
+                    </textarea>
                     <label>数据字符串</label>
                     <br>
-                    <textarea id="dcdt" name="dcdt" style="min-height: 400px;width: 100%">
+                    <textarea id="dcdt" name="dcdt" style="min-height: 300px;width: 100%">
                             &lt;CheckInput TAG="2"&gt;
                                 &lt;Doctor POSITION="副主任医师" NAME="门急诊医生" DEPT_CODE="030401" DEPT_NAME="骨科" USER_ID="123" /&gt;
                                 &lt;Patient NAME="门急诊病人1" ID="1" GENDER="男" BIRTH="19840908" WEIGHT="20" HEIGHT="100" ALERGY_DRUGS="选择性5-HT3受体抑制药类" PREGNANT="是" LACT="是" HEPATICAL="是" RENAL="否" PANCREAS="否" VISIT_ID="1233" PATIENT_PRES_ID="1" IDENTITY_TYPE="军人" FEE_TYPE="医保" WARD_CODE="11" WARD_NAME="病区22" BED_NO="1" /&gt;
@@ -83,8 +90,8 @@
 </div>
 </body>
 
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>--%>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt.js"></script>--%>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>
 <%--<script type="text/javascript"--%>
 <%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>
 

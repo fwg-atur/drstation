@@ -2,10 +2,12 @@ package com.dcdt.doctorstation.controller;
 
 import com.dcdt.cache.Config;
 import com.dcdt.doctorstation.entity.CheckMessage;
+import com.dcdt.doctorstation.entity.CheckPresInput;
 import com.dcdt.doctorstation.entity.CheckResults;
 import com.dcdt.doctorstation.service.CacheService;
 import com.dcdt.doctorstation.service.PrescCheckService;
 import com.dcdt.utils.CommonUtil;
+import com.dcdt.utils.ParseXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,13 @@ public class SubmitPrescController {
     @RequestMapping("/sendCheck")
     public CheckMessage sendCheck(int tag, String xml) {
         return service.checkPresc(tag, xml);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getDeptCode")
+    public String getDeptCode(String xml) {
+        CheckPresInput checkPresInput = new ParseXML().parseInputXml(xml);
+        return checkPresInput.getDoctor().getDEPT_CODE();
     }
 
 

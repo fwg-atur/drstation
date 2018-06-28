@@ -9,22 +9,21 @@
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-var cheServerPortInHos = "8080";
+var cheServerPortInHos = "80";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var cheServerPortOutHos = "8080";
+var cheServerPortOutHos = "80";
 //说明书地址
-var disUrl = 'http://116.90.80.66:8221/drugs/@code@?source=dcdt_web&hospital_id=cdsdyrmyy&show_navbar=true';
+var disUrl = 'http://localhost:80/DCStation/home/index?drugCode=@code@';
 
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    DoctorCheck(tag, dcdtXml, 1);
+    DoctorCheck(tag, dcdtXml,1);
 }
-
 /**
  *
  * @param tag
@@ -50,6 +49,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     var iHeight = '650px';
     var xmlhttp;
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
+
     if (window.XMLHttpRequest) {
         //  IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();
@@ -65,7 +65,12 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
 
-    if (check.hasProblem == 0) {
+    var start = xml.indexOf("DEPT_CODE=\"");
+    var rest = xml.substr(start + 11);
+    var stop = rest.indexOf("\"");
+    var dept_code = rest.substr(0, stop);
+
+    if (check.hasProblem == 1 && dept_code == '肠道门诊') {
         alert("处方没有问题！");
     }
     if (tag == 2 || check.hasProblem == 0) {
@@ -101,7 +106,6 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
 function isDirectClose(data) {
     return data == -2;
 }
-
 function drawCheckResultElem(url) {
     var checkResultElem = document.getElementById("checkResult");
     checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
@@ -113,7 +117,6 @@ function showdiv() {
     document.getElementById("bg").style.display = "block";
     document.getElementById("show").style.display = "block";
 }
-
 function hidediv() {
     document.getElementById("bg").style.display = 'none';
     document.getElementById("show").style.display = 'none';
@@ -121,8 +124,7 @@ function hidediv() {
 
 function openDiscribLinked(code) {
     var urlTemp = disUrl.replace("@code@", code);
-    // window.location.href = urlTemp;
-    window.open(urlTemp, '', 'left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 50) + ',scrollbars,resizable=yes,toolbar=no');
+    window.open(urlTemp, '药品说明书', ' left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 50) + ',scrollbars,resizable=yes,toolbar=no');
 }
 
 //药师站
@@ -130,34 +132,30 @@ function testPharmacistCheck(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck(tag, patientID, visitDate, dcdtXml);
-}
-
-function PharmacistCheck(tag, patientID, visitDate, xml) {
-    PharmacistCheck(tag, patientID, visitDate, dcdtXml, 1);
+    PharmacistCheck(tag,patientID,visitDate,dcdtXml,1);
 }
 
 function testPharmacistCheckSilent(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheckSilent(tag, patientID, visitDate, dcdtXml, 1);
+    PharmacistCheckSilent(tag,patientID,visitDate,dcdtXml,1);
 }
 
-function PharmacistCheck(tag, patientID, visitDate, xml, inHosFlag) {
+function PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendPharmacistCheck(tag, xml, patientID, visitDate, checkServerIpOutHos, cheServerPortOutHos);
+        return sendPharmacistCheck(tag, xml, patientID, visitDate,pharmacistInfo, checkServerIpOutHos, cheServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendPharmacistCheck(tag, xml, patientID, visitDate, checkServerIpInHos, cheServerPortInHos);
+        return sendPharmacistCheck(tag, xml, patientID, visitDate,pharmacistInfo, checkServerIpInHos, cheServerPortInHos);
     } else {
         alert("error:未识别的住院标识！");
     }
 }
 
-function pharmacistCheckSilent(tag, patientID, visitDate, xml, inHosFlag) {
+function pharmacistCheckSilent(tag,patientID,visitDate,xml,inHosFlag) {
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
@@ -170,11 +168,11 @@ function pharmacistCheckSilent(tag, patientID, visitDate, xml, inHosFlag) {
     }
 }
 
-function sendPharmacistCheck(tag, patientID, visitDate, xml, checkServerIp, checkServerPort) {
+function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkServerIp, checkServerPort){
     var iWidth = '1000px';
     var iHeight = '650px';
     var xmlhttp;
-    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     if (window.XMLHttpRequest) {
         //  IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();
@@ -195,10 +193,10 @@ function sendPharmacistCheck(tag, patientID, visitDate, xml, checkServerIp, chec
     else if (check.hasProblem == 1) {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
 
-        if (navigator.userAgent.indexOf("Chrome") > 0) {
-            var winOption = "height=" + iHeight + ",width=" + iWidth + "," +
+        if(navigator.userAgent.indexOf("Chrome") >0 ){
+            var winOption = "height="+iHeight+",width="+iWidth+"," +
                 "top=50,left=50,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,fullscreen=0";
-            window.open(url, window, winOption);
+            window.open(url,window, winOption);
         } else {
             window.showModalDialog(url, '',
                 'resizable:yes;scroll:yes;status:no;' +
@@ -217,7 +215,7 @@ function sendPharmacistCheck(tag, patientID, visitDate, xml, checkServerIp, chec
     return data;
 }
 
-function sendPharmacistCheckSilent(tag, patientID, visitDate, xml, checkServerIp, checkServerPort) {
+function sendPharmacistCheckSilent(tag,patientID,visitDate,xml,checkServerIp, checkServerPort){
     var xmlhttp;
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
     if (window.XMLHttpRequest) {
