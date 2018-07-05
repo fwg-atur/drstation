@@ -662,7 +662,7 @@
                                 <td>[问题药品]&nbsp;@(drug_name)</td>
                             </tr>
                             <tr>
-                                <td>[警示信息]&nbsp;@(warning_info)</td>
+                                <td style="color: red">[警示信息]&nbsp;@(warning_info)</td>
                             </tr>
                             <tr>
                                 <td>[参考信息]&nbsp;@(ref_source)</td>
@@ -814,6 +814,7 @@
         showCheckResult(fn);
     }
 
+    var count = 1;
     for (var i = 0; i < advises.length; i++) {
         var advise = advises[i];
         var checkInfoList = advise.checkInfoList;
@@ -841,6 +842,11 @@
                         function (event) {
                             showProblemDetail(event.data)
                         });
+
+                    if(count > 0){
+                        count = 0;
+                        $chooseTd.click();
+                    }
                 }
             }
         }

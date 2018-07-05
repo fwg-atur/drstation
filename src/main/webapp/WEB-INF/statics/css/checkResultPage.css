@@ -8,12 +8,13 @@
 }
 
 .table-area-content {
-    width: 907px;
+    width: 960px;
     height: 200px;
     _height: 180px;
     /*margin-left: 55px;*/
     /*_margin-left: 47px;*/
     /*overflow: auto;*/
+    overflow-x: hidden;
 }
 
 table.main-table {
