@@ -131,38 +131,40 @@ function openDiscribLinked(code) {
 function testPharmacistCheck(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
+    var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck(tag,patientID,visitDate,dcdtXml,1);
+    pharmacistCheck(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
 }
 
 function testPharmacistCheckSilent(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
+    var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheckSilent(tag,patientID,visitDate,dcdtXml,1);
+    pharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
 }
 
-function PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
+function pharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendPharmacistCheck(tag, xml, patientID, visitDate,pharmacistInfo, checkServerIpOutHos, cheServerPortOutHos);
+        return sendPharmacistCheck(tag, patientID, visitDate,pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendPharmacistCheck(tag, xml, patientID, visitDate,pharmacistInfo, checkServerIpInHos, cheServerPortInHos);
+        return sendPharmacistCheck(tag, patientID, visitDate,pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
     } else {
         alert("error:未识别的住院标识！");
     }
 }
 
-function pharmacistCheckSilent(tag,patientID,visitDate,xml,inHosFlag) {
+function pharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendPharmacistCheckSilent(tag, xml, patientID, visitDate, checkServerIpOutHos, cheServerPortOutHos);
+        return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendPharmacistCheckSilent(tag, xml, patientID, visitDate, checkServerIpInHos, cheServerPortInHos);
+        return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
     } else {
         alert("error:未识别的住院标识！");
     }
@@ -215,9 +217,9 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
     return data;
 }
 
-function sendPharmacistCheckSilent(tag,patientID,visitDate,xml,checkServerIp, checkServerPort){
+function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,checkServerIp, checkServerPort){
     var xmlhttp;
-    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     if (window.XMLHttpRequest) {
         //  IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();

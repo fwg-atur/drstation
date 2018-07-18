@@ -214,8 +214,9 @@ function testPharmacistCheck(tag) {
 function testPharmacistCheckSilent(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
+    var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheckSilent(tag, patientID, visitDate, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
+    pharmacistCheckSilent(tag, patientID, visitDate,pharmacistInfo, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
 }
 
 function PharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
@@ -224,10 +225,10 @@ function PharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, next_fu
     PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml);
 }
 
-function PharmacistCheckSilent(tag, patientID, visitDate, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
+function pharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
     setInHosFlag(inHosFlag);
     local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
-    PharmacistCheckSilentForChrome(tag, patientID, visitDate, xml);
+    PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInfo, xml);
 }
 
 function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml) {
@@ -248,8 +249,8 @@ function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml
         pharmacistCheckIsQuitState = window.setInterval("pharmacistCheckIsQuit()", 500);
     }
 }
-function PharmacistCheckSilentForChrome(tag, patientID, visitDate, xml) {
-    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate;
+function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInfo, xml) {
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
     var checkData = sendAjaxRequest(data, url);
 

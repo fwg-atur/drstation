@@ -16,8 +16,8 @@
     </title>
 
     <script type="text/javascript"
-            src="http://localhost:80/DCStation/js/jquery.min.js"></script>
-    <link href="http://localhost:80/DCStation/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
+            src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
+    <link href="${pageContext.servletContext.contextPath}/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
     <title>实时审核Web版</title>
     <style type="text/css">
         .selected {

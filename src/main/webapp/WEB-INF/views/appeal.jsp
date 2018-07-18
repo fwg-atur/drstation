@@ -12,7 +12,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://localhost:80/DCStation/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="http://localhost:80/DCStation/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
     <title>
         医生反馈
     </title>

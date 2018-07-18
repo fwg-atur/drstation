@@ -247,8 +247,8 @@
     </script>
 
     <script type="text/javascript"
-            src="http://localhost:80/DCStation/js/jquery.min.js"></script>
-    <link href="http://localhost:80/DCStation/css/pharmacistCheckResultPage.css" rel="stylesheet" type="text/css"/>
+            src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
+    <link href="${pageContext.servletContext.contextPath}/css/pharmacistCheckResultPage.css" rel="stylesheet" type="text/css"/>
 
     <style type="text/css">
     </style>
