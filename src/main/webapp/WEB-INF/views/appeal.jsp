@@ -11,7 +11,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="http://localhost:80/DCStation/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.servletContext.contextPath}/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
     <title>
         医生反馈
@@ -192,7 +192,7 @@
             alert("您的反馈意见已成功提交，请耐心等候！")
             window.close()
         }
-        xmlhttp.open("POST", "http://223.3.71.149:8081/service/api/mediator/ClientHelper.do", false);
+        xmlhttp.open("POST", "http://${config.drStationServerIp}:${config.drStationServerPort}/service/api/mediator/ClientHelper.do", false);
         xmlhttp.setRequestHeader("Content-type", "text/plain;");
         xmlhttp.send(data);
     }

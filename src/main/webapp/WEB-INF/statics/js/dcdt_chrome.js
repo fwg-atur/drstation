@@ -112,7 +112,7 @@ function sendAjaxRequest(data, url) {
 }
 
 function getSendCheckUrl() {
-    return "http://" + checkServerIpTemp + ":" + cheServerPortTemp + "/DCStation/submit/sendCheckForTest";
+    return "http://" + checkServerIpTemp + ":" + cheServerPortTemp + "/DCStation/submit/sendCheck";
 }
 
 function getCheckResultPageUrl(check) {

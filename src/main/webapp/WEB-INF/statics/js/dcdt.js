@@ -58,13 +58,15 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheckForTest", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
 
+    /**
+     * 沈阳医大一院科室过滤代码
     var start = xml.indexOf("DEPT_CODE=\"");
     var rest = xml.substr(start + 11);
     var stop = rest.indexOf("\"");
@@ -73,6 +75,8 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     if (check.hasProblem == 1 && dept_code == '肠道门诊') {
         alert("处方没有问题！");
     }
+     **/
+
     if (tag == 2 || check.hasProblem == 0) {
         return 0;
     }
