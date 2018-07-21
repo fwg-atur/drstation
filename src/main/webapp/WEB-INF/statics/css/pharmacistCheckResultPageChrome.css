@@ -11,7 +11,7 @@
     width: 907px;
     height: 140px;
     _height: 120px;
-    margin-left: 55px;
+    margin-left: 50px;
     _margin-left: 47px;
     overflow: auto;
 }
@@ -150,7 +150,7 @@ table.main-table td {
     font-family: SourceHanSansCN-Normal, serif;
     padding: 40px 10px;
     _padding: 20px 10px;
-    height: 20px;
+    /*height: 20px;*/
     _height: 30px;
     overflow: auto;
 }

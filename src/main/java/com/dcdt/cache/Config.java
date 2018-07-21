@@ -47,6 +47,9 @@ public class Config {
     @Value("${antiCheckInURL}")
     private String antiCheckInURL;
 
+    @Value("${browserFlag}")
+    private String browserFlag;
+
     public String getDrStationServerIp() {
         return drStationServerIp;
     }
@@ -117,5 +120,13 @@ public class Config {
 
     public void setAntiCheckInURL(String antiCheckInURL) {
         this.antiCheckInURL = antiCheckInURL;
+    }
+
+    public String getBrowserFlag() {
+        return browserFlag;
+    }
+
+    public void setBrowserFlag(String browserFlag) {
+        this.browserFlag = browserFlag;
     }
 }

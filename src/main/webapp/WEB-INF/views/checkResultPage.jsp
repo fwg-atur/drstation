@@ -18,7 +18,8 @@
 
     <script type="text/javascript"
             src="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/js/jquery.min.js"></script>
-    <link href="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/css/checkResultPageForChrome.css"
+
+    <link href="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/css/checkResultPage${config.browserFlag}.css"
           rel="stylesheet" type="text/css"/>
     <link href="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/css/style.css"
           rel="stylesheet" type="text/css"/>

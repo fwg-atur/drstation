@@ -1,0 +1,249 @@
+.main-content, .table-area {
+    width: 100%;
+    clear: both;
+}
+
+.table-area {
+    padding-top: 5px;
+}
+
+.table-area-content {
+    width: 907px;
+    height: 140px;
+    _height: 120px;
+    margin-left: 55px;
+    _margin-left: 47px;
+    overflow: auto;
+}
+
+table.main-table {
+    width: 890px;
+    border: 1px #a7f1fd;
+    border-collapse: collapse;
+}
+
+table.main-table-head {
+    border: 1px #a7f1fd;
+    border-collapse: collapse;
+    width: 890px;
+    height: 40px;
+    margin: 0 auto;
+}
+
+table.main-table-head th {
+    padding: 8px;
+    border: 1px solid #a7f1fd;
+    background-color: #06bfc7;
+    height: 40px;
+    color: #ffffff;
+    font-family: SourceHanSansCN-Bold, serif;
+    font-size: 16px;
+
+    width: 75px;
+    _width: 75px;
+}
+
+table.main-table td {
+    padding: 8px;
+    border: 1px solid #a7f1fd;
+    height: 40px;
+    color: #005a5c;
+    font-family: SourceHanSansCN-Bold, serif;
+    font-size: 14px;
+
+    width: 75px;
+    _width: 75px;
+}
+
+.main-table tbody tr:nth-child(even) td {
+    background-color: #ffffff;
+}
+
+.main-table tbody tr:nth-child(odd) td {
+    background-color: #f3fbfd;
+}
+
+.common-problem {
+    background: url(http://localhost:80/DCStation/image/common-problem-big.png) no-repeat center;
+}
+
+.serious-problem {
+    background: url(http://localhost:80/DCStation/image/serious-problem-big.png) no-repeat center;
+}
+
+.disaster-problem {
+    background: url(http://localhost:80/DCStation/image/disaster-problem-big.png) no-repeat center;
+}
+
+.disable-problem {
+    background: url(http://localhost:80/DCStation/image/nextdisabled.png) no-repeat center;
+}
+
+.button-area {
+    margin: 0 auto;
+    padding: 10px 10px;
+    text-align: center;
+}
+
+.button-area input {
+    background: transparent url(http://localhost:80/DCStation/image/circlerectangle.png);
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 80px;
+    height: 26px;
+    margin: 0 auto;
+}
+
+.left-area {
+    float: left;
+    border: 1px solid #a7f1fd
+}
+
+.right-area {
+    float: right;
+    border: 1px solid #a7f1fd
+}
+
+.detail-info {
+    width: 380px;
+    height: 170px;
+    _height: 190px;
+    background-color: #f3fbfd;
+}
+
+.detail-content-left {
+    color: #343434;
+    font-size: 15px;
+    font-family: SourceHanSansCN-Normal, serif;
+    padding: 40px 10px;
+    _padding: 20px 10px;
+    height: 120px;
+    _height: 140px;
+    overflow: auto;
+}
+
+.detail-content-right {
+    color: #343434;
+    font-size: 15px;
+    font-family: SourceHanSansCN-Normal, serif;
+    padding: 40px 10px;
+    _padding: 20px 10px;
+    height: 60px;
+    _height: 70px;
+    overflow: auto;
+}
+
+.down-detail-info {
+    width: 442px;
+    height: 130px;
+    _height: 150px;
+    background-color: #f3fbfd;
+}
+
+.down-detail-content {
+    color: #343434;
+    font-size: 15px;
+    font-family: SourceHanSansCN-Normal, serif;
+    padding: 40px 10px;
+    _padding: 20px 10px;
+    /*height: 20px;*/
+    _height: 30px;
+    overflow: auto;
+}
+
+.info-area {
+    width: 890px;
+    margin: 0 auto;
+}
+
+.head-info-sm {
+    background-color: #06bfc7;
+    font-size: 16px;
+    font-family: SourceHanSansCN-Bold, serif;
+    color: #ffffff;
+    margin: 0 auto;
+}
+
+.head-info-sm p {
+    height: 30px;
+    line-height: 30px;
+    margin: 0 20px;
+}
+
+.head-info-lg {
+    font-size: 24px;
+    font-family: SourceHanSansCN-Normal, serif;
+    color: #343434;
+}
+
+.head-info-lg p {
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.head-top {
+    height: 43px;
+    background: url(http://localhost:80/DCStation/image/titleTJJK.png) center;
+}
+
+#error_detail th {
+    font-size: 24px;
+    font-family: SourceHanSansCN-Bold, serif;
+    color: #343434;
+    _margin-top: 30px;
+}
+
+#error_detail td {
+    font-size: 15px;
+    font-family: SourceHanSansCN-Normal, serif;
+    color: #005a5c;
+}
+
+.container {
+    width: 450px;
+    border: 1px solid #6C9C2C;
+    height: 25px;
+}
+
+#bar {
+    background: #06bfc7;
+    float: left;
+    height: 100%;
+    text-align: center;
+    line-height: 150%;
+}
+
+#bg {
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 1001;
+    -moz-opacity: 0.7;
+    opacity: .70;
+    filter: alpha(opacity=70);
+}
+
+#show {
+    display: none;
+    position: absolute;
+    top: 25%;
+    left: 22%;
+    width: 53%;
+    height: 49%;
+    padding: 8px;
+    border: 8px solid #E8E9F7;
+    background-color: white;
+    z-index: 1002;
+    overflow: auto;
+}
+

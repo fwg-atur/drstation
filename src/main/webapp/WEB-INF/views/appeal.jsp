@@ -11,7 +11,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="${pageContext.servletContext.contextPath}/css/checkResultPage.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.servletContext.contextPath}/css/checkResultPage${config.browserFlag}.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
     <title>
         医生反馈

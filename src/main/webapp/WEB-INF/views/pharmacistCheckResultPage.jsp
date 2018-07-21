@@ -248,7 +248,7 @@
 
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
-    <link href="${pageContext.servletContext.contextPath}/css/pharmacistCheckResultPage.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.servletContext.contextPath}/css/pharmacistCheckResultPage${config.browserFlag}.css" rel="stylesheet" type="text/css"/>
 
     <style type="text/css">
     </style>
@@ -309,7 +309,7 @@
                             <th>特殊<br>人群</th>
                             <th>药敏</th>
                             <th>医院<br>管理</th>
-                            <th>处方<br>ID</th>
+                            <th style="width: 82px">处方<br>ID</th>
                         </tr>
                         </thead>
                     </table>
@@ -331,7 +331,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td style="width: 60px">${item.order_id}</td>
+                                <td style="width: 80px">${item.order_id}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
