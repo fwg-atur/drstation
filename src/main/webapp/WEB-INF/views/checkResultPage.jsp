@@ -815,7 +815,7 @@
         showCheckResult(fn);
     }
 
-    var count = 1;
+    var highestLevel = -2;
     for (var i = 0; i < advises.length; i++) {
         var advise = advises[i];
         var checkInfoList = advise.checkInfoList;
@@ -826,37 +826,25 @@
                 if (checkInfo.NAME == problemType[k]) {
                     var problemLevel = parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1;
                     var $chooseTd = $(".main-table tbody").children().eq(i).children().eq(k + 1);
-                    var tag = 0;
                     //如果问题等级是-1（拦截）或者问题等级大于当前等级，则更改图标
                     if (problemLevel == 0 || curProblemLevel < problemLevel) {
                         var className = problemLevelClassName[problemLevel];
                         $chooseTd.attr('class', className);
                         curProblemLevel = problemLevel == 0 ? 10 : problemLevel;
-                        if(className == 'disaster-problem' || className == 'serious-problem') {
-                            tag = 1;
-                        }
                     }
 
                     var antiCheckInFlag = needAntiCheckIn(checkInfo, advise);
                     if (antiCheckInFlag) {
                         setAntiCheckInInfo($chooseTd);
                     }
-                    if(tag == 1) {
-                        $chooseTd.click(
-                                {row: i, col: k, antiCheckInFlag: antiCheckInFlag, obj: $chooseTd},
-                                function (event) {
-                                    showSeriousProblemDetail(event.data)
-                                });
-                    }else{
-                        $chooseTd.click(
-                                {row: i, col: k, antiCheckInFlag: antiCheckInFlag, obj: $chooseTd},
-                                function (event) {
-                                    showProblemDetail(event.data)
-                                });
-                    }
+                    $chooseTd.click(
+                            {row: i, col: k, antiCheckInFlag: antiCheckInFlag, obj: $chooseTd},
+                            function (event) {
+                                showProblemDetail(event.data)
+                            });
 
-                    if(count > 0){
-                        count = 0;
+                    if(curProblemLevel > highestLevel){
+                        highestLevel = curProblemLevel;
                         $chooseTd.click();
                     }
                 }
@@ -882,6 +870,7 @@
         var advise = advises[row];
         var checkInfoList = advise.checkInfoList;
         for (var j = 0; j < checkInfoList.length; j++) {
+            var tag = 0;
             var checkInfo = checkInfoList[j];
             if (checkInfo.NAME != error_name) {
                 continue;
@@ -889,46 +878,27 @@
             var temp = error_detail;
             tempHtml += temp.replace('@(drug_name)', drug_name).replace('@(warning_info)', checkInfo.WARNING_INFO)
                 .replace('@(ref_source)', checkInfo.REF_SOURCE);
-        }
-        $("#error_detail").html(tempHtml);
 
-        if (antiCheckInFlag && !antiCheckedInValue[advise.DRUG_LO_ID]) {
-            showAntiCheckInInfo(advise);
-        }
-        showAppealBtn(drug_name, error_name, '${presId}');
-    }
-
-    function showSeriousProblemDetail(data) {
-        String.prototype.trim = function () {
-            return this.replace(/(^\s*)|(\s*$)/g, "");
-        }
-        var row = data.row;
-        var col = data.col;
-        var antiCheckInFlag = data.antiCheckInFlag;
-        $chooseTd = data.obj;
-        var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '').trim();
-        var error_name = problemType[col];
-        $("#error_detail").html('');
-        var tempHtml = "<thead><tr><th>" + error_name + "</th></tr></thead>";
-        var advise = advises[row];
-        var checkInfoList = advise.checkInfoList;
-        for (var j = 0; j < checkInfoList.length; j++) {
-            var checkInfo = checkInfoList[j];
-            if (checkInfo.NAME != error_name) {
-                continue;
+            var problemLevel = parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1;
+            var className = problemLevelClassName[problemLevel];
+            if(className == 'disaster-problem' || className == 'serious-problem') {
+                tag = 1;
             }
-            var temp = error_detail;
-            tempHtml += temp.replace('@(drug_name)', drug_name).replace('@(warning_info)', checkInfo.WARNING_INFO)
-                    .replace('@(ref_source)', checkInfo.REF_SOURCE);
+            if(tag == 1){
+                tempHtml = tempHtml.replace('warning_info','serious');
+            }else{
+                tempHtml = tempHtml.replace('warning_info','common')
+            }
         }
         $("#error_detail").html(tempHtml);
-        $("#warning_info").css("color","red");
+        $("#serious").css("color","red");
 
         if (antiCheckInFlag && !antiCheckedInValue[advise.DRUG_LO_ID]) {
             showAntiCheckInInfo(advise);
         }
         showAppealBtn(drug_name, error_name, '${presId}');
     }
+
 
     function checkCanBeNext() {
         if (highestWarningLevel == -1 || antiCheckNumber > 0) {

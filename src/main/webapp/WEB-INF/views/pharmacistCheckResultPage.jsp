@@ -272,7 +272,7 @@
                                 <td>[问题药品]&nbsp;@(drug_name)</td>
                             </tr>
                             <tr>
-                                <td>[警示信息]&nbsp;@(warning_info)</td>
+                                <td id="warning_info">[警示信息]&nbsp;@(warning_info)</td>
                             </tr>
                             <tr>
                                 <td>[参考信息]&nbsp;@(ref_source)</td>
@@ -387,11 +387,13 @@
     var error_detail = $('#error_detail').html();
     $('#error_detail').html('');
 
+    var highestLevel = -2;
     for (var i = 0; i < prescInfos.length; i++) {
         var prescInfo = prescInfos[i];
         var checkInfoList = prescInfo.checkInfos;
         if (null != checkInfoList) {
             for (var j = 0; j < checkInfoList.length; j++) {
+                var tag = 0;
                 var checkInfo = checkInfoList[j];
                 var curProblemLevel = -1;
                 for (var k = 0; k < problemType.length; k++) {
@@ -407,6 +409,10 @@
                         $chooseTd.click({row: i, col: k}, function (event) {
                             showProblemDetail(event.data)
                         });
+                        if(curProblemLevel > highestLevel){
+                            highestLevel = curProblemLevel;
+                            $chooseTd.click();
+                        }
                     }
                 }
             }
@@ -439,10 +445,23 @@
                 var temp = error_detail;
                 tempHtml += temp.replace('@(drug_name)', drug_name).replace('@(warning_info)', checkInfo.WARNING_INFO)
                         .replace('@(ref_source)', checkInfo.REF_SOURCE);
+
+                var problemLevel = parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1;
+                var className = problemLevelClassName[problemLevel];
+                if(className == 'disaster-problem' || className == 'serious-problem') {
+                    tag = 1;
+                }
+                if(tag == 1){
+                    tempHtml = tempHtml.replace('warning_info','serious');
+                }else{
+                    tempHtml = tempHtml.replace('warning_info','common')
+                }
             }
         }
         $("#error_detail").html(tempHtml);
+        $("#serious").css("color","red");
     }
+
 
     function sumUpProblems() {
         var error_detail = $("#error_detail").html();
