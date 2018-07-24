@@ -58,7 +58,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheckForTest", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
 
@@ -244,5 +244,23 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     else if (check.hasProblem == 1) {
         return -1;
     }
+}
+
+function sendPharmacistInterfere(xml){
+    var data = "xml=" + encodeURIComponent(xml);
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistInterfere", false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send(data);
+
+    var checkData = xmlhttp.responseText;
+    return checkData;
 }
 

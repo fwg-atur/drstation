@@ -530,5 +530,5 @@
     }
 </script>
 </body>
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_chrome.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_Chrome.js"></script>
 </html>

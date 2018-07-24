@@ -311,4 +311,10 @@ function test_pharmacistBack(val) {
     alert("pharmacistBack:" + val);
 }
 
+function sendPharmacistInterfere(xml) {
+    var data = "xml=" + encodeURIComponent(xml);
+    var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistInterfere";
+    var checkData = sendAjaxRequest(data, url);
+}
+
 
