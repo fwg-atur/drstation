@@ -90,7 +90,7 @@ public class PharmacistPrescCheckService {
         //将与传入的xml中医嘱匹配的审核结果重新赋值给对象
         check.getCheckPresOutput().setPrescInfos(list);
 
-        String presId = check.getCheckPresInput().getPatient().getPATIENT_PRES_ID();
+        String presId = checkPresInput.getPatient().getPATIENT_PRES_ID();
 
         //缓存审核结果,等到进入审核结果页面时再读取记录显示
         PharmacistCheckResultCache.putPharmacistCheckResult(presId, check);
@@ -111,11 +111,15 @@ public class PharmacistPrescCheckService {
         List<PrescInfo> prescInfos = new ArrayList<PrescInfo>();
 
         //遍历传入xml的医嘱列表
-        for(Advice advice : adviceList){
-            //遍历审核结果xml的审核结果医嘱列表
-            for(PrescInfo prescInfo : prescInfoList){
-                if(advice.getDRUG_LO_ID().equals(prescInfo.getDrug_lo_id())){
-                    prescInfos.add(prescInfo);
+        if(adviceList != null) {
+            for (Advice advice : adviceList) {
+                //遍历审核结果xml的审核结果医嘱列表
+                if(prescInfoList != null) {
+                    for (PrescInfo prescInfo : prescInfoList) {
+                        if (advice.getDRUG_LO_ID().equals(prescInfo.getDrug_lo_id())) {
+                            prescInfos.add(prescInfo);
+                        }
+                    }
                 }
             }
         }

@@ -16,6 +16,9 @@ public class ParseXML {
     CheckPharmacist checkPharmacist = new CheckPharmacist();
 
     public void parseXML(String xml){
+        if(xml == null || xml.length() == 0){
+            return;
+        }
         Document document = null;
         if(xml.length() > 38) {
             xml = xml.substring(38);
