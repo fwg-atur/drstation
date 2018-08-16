@@ -50,7 +50,7 @@
         var doctor = checkResultJson.doctor;
 
         /*查询干预状态时，轮询停止标识。如果查询结果为零，则停止轮询*/
-        var stop_flag = false
+        var stop_flag = false;
         //进度条计时器
         var timeout = null;
         //查询药师状态计时器
@@ -157,7 +157,12 @@
                 checkResultElem.innerHTML = drug_specification.replace('@(url)', url);
                 document.getElementById("checkResultButton").click();
             }
-            showCheckResult(fn);
+            showDrugSpecResult(fn);
+        }
+
+        function showDrugSpecResult(fn) {
+            var checkResultElem = document.getElementById("checkResult");
+            fn(checkResultElem);
         }
 
         function showCheckResult(fn) {
@@ -333,7 +338,9 @@
 
         var sendMessage = function () {
             var message = $("#message-area").val();
-            sendRealMessage(message);
+            if(message != null && message != '') {
+                sendRealMessage(message);
+            }
             $("#message-area").val('');
         }
 

@@ -45,6 +45,10 @@
         var checkResultTemp = getTemplateByName("check_result_template");
         /********定义iframe模板********/
 
+        /********定义药品说明书模板********/
+        var drug_specification = getTemplateByName("drug_specification_template");
+        /********定义药品说明书模板********/
+
         /********定义doctorInfo模板********/
         var doctorInfoTemp = getTemplateByName("doctor_info_template");
         /********定义doctorInfo模板********/
@@ -68,9 +72,21 @@
         }
 
         function drawCheckResultElem(url) {
+            var fn = function (checkResultElem) {
+                checkResultElem.innerHTML = drug_specification.replace('@(url)', url);
+                document.getElementById("checkResultButton").click();
+            }
+            showDrugSpecResult(fn);
+        }
+
+        function showDrugSpecResult(fn) {
             var checkResultElem = document.getElementById("checkResult");
-            checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
-            document.getElementById("checkResultButton").click();
+            fn(checkResultElem);
+        }
+
+        function showCheckResult(fn) {
+            var checkResultElem = document.getElementById("checkResult");
+            fn(checkResultElem);
             showdiv();
         }
 
@@ -219,12 +235,7 @@
         /*
          * val:0下一步,-1返回修改
          * */
-        function nextOrBack(val, needSendMessage) {
-            if (needSendMessage != undefined && needSendMessage == true) {
-                sendQuitMessage(val);
-            }
-            changeDirectCloseFlag();
-
+        function nextOrBack(val) {
             var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/setRetValue";
             var arg = 'presId=' + presId + '&retVal=' + val;
             var xmlhttp;

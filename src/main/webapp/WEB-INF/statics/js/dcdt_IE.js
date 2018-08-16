@@ -65,6 +65,27 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
 
+    // var url = "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck";
+    // var checkData;
+    // var check;
+    //
+    // $.ajax({
+    //     type: 'POST',
+    //     url: "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck",
+    //     async: true,
+    //     data: data,
+    //     contentType: 'text/plain',
+    //     dataType: 'jsonp',
+    //     jsonp: 'callback',
+    //     jsonpCallback: 'successCallback',
+    //     success: function (rtData) {
+    //         alert("a");
+    //         checkData = rtData.responseText;
+    //         check = eval("(" + checkData + ")");
+    //     }
+    // });
+
+
     /**
      * 沈阳医大一院科室过滤代码
     var start = xml.indexOf("DEPT_CODE=\"");
@@ -168,7 +189,7 @@ function pharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosF
     if (inHosFlag == 0) {
         return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
+        return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
     } else {
         alert("error:未识别的住院标识！");
     }
@@ -176,7 +197,7 @@ function pharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosF
 
 function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkServerIp, checkServerPort){
     var iWidth = '1000px';
-    var iHeight = '650px';
+    var iHeight = '700px';
     var xmlhttp;
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     if (window.XMLHttpRequest) {

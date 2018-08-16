@@ -13,7 +13,8 @@
     _height: 120px;
     margin-left: 55px;
     _margin-left: 47px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 table.main-table {
