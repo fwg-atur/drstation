@@ -120,12 +120,63 @@
             for(var i = 0;i < orders.length;i++){
                 order = orders[i];
                 temp += ordersTableBodyElem.innerHTML;
-                for(var j in order){
-                    temp = temp.replace('@('+j+')',order[j]);
+                var tb = document.getElementById('ordersTableBody');
+                var rows = tb.rows;
+                for(var j=0;j<rows.length;j++){
+                    for(var k=0;k<rows[j].cells.length;k++){
+                        temp = temp.replace(rows[j].cells[k].innerHTML,order[rows[j].cells[k].innerHTML]);
+                    }
                 }
             }
-            ordersTableBodyElem.innerHTML = temp;
+            var explorer = window.navigator.userAgent.toLowerCase();
+            var type = "unknow";
+            var version = "unknow";
+            if (explorer.indexOf("msie") >= 0) {
+                type = "IE";
+                version = explorer.match(/msie ([\d.]+)/)[1];
+            }else if (explorer.indexOf("chrome") >= 0) {
+                type = "Chrome";
+                version = explorer.match(/chrome\/([\d.]+)/)[1];
+            }
+
+            if(type == 'IE' && version == '8.0') {
+                setTBodyInnerHTML(ordersTableBodyElem, temp);
+            }else {
+                ordersTableBodyElem.innerHTML = temp;
+            }
             showdiv();
+        }
+
+        function setTBodyInnerHTML(tbody, html) {
+            var div = document.createElement('div')
+            div.innerHTML = '<table>' + html + '</table>'
+            tbody.parentNode.replaceChild(div.firstChild.firstChild, tbody)
+        }
+
+        function getExplorerInfo() {
+            var explorer = window.navigator.userAgent.toLowerCase();
+            //ie
+            if (explorer.indexOf("msie") >= 0) {
+                var ver = explorer.match(/msie ([\d.]+)/)[1];
+                return { type: "IE", version: ver };
+            }
+            //firefox
+            else if (explorer.indexOf("firefox") >= 0) {
+                var ver = explorer.match(/firefox\/([\d.]+)/)[1];
+                return { type: "Firefox", version: ver };
+            }
+            //Chrome
+
+            //Opera
+            else if (explorer.indexOf("opera") >= 0) {
+                var ver = explorer.match(/opera.([\d.]+)/)[1];
+                return { type: "Opera", version: ver };
+            }
+            //Safari
+            else if (explorer.indexOf("Safari") >= 0) {
+                var ver = explorer.match(/version\/([\d.]+)/)[1];
+                return { type: "Safari", version: ver };
+            }
         }
 
         function drawInterfereInfoElem() {

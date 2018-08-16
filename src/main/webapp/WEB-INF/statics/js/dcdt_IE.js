@@ -260,9 +260,11 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
     if (tag == 2 || check.hasProblem == 0) {
+        alert("返回值为：0");
         return 0;
     }
     else if (check.hasProblem == 1) {
+        alert("返回值为：1");
         return -1;
     }
 }
