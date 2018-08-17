@@ -138,8 +138,9 @@
                 type = "Chrome";
                 version = explorer.match(/chrome\/([\d.]+)/)[1];
             }
+            //alert("浏览器名称:"+type+"\n版本:"+version);
 
-            if(type == 'IE' && version == '8.0') {
+            if(type == 'IE' && (version == '8.0' || version == '7.0')) {
                 setTBodyInnerHTML(ordersTableBodyElem, temp);
             }else {
                 ordersTableBodyElem.innerHTML = temp;
