@@ -147,7 +147,9 @@ public class PharmacistPrescCheckService {
                 //遍历审核结果xml的审核结果医嘱列表
                 if(prescInfoList != null) {
                     for (PrescInfo prescInfo : prescInfoList) {
-                        if (advice.getDRUG_LO_ID().equals(prescInfo.getDrug_lo_id())) {
+                        if (advice.getDRUG_LO_ID().equals(prescInfo.getDrug_lo_id())
+                                && advice.getORDER_NO().equals(prescInfo.getOrder_id())
+                                && advice.getORDER_SUB_NO().equals(prescInfo.getOrder_sub_id())) {
                             prescInfos.add(prescInfo);
                         }
                     }

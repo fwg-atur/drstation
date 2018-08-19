@@ -148,9 +148,9 @@
         }
 
         function setTBodyInnerHTML(tbody, html) {
-            var div = document.createElement('div')
-            div.innerHTML = '<table>' + html + '</table>'
-            tbody.parentNode.replaceChild(div.firstChild.firstChild, tbody)
+            var div = document.createElement('div');
+            div.innerHTML = '<table>' + html + '</table>';
+            tbody.parentNode.replaceChild(div.firstChild.firstChild, tbody);
         }
 
         function getExplorerInfo() {
@@ -424,7 +424,7 @@
                 <input id="orderInfo" type="button" value="处方信息" onclick="drawOrdersInfoElem()"/>
 
 
-                <input id="help" type="button" value="帮助"/>
+                <%--<input id="help" type="button" value="帮助"/>--%>
                 <input id="interfere" type="button" value="实施干预" onclick="drawInterfereInfoElem()"/>
                 <input id="back" type="button" onclick="nextOrBack(-1)" value="返回"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -516,7 +516,7 @@
                 if(tag == 1){
                     tempHtml = tempHtml.replace('warning_info','serious');
                 }else{
-                    tempHtml = tempHtml.replace('warning_info','common')
+                    tempHtml = tempHtml.replace('warning_info','common');
                 }
             }
         }

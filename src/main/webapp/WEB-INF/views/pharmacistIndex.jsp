@@ -31,11 +31,11 @@
                 <form id="queryForm" method="get">
                     <label>患者id</label>
                     <br>
-                    <input type="text" id="patientID" name="patientID" value="1">
+                    <input type="text" id="patientID" name="patientID" value="0000282461">
                     <br>
                     <label>日期</label>
                     <br>
-                    <input type="text" id="visitDate" name="visitDate" value="20180326">
+                    <input type="text" id="visitDate" name="visitDate" value="20180818">
                     <br>
                     <label>药师信息</label>
                     <br>
@@ -48,20 +48,20 @@
                     <br>
                     <textarea id="dcdt" name="dcdt" style="min-height: 300px;width: 100%">
                             &lt;CheckInput TAG="2"&gt;
-                                &lt;Doctor POSITION="副主任医师" NAME="门急诊医生" DEPT_CODE="030401" DEPT_NAME="骨科" USER_ID="123" /&gt;
-                                &lt;Patient NAME="门急诊病人1" ID="1" GENDER="男" BIRTH="19840908" WEIGHT="20" HEIGHT="100" ALERGY_DRUGS="选择性5-HT3受体抑制药类" PREGNANT="是" LACT="是" HEPATICAL="是" RENAL="否" PANCREAS="否" VISIT_ID="1233" PATIENT_PRES_ID="1" IDENTITY_TYPE="军人" FEE_TYPE="医保" WARD_CODE="11" WARD_NAME="病区22" BED_NO="1" /&gt;
-                                &lt;Diagnosises DIAGNOSISES="_感染" />
-                                &lt;Advices>
-                                    &lt;Advice DRUG_LO_ID="0101003CP0" DRUG_LO_NAME="阿莫西林胶囊" ADMINISTRATION="静滴" DOSAGE="5" DOSAGE_UNIT="粒" FREQ_COUNT="1" FREQ_INTERVAL="1" FREQ_INTERVAL_UNIT="日" START_DAY="20150114" END_DAY="20150114" REPEAT="0" ORDER_NO="1" ORDER_SUB_NO="2" DEPT_CODE="2426" DOCTOR_NAME="闫洪生" TITLE="副主任医师" AUTHORITY_LEVELS="" ALERT_LEVELS="1,2" GROUP_ID="" USER_ID="123" PRES_ID="1" PRES_DATE="20150114" PRES_SEQ_ID="3138829120150114" PK_ORDER_NO="" COURSE="" PKG_COUNT="101" PKG_UNIT="粒" BAK_01="" BAK_02="" BAK_03="胶囊" BAK_04="0.25g" BAK_05="昆明贝克诺" SELF_DRUG="自" DOCTOR_COMMENT="多吃" /&gt;
-
-                                    &lt;Advice DRUG_LO_ID="3012302CP0" DRUG_LO_NAME="安替可胶囊" ADMINISTRATION="" DOSAGE="100" DOSAGE_UNIT="" FREQ_COUNT="5" FREQ_INTERVAL="1" FREQ_INTERVAL_UNIT="日" START_DAY="20150114" END_DAY="20150114" REPEAT="0" ORDER_NO="6" ORDER_SUB_NO="1" DEPT_CODE="骨科" DOCTOR_NAME="朱宏勋" TITLE="主任医师" AUTHORITY_LEVELS="" ALERT_LEVELS="1,2" GROUP_ID="" USER_ID="009284" PRES_ID="1" PRES_DATE="20150114" PRES_SEQ_ID="3138829120150114" PK_ORDER_NO="" COURSE="" PKG_COUNT="2" PKG_UNIT="" BAK_01="" BAK_02="" BAK_03="" BAK_04="0.22g" BAK_05="" SELF_DRUG="自" DOCTOR_COMMENT="多吃" /&gt;
+                                &lt;Doctor POSITION="主治医师" NAME="陈四八" DEPT_CODE="JZKMZ" DEPT_NAME="急诊科门诊" USER_ID="2133"/&gt;
+                                &lt;Patient NAME="许辰铭" ID="0000282461" GENDER="男" BIRTH="20120825" WEIGHT="" HEIGHT="" ALERGY_DRUGS="" PREGNANT="" LACT="" HEPATICAL="" RENAL="" PANCREAS="" VISIT_ID="" PATIENT_PRES_ID="607650" IDENTITY_TYPE="" FEE_TYPE="农合" SCR="" SCR_UNIT="" GESTATION_AGE="" PRETERM_BIRTH="" DRUG_HISTORY="" FAMILY_DISEASE_HISTORY="" GENETIC_DISEASE="" MEDICARE_01="" MEDICARE_02="" MEDICARE_03="" MEDICARE_04="" MEDICARE_05="" WARD_CODE="" WARD_NAME="" BED_NO="" INPATIENT_NO=""/&gt;
+                                &lt;Diagnosises DIAGNOSISES="急性胃肠炎"/&gt;
+                                &lt;Advices&gt;
+                                    &lt;Advice REPEAT="" DRUG_LO_NAME="大黄碳酸氢钠片[1片×100片/瓶]" DRUG_LO_ID="0689" ADMINISTRATION="口服" DOSAGE="1" DOSAGE_UNIT="片" FREQ_COUNT="tid" FREQ_INTERVAL="" FREQ_INTERVAL_UNIT="" START_DAY="20180817" END_DAY="" DEPT_CODE="JZKMZ" DOCTOR_NAME="陈四八" ORDER_NO="E180817000012" ORDER_SUB_NO="1" AUTHORITY_LEVELS="" ALERT_LEVELS="" TITLE="主治医师" GROUP_ID="E180817000012" USER_ID="2133" PRES_ID="E18081700001" PRES_DATE="20180817" PRES_SEQ_ID="E18081700001" PK_ORDER_NO="" COURSE="1" PKG_COUNT="3" PKG_UNIT="片" BAK_01="" BAK_02="否" BAK_03="片剂" BAK_04="1片×100片/瓶" BAK_05="福州海王福药" PERFORM_SCHEDULE=""/&gt;
+                                    &lt;Advice REPEAT="" DRUG_LO_NAME="艾司奥美拉唑钠注射液(进口)[40mg/支]" DRUG_LO_ID="257A" ADMINISTRATION="ivgtt" DOSAGE="40" DOSAGE_UNIT="mg" FREQ_COUNT="qd" FREQ_INTERVAL="" FREQ_INTERVAL_UNIT="" START_DAY="20180817" END_DAY="" DEPT_CODE="JZKMZ" DOCTOR_NAME="陈四八" ORDER_NO="E180817000023" ORDER_SUB_NO="1" AUTHORITY_LEVELS="" ALERT_LEVELS="" TITLE="主治医师" GROUP_ID="E180817000023" USER_ID="2133" PRES_ID="E18081700002" PRES_DATE="20180817" PRES_SEQ_ID="E18081700002" PK_ORDER_NO="" COURSE="1" PKG_COUNT="1" PKG_UNIT="支(1支)" BAK_01="" BAK_02="否" BAK_03="针剂" BAK_04="40mg/支" BAK_05="阿斯利康制药制药有限公司" PERFORM_SCHEDULE=""/&gt;
+                                    &lt;Advice REPEAT="" DRUG_LO_NAME="维生素A.D滴剂（胶囊型）[1500单位×50粒/盒]" DRUG_LO_ID="2C0C" ADMINISTRATION="口服" DOSAGE="1500" DOSAGE_UNIT="单位" FREQ_COUNT="bid" FREQ_INTERVAL="" FREQ_INTERVAL_UNIT="" START_DAY="20180817" END_DAY="" DEPT_CODE="JZKMZ" DOCTOR_NAME="陈四八" ORDER_NO="E180817000034" ORDER_SUB_NO="1" AUTHORITY_LEVELS="" ALERT_LEVELS="" TITLE="主治医师" GROUP_ID="E180817000034" USER_ID="2133" PRES_ID="E18081700003" PRES_DATE="20180817" PRES_SEQ_ID="E18081700003" PK_ORDER_NO="" COURSE="1" PKG_COUNT="2" PKG_UNIT="粒" BAK_01="" BAK_02="否" BAK_03="胶囊剂" BAK_04="1500单位×50粒/盒" BAK_05="青岛双鲸药业有限公司" PERFORM_SCHEDULE=""/&gt;
                                 &lt;/Advices&gt;
                             &lt;/CheckInput&gt;
                     </textarea>
                 </form>
                 <p>
-                    <button onclick="testPharmacistCheck(1);" class="btn btn-primary btn-large">检查 »</button>
-                    <button onclick="testPharmacistCheckSilent(1);" class="btn btn-primary btn-large">静默检查 »</button>
+                    <button onclick="testPharmacistCheck(1)" class="btn btn-primary btn-large">检查 »</button>
+                    <button onclick="testPharmacistCheckSilent(1)" class="btn btn-primary btn-large">静默检查 »</button>
                     <%--<button onclick="testCheck(2);" class="btn btn-primary btn-large">提交处方 »</button>--%>
                 </p>
             </div>
@@ -93,6 +93,7 @@
 
 <%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js"></script>--%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
 <%--<script type="text/javascript"--%>
 <%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>
 
