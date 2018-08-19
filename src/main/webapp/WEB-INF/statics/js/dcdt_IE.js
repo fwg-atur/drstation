@@ -262,8 +262,15 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     if (tag == 2 || check.hasProblem == 0) {
         alert("返回值为：0");
         return 0;
+    }else if(check.hasProblem == 1) {
+        alert("返回值为：1");
+        return 1;
     }
-    else if (check.hasProblem == 1) {
+    else if(check.hasProblem == 2) {
+        alert("返回值为：2");
+        return 2;
+    }
+    else if (check.hasProblem == -1) {
         alert("返回值为：-1");
         return -1;
     }
@@ -284,6 +291,10 @@ function sendPharmacistInterfere(xml){
     xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
+    if(checkData != null || checkData != ""){
+        alert("干预成功！");
+        hidediv();
+    }
     return checkData;
 }
 

@@ -257,8 +257,13 @@ function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInf
     var check = eval("(" + checkData + ")");
     if (tag == 2 || check.hasProblem == 0) {
         return 0;
+    }else if(check.hasProblem == 1) {
+        return 1;
     }
-    else if (check.hasProblem == 1) {
+    else if(check.hasProblem == 2) {
+        return 2;
+    }
+    else if (check.hasProblem == -1) {
         return -1;
     }
 }
@@ -315,6 +320,10 @@ function sendPharmacistInterfere(xml) {
     var data = "xml=" + encodeURIComponent(xml);
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistInterfere";
     var checkData = sendAjaxRequest(data, url);
+    if(checkData != null || checkData != ""){
+        alert("干预成功！");
+        hidediv();
+    }
 }
 
 

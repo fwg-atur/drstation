@@ -39,10 +39,6 @@ public class PharmacistSubmitPresController{
         Check check = service.findPharmacistCheckResult(presId);
         model.addAttribute("pharmacistCheckResult", check);
         model.addAttribute("pharmacistCheckResultJson", service.toJson(check));
-//        model.addAttribute("pharmacistCheckResultJson", service.toJson(check));
-//        model.addAttribute("checkPresInput",check.getCheckPresInput());
-//        model.addAttribute("checkPresOutput",check.getCheckPresOutput());
-//        model.addAttribute("presInfos",check.getCheckPresOutput().getPrescInfos());
         model.addAttribute("presId", presId);
         model.addAttribute("checkPharmacist",check.getCheckPharmacist());
         model.addAttribute("config", config);

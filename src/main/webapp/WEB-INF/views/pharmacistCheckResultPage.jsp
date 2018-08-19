@@ -21,7 +21,6 @@
         var checkServerPort = '${config.drStationServerPort}';
         //药品说明书链接
         var disUrl = '${config.drugDescriptionURL}';
-        var presId = '${presId}';
         //药师信息
         var pharmacistInfo = ${pharmacistInfo};
         var pharmacistCheckResultJson = ${pharmacistCheckResultJson};
@@ -31,8 +30,8 @@
         var patientInfo = pharmacistCheckResultJson.checkPresInput.patient;
         //处方信息
         var orders = pharmacistCheckResultJson.checkPresInput.advices;
-
-        var date = '${date}'
+        var pharmacistPresId = '${presId}';
+        var date = '${date}';
 
         var problemNameList = new Array();
         var case_type_pharmacist;
@@ -202,9 +201,9 @@
             interfereInputXML = "<Request FUN='1'>" +
                     "<Input DOCTOR_ID='"+doctorInfo.USER_ID+"'" +
                     " DOCTOR_NAME='"+doctorInfo.NAME+"' PHARMACIST_ID='"+ pharmacistInfo.pharmacist_id +"' PHARMACIST_NAME='"+ pharmacistInfo.pharmacist_name +"'" +
-                    " PHARMACIST_PHONE='"+ pharmacistInfo.telephone +"'PATIENT_ID='"+patientInfo.ID+"'PATIENT_NAME='"+patientInfo.NAME+"'" +
-                    " PRES_ID='"+presId+"' APPLY_DATE='"+date+"' CASE_TYPE_PHARMACIST='"+case_type_pharmacist+"'" +
-                    " CASE_DESCRIPTION='"+case_description+"' CASE_TYPE_ENGIN='"+case_type_engin+"'/>" +
+                    " PHARMACIST_PHONE='"+ pharmacistInfo.telephone +"' PATIENT_ID='"+patientInfo.ID+"' PATIENT_NAME='"+patientInfo.NAME+"'" +
+                    " PRES_ID='"+pharmacistPresId+"' APPLY_DATE='"+date+"' CASE_TYPE_PHARMACIST='"+case_type_pharmacist+"'" +
+                    " CASE_DESCRIPTION='"+case_description+"' CASE_TYPE_ENGIN='"+case_type_engin+"' INTERVENTION_RESULT='0'/>" +
                     "</Request>";
             showdiv();
         }
@@ -289,7 +288,7 @@
          * */
         function nextOrBack(val) {
             var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/setRetValue";
-            var arg = 'presId=' + presId + '&retVal=' + val;
+            var arg = 'presId=' + pharmacistPresId + '&retVal=' + val;
             var xmlhttp;
             if (window.XMLHttpRequest) {
                 //  IE7+, Firefox, Chrome, Opera, Safari
@@ -394,7 +393,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td style="width: 80px">${item.order_id}</td>
+                                <td style="width: 80px;word-wrap: break-word;word-break: break-all">${item.order_id}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -549,7 +548,11 @@
         case_type_engin = "";
         case_type_pharmacist = "";
         for(var j=0;j<problemNameList.length;j++) {
-            case_type_engin += problemNameList[j] + ";";
+            if(j == 0) {
+                case_type_engin += problemNameList[j];
+            }else{
+                case_type_engin += problemNameList[j] + ";";
+            }
             for (var i = 0; i < trs.rows.length; i++) {
                 if (trs.rows[i].cells[1].innerText.indexOf(problemNameList[j]) >= 0){
                     case_type_pharmacist += trs.rows[i].cells[1].innerText;
@@ -593,5 +596,5 @@
     }
 </script>
 </body>
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_Chrome.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js"></script>
 </html>

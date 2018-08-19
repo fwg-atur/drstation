@@ -15,6 +15,7 @@ public class ParseXML {
     CheckPresOutput checkPresOutput = new CheckPresOutput();
     CheckPharmacist checkPharmacist = new CheckPharmacist();
 
+    //解析审核结果xml
     public void parseXML(String xml){
         if(xml == null || xml.length() == 0){
             return;
@@ -177,6 +178,8 @@ public class ParseXML {
         }
     }
 
+
+    //解析药师站传入的xml
     public CheckPresInput parseInputXml(String xml){
         CheckPresInput checkPresInput = new CheckPresInput();
         Document document = null;
@@ -281,6 +284,7 @@ public class ParseXML {
         return checkPresInput;
     }
 
+    //解析药师信息xml
     public PharmacistInfo parsePharmacistInfo(String xml){
         Document document = null;
         try {
@@ -296,6 +300,25 @@ public class ParseXML {
         pharmacistInfo.setPharmacist_name(pharmacistElement.getAttributeValue("PHARMACIST_NAME"));
         pharmacistInfo.setTelephone(pharmacistElement.getAttributeValue("TELEPHONE"));
         return pharmacistInfo;
+    }
+
+    //药师站获取最高警示级别
+    public int getPharHighestWarningLevel(List<PrescInfo> prescInfos){
+        int level = 0;
+        for(PrescInfo prescInfo : prescInfos){
+            if(prescInfo.getCheckInfos() != null && prescInfo.getCheckInfos().size() != 0){
+                for(CheckInfo checkInfo : prescInfo.getCheckInfos()){
+                    if("禁忌".equals(checkInfo.getWARNING_LEVEL()) && level == 0){
+                        level = 2;
+                    }else if("慎用".equals(checkInfo.getWARNING_LEVEL()) && (level == 0 || level == 2)){
+                        level = 1;
+                    }else if("拦截".equals(checkInfo.getWARNING_LEVEL())){
+                        level = -1;
+                    }
+                }
+            }
+        }
+        return level;
     }
 
     public CheckPresInput getCheckPresInput() {
