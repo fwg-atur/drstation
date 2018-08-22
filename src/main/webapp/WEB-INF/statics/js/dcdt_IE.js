@@ -158,7 +158,7 @@ function testPharmacistCheck(tag) {
     var visitDate = document.getElementById("visitDate").value;
     var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    pharmacistCheck(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
+    PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
 }
 
 function testPharmacistCheckSilent(tag) {
@@ -166,10 +166,10 @@ function testPharmacistCheckSilent(tag) {
     var visitDate = document.getElementById("visitDate").value;
     var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    pharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
+    PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
 }
 
-function pharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
+function PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
@@ -182,7 +182,7 @@ function pharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
     }
 }
 
-function pharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
+function PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
@@ -294,6 +294,11 @@ function sendPharmacistInterfere(xml){
     if(checkData != null || checkData != ""){
         alert("干预成功！");
         hidediv();
+        //禁止点击下一步
+        $("#next").attr('disabled', 'disabled');
+        $("#next").css('background-image', 'url(http://' + checkServerIp +':'+ checkServerPort + '/DCStation/image/nextdisabled.png)');
+        $("#next").css('background-repeat', 'no-repeat');
+        $("#next").css('background-position', 'center');
     }
     return checkData;
 }
