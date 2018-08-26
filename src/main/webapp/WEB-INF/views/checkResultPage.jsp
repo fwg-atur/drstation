@@ -656,10 +656,10 @@
 <div>
     <div>
         <div class="main-content">
+            <div class="inner-main-content">
             <div class="head-top">
-            </div>
-            <div class="head-info-lg">
-                <p>审查结果</p>
+                <div class="head-top left-head"></div>
+                <div class="head-top right-head">|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合理用药实时审核Web端</div>
             </div>
             <div class="info-area">
                 <div class="detail-info left-area">
@@ -679,7 +679,11 @@
                     </div>
                 </div>
                 <div class="detail-info right-area">
-                    <div class="head-info-sm"><p>使用说明</p></div>
+                    <div class="head-info-sm">
+                        <div class="head-info-sm-up>"></div>
+                        <p>使用说明</p>
+                        <div class="head-info-sm-down>"></div>
+                    </div>
                     <div class="detail-content">
                         <table style="_margin-top: 50px">
                             <tr>
@@ -760,7 +764,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="next" type="button" onclick="next()" value="下一步"/>
             </div>
-
+            </div>
         </div>
     </div>
 
@@ -826,10 +830,10 @@
     for (var i = 0; i < advises.length; i++) {
         var advise = advises[i];
         var checkInfoList = advise.checkInfoList;
-        for (var j = 0; j < checkInfoList.length; j++) {
-            var checkInfo = checkInfoList[j];
+        for (var k = 0; k < problemType.length; k++) {
             var curProblemLevel = -1;
-            for (var k = 0; k < problemType.length; k++) {
+            for (var j = 0; j < checkInfoList.length; j++) {
+                var checkInfo = checkInfoList[j];
                 if (checkInfo.NAME == problemType[k]) {
                     var problemLevel = parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1;
                     var $chooseTd = $(".main-table tbody").children().eq(i).children().eq(k + 1);

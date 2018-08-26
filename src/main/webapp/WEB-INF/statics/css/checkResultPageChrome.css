@@ -1,10 +1,19 @@
-.main-content, .table-area {
-    width: 100%;
+.main-content {
     clear: both;
+    background-color: #cfe3e4;
+}
+
+.inner-main-content {
+    /*width: 930px;*/
+    /*margin: auto;*/
+    clear: both;
+    background-color: #f2f5fa;
 }
 
 .table-area {
-    padding-top: 5px;
+    padding-top: 10px;
+    width: 100%;
+    clear: both;
 }
 
 .table-area-content {
@@ -34,20 +43,21 @@ table.main-table-head {
 
 table.main-table-head th {
     padding: 2px;
-    border: 1px solid #a7f1fd;
-    background-color: #06bfc7;
-    color: #ffffff;
-    font-family: SourceHanSansCN-Bold, serif;
+    border: 1px solid #d0d2d1;
+    background-color: #edebec;
+    color: #04555d;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
     font-size: 16px;
+    font-weight: bold;
 
     width: 70px;
 }
 
 table.main-table td {
     padding: 2px;
-    border: 1px solid #a7f1fd;
-    color: #005a5c;
-    font-family: SourceHanSansCN-Bold, serif;
+    border: 1px solid #d0d2d1;
+    color: #04555d;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
     font-size: 16px;
     height: 30px;
 
@@ -59,19 +69,19 @@ table.main-table td {
 }
 
 .main-table tbody tr:nth-child(odd) td {
-    background-color: #f3fbfd;
+    background-color: #f9ffff;
 }
 
 .common-problem {
-    background: url(http://localhost:80/DCStation/image/common-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/common-problem.png) no-repeat center;
 }
 
 .serious-problem {
-    background: url(http://localhost:80/DCStation/image/serious-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/serious-problem.png) no-repeat center;
 }
 
 .disaster-problem {
-    background: url(http://localhost:80/DCStation/image/disaster-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/disaster-problem.png) no-repeat center;
 }
 
 .disable-problem {
@@ -98,26 +108,29 @@ table.main-table td {
 }
 
 .left-area {
+    margin-right: 5px;
     float: left;
-    border: 1px solid #a7f1fd
+    border: 1px solid #d0d2d1
 }
 
 .right-area {
+    margin-left: 5px;
     float: right;
-    border: 1px solid #a7f1fd
+    border: 1px solid #d0d2d1
 }
 
 .detail-info {
-    width: 442px;
+    margin-top: 5px;
+    width: 438px;
     height: 200px;
     _height: 220px;
-    background-color: #f3fbfd;
+    /*background-color: #f3fbfd;*/
 }
 
 .detail-content {
     color: #343434;
     font-size: 14px;
-    font-family: SourceHanSansCN-Normal, serif;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
     padding: 40px 10px;
     _padding: 20px 10px;
     height: 140px;
@@ -131,14 +144,17 @@ table.main-table td {
 }
 
 .head-info-sm {
-    background-color: #06bfc7;
+    /*background-color: #06bfc7;*/
+    background: url(http://localhost:80/DCStation/image/head-info-sm.png) center;
     font-size: 16px;
-    font-family: SourceHanSansCN-Bold, serif;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
     color: #ffffff;
     margin: 0 auto;
 }
 
 .head-info-sm p {
+    font-size: 14px;
+    color: #333333;
     height: 30px;
     line-height: 30px;
     margin: 0 20px;
@@ -146,7 +162,7 @@ table.main-table td {
 
 .head-info-lg {
     font-size: 24px;
-    font-family: SourceHanSansCN-Normal, serif;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
     color: #343434;
 }
 
@@ -158,27 +174,42 @@ table.main-table td {
 }
 
 .head-top {
-    height: 43px;
-    background: url(http://localhost:80/DCStation/image/titleTJJK.png) center;
+    color: #FFFFFF;
+    height: 40px;
+    width: 70%;
+    margin: auto;
+    background: url(http://localhost:80/DCStation/image/titleTJJK_doc.png) no-repeat center;
 }
 
-/*.iframe-area {*/
-/*border: 0px;*/
-/*height: 500px;*/
-/*width: 890px;*/
-/*}*/
+.left-head {
+    float: left;
+    width: 200px;
+    height: 30px;
+    padding-top: 10px;
+    margin-left: 100px;
+    background: url(http://localhost:80/DCStation/image/tj.png) no-repeat center;
+}
+
+.right-head {
+    float: left;
+    width: 220px;
+    height: 30px;
+    padding-top: 10px;
+    margin-left: 40px;
+}
 
 #error_detail th {
-    font-size: 24px;
-    font-family: SourceHanSansCN-Bold, serif;
-    color: #343434;
+    font-size: 18px;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
+    font-weight: bold;
+    color: #333333;
     _margin-top: 30px;
 }
 
 #error_detail td {
-    font-size: 18px;
-    font-family: SourceHanSansCN-Normal, serif;
-    color: #005a5c;
+    font-size: 16px;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
+    color: #666666;
 }
 
 .container {

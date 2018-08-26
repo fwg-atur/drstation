@@ -46,7 +46,7 @@ function DoctorCheck(tag, xml, inHosFlag) {
 
 function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     var iWidth = '1000px';
-    var iHeight = '650px';
+    var iHeight = '560px';
     var xmlhttp;
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
 
@@ -260,18 +260,18 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
     if (tag == 2 || check.hasProblem == 0) {
-        alert("返回值为：0");
+        // alert("返回值为：0");
         return 0;
     }else if(check.hasProblem == 1) {
-        alert("返回值为：1");
+        // alert("返回值为：1");
         return 1;
     }
     else if(check.hasProblem == 2) {
-        alert("返回值为：2");
+        // alert("返回值为：2");
         return 2;
     }
     else if (check.hasProblem == -1) {
-        alert("返回值为：-1");
+        // alert("返回值为：-1");
         return -1;
     }
 }

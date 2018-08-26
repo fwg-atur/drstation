@@ -310,7 +310,7 @@
 
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
-    <link href="${pageContext.servletContext.contextPath}/css/pharmacistCheckResultPage${config.browserFlag}.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.servletContext.contextPath}/css/pharmacistCheckResultPageChrome.css" rel="stylesheet" type="text/css"/>
 
     <style type="text/css">
     </style>
@@ -319,12 +319,11 @@
 <div>
     <div>
         <div class="main-content">
+            <div class="inner-main-content">
             <div class="head-top">
-                <%--<p></p>--%>
+                <div class="head-top left-head"></div>
+                <div class="head-top right-head">|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合理用药实时审核Web端</div>
             </div>
-            <%--<div class="head-info-lg">--%>
-                <%--<p>审查结果</p>--%>
-            <%--</div>--%>
             <div class="info-area">
                 <div class="detail-info left-area">
                     <div class="head-info-sm"><p>详细信息</p></div>
@@ -345,15 +344,16 @@
 
                 <div class="detail-info right-area">
                     <div class="head-info-sm"><p>问题汇总</p></div>
-                    <div class="detail-content-right" id="sum_errors">
+                    <br>
+                    <div class="detail-content-right" style="padding-bottom: 20px;margin-top: -20px" id="sum_errors">
 
                     </div>
                 </div>
             </div>
 
             <div class="button-area">
-                <input id="sum" type="button" value="汇总" style="margin-top: 30px" onclick="sumUpProblems()"/>
-                <input id="clear" type="button" value="清空" style="margin-top: 30px" onclick="clearProblems()"/>
+                <input id="sum" class="short" type="button" value="汇总" style="margin-top: 40px" onclick="sumUpProblems()"/>
+                <input id="clear" class="short" type="button" value="清空" style="margin-top: 30px" onclick="clearProblems()"/>
             </div>
 
             <div class="table-area">
@@ -417,20 +417,20 @@
             </div>
 
             <div class="button-area">
-                <input id="doctorInfo" type="button" value="医生信息" onclick="drawDoctorInfoELem()"/>
+                <input id="doctorInfo" class="long" type="button" value="医生信息" onclick="drawDoctorInfoELem()"/>
 
-                <input id="patientInfo" type="button" value="患者信息" onclick="drawPatientInfoElem()"/>
+                <input id="patientInfo" class="long" type="button" value="患者信息" onclick="drawPatientInfoElem()"/>
 
-                <input id="orderInfo" type="button" value="处方信息" onclick="drawOrdersInfoElem()"/>
+                <input id="orderInfo" class="long" type="button" value="处方信息" onclick="drawOrdersInfoElem()"/>
 
 
                 <%--<input id="help" type="button" value="帮助"/>--%>
-                <input id="interfere" type="button" value="实施干预" onclick="drawInterfereInfoElem()"/>
-                <input id="back" type="button" onclick="nextOrBack(-1)" value="返回"/>
+                <input id="interfere" class="long" type="button" value="实施干预" onclick="drawInterfereInfoElem()"/>
+                <input id="back" class="long" type="button" onclick="nextOrBack(-1)" value="返回"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="next" type="button" onclick="nextOrBack(0)" value="下一步"/>
+                <input id="next" class="long" type="button" onclick="nextOrBack(0)" value="下一步"/>
             </div>
-
+            </div>
         </div>
     </div>
 
@@ -453,12 +453,12 @@
     for (var i = 0; i < prescInfos.length; i++) {
         var prescInfo = prescInfos[i];
         var checkInfoList = prescInfo.checkInfos;
-        if (null != checkInfoList) {
-            for (var j = 0; j < checkInfoList.length; j++) {
-                var tag = 0;
-                var checkInfo = checkInfoList[j];
-                var curProblemLevel = -1;
-                for (var k = 0; k < problemType.length; k++) {
+        for (var k = 0; k < problemType.length; k++) {
+            var tag = 0;
+            var curProblemLevel = -1;
+            if (null != checkInfoList) {
+                for (var j = 0; j < checkInfoList.length; j++) {
+                    var checkInfo = checkInfoList[j];
                     if (checkInfo.NAME == problemType[k]) {
                         var problemLevel = parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1;
                         var $chooseTd = $(".main-table tbody").children().eq(i).children().eq(k + 1);

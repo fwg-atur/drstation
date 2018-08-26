@@ -1,10 +1,19 @@
-.main-content, .table-area {
-    width: 100%;
+.main-content {
     clear: both;
+    background-color: #cfe3e4;
+}
+
+.inner-main-content {
+    /*width: 930px;*/
+    /*margin: auto;*/
+    clear: both;
+    background-color: #f3f7ff;
 }
 
 .table-area {
-    padding-top: 5px;
+    width: 100%;
+    clear: both;
+    padding-top: 10px;
 }
 
 .table-area-content {
@@ -19,12 +28,12 @@
 
 table.main-table {
     width: 890px;
-    border: 1px #a7f1fd;
+    border: 1px #d0d2d1;
     border-collapse: collapse;
 }
 
 table.main-table-head {
-    border: 1px #a7f1fd;
+    border: 1px #d0d2d1;
     border-collapse: collapse;
     width: 890px;
     height: 40px;
@@ -33,11 +42,11 @@ table.main-table-head {
 
 table.main-table-head th {
     padding: 8px;
-    border: 1px solid #a7f1fd;
-    background-color: #06bfc7;
+    border: 1px solid #d0d2d1;
+    background-color: #edebec;
     height: 40px;
-    color: #ffffff;
-    font-family: SourceHanSansCN-Bold, serif;
+    color: #015587;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
     font-size: 16px;
 
     width: 75px;
@@ -46,11 +55,11 @@ table.main-table-head th {
 
 table.main-table td {
     padding: 8px;
-    border: 1px solid #a7f1fd;
+    border: 1px solid #d0d2d1;
     height: 40px;
-    color: #005a5c;
-    font-family: SourceHanSansCN-Bold, serif;
-    font-size: 14px;
+    color: #015587;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
+    font-size: 16px;
 
     width: 75px;
     _width: 75px;
@@ -61,19 +70,19 @@ table.main-table td {
 }
 
 .main-table tbody tr:nth-child(odd) td {
-    background-color: #f3fbfd;
+    background-color: #f3fafd;
 }
 
 .common-problem {
-    background: url(http://localhost:80/DCStation/image/common-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/common-problem.png) no-repeat center;
 }
 
 .serious-problem {
-    background: url(http://localhost:80/DCStation/image/serious-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/serious-problem.png) no-repeat center;
 }
 
 .disaster-problem {
-    background: url(http://localhost:80/DCStation/image/disaster-problem-big.png) no-repeat center;
+    background: url(http://localhost:80/DCStation/image/disaster-problem.png) no-repeat center;
 }
 
 .disable-problem {
@@ -81,45 +90,57 @@ table.main-table td {
 }
 
 .button-area {
-    margin: 0 auto;
     padding: 10px 10px;
     text-align: center;
 }
 
 .button-area input {
-    background: transparent url(http://localhost:80/DCStation/image/circlerectangle.png);
-    border: none;
-    color: white;
+    background: transparent url(http://localhost:80/DCStation/image/circlerectangle_pha_out_long.png);
+    border: 0.1px solid #73a5bd;
+    color: #ffffff;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
     width: 80px;
     height: 26px;
-    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.button-area .short {
+    background: transparent url(http://localhost:80/DCStation/image/circlerectangle_pha_out_short.png);
+    border: 0.1px solid #73a5bd;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    width: 50px;
+    height: 26px;
 }
 
 .left-area {
     float: left;
-    border: 1px solid #a7f1fd
+    border: 1px solid #d0d2d1
 }
 
 .right-area {
     float: right;
-    border: 1px solid #a7f1fd
+    border: 1px solid #d0d2d1
 }
 
 .detail-info {
-    width: 380px;
+    margin-top: 5px;
+    width: 410px;
     height: 170px;
     _height: 190px;
-    background-color: #f3fbfd;
+    /*background-color: #f3fbfd;*/
 }
 
 .detail-content-left {
     color: #343434;
-    font-size: 15px;
-    font-family: SourceHanSansCN-Normal, serif;
+    font-size: 16px;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
     padding: 40px 10px;
     _padding: 20px 10px;
     height: 120px;
@@ -129,26 +150,27 @@ table.main-table td {
 
 .detail-content-right {
     color: #343434;
-    font-size: 15px;
-    font-family: SourceHanSansCN-Normal, serif;
+    font-size: 16px;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
     padding: 40px 10px;
     _padding: 20px 10px;
-    height: 60px;
+    height: 80px;
     _height: 70px;
     overflow: auto;
 }
 
 .down-detail-info {
-    width: 442px;
+    margin-top: 10px;
+    width: 439px;
     height: 130px;
     _height: 150px;
-    background-color: #f3fbfd;
+    /*background-color: #f3fbfd;*/
 }
 
 .down-detail-content {
-    color: #343434;
-    font-size: 15px;
-    font-family: SourceHanSansCN-Normal, serif;
+    color: #333333;
+    font-size: 14px;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
     padding: 40px 10px;
     _padding: 20px 10px;
     /*height: 20px;*/
@@ -159,17 +181,27 @@ table.main-table td {
 .info-area {
     width: 890px;
     margin: 0 auto;
+    font-size: 16px;
+}
+
+.pharInfo-button {
+    width: 200px;
+    margin-left: 90px;
+    display: inline;
 }
 
 .head-info-sm {
-    background-color: #06bfc7;
+    /*background-color: #06bfc7;*/
+    background: url(http://localhost:80/DCStation/image/head-info-sm.png) center;
     font-size: 16px;
-    font-family: SourceHanSansCN-Bold, serif;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
     color: #ffffff;
     margin: 0 auto;
 }
 
 .head-info-sm p {
+    font-size: 14px;
+    color: #333333;
     height: 30px;
     line-height: 30px;
     margin: 0 20px;
@@ -177,7 +209,7 @@ table.main-table td {
 
 .head-info-lg {
     font-size: 24px;
-    font-family: SourceHanSansCN-Normal, serif;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
     color: #343434;
 }
 
@@ -189,21 +221,59 @@ table.main-table td {
 }
 
 .head-top {
-    height: 43px;
-    background: url(http://localhost:80/DCStation/image/titleTJJK.png) center;
+    color: #FFFFFF;
+    height: 40px;
+    width: 70%;
+    margin: auto;
+    background: url(http://localhost:80/DCStation/image/titleTJJK_pha_out.png) no-repeat center;
+}
+
+.left-head {
+    float: left;
+    width: 200px;
+    height: 30px;
+    padding-top: 10px;
+    margin-left: 100px;
+    background: url(http://localhost:80/DCStation/image/tj.png) no-repeat center;
+}
+
+.right-head {
+    float: left;
+    width: 220px;
+    height: 30px;
+    padding-top: 10px;
+    margin-left: 40px;
+}
+.mid-head {
+    height: 30px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+table .problemTypeTable {
+    border: 1px #d0d2d1;
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 400px;
+    width: 415px;
+}
+
+.problemDescribe {
+    border:1px solid #d0d1d2;
 }
 
 #error_detail th {
-    font-size: 24px;
-    font-family: SourceHanSansCN-Bold, serif;
-    color: #343434;
+    font-size: 16px;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
+    font-weight: bold;
+    color: #333333;
     _margin-top: 30px;
 }
 
 #error_detail td {
-    font-size: 15px;
-    font-family: SourceHanSansCN-Normal, serif;
-    color: #005a5c;
+    font-size: 16px;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
+    color: #666666;
 }
 
 .container {
