@@ -310,7 +310,7 @@
 
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
-    <link href="${pageContext.servletContext.contextPath}/css/pharmacistCheckResultPageChrome.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.servletContext.contextPath}/css/pharmacistCheckResultPage${config.browserFlag}.css" rel="stylesheet" type="text/css"/>
 
     <style type="text/css">
     </style>

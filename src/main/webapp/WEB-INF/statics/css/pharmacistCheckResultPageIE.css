@@ -33,6 +33,7 @@ table.main-table {
 }
 
 table.main-table-head {
+    background-color: #edebec;
     border: 1px #d0d2d1;
     border-collapse: collapse;
     width: 890px;
@@ -43,7 +44,6 @@ table.main-table-head {
 table.main-table-head th {
     padding: 8px;
     border: 1px solid #d0d2d1;
-    background-color: #edebec;
     height: 40px;
     color: #015587;
     /*font-family: SourceHanSansCN-Bold, serif;*/

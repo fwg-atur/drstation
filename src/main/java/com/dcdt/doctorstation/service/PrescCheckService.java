@@ -2,6 +2,8 @@ package com.dcdt.doctorstation.service;
 
 import com.dcdt.cache.CheckResultCache;
 import com.dcdt.cache.RetValCache;
+import com.dcdt.doctorstation.entity.Advice;
+import com.dcdt.doctorstation.entity.CheckInfo;
 import com.dcdt.doctorstation.entity.CheckMessage;
 import com.dcdt.doctorstation.entity.CheckResults;
 import com.dcdt.utils.CommonUtil;
@@ -14,7 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by LiRong on 2017/6/20.
@@ -119,6 +123,7 @@ public class PrescCheckService {
     protected CheckMessage handleCheckJson(String checkJson) {
         Gson g = new Gson();
         CheckResults results = g.fromJson(checkJson, CheckResults.class);
+        results.setAdvices(sortCheckResult(results.getAdvices()));
 
         String presId = results.getPatient().getPATIENT_PRES_ID();
         if(presId == null || "".equals(presId)){
@@ -187,5 +192,40 @@ public class PrescCheckService {
         String data = cacheService.getXMLFromCache(presId, presId);
         HttpUtil.sendPost(url, data);
         return presId;
+    }
+
+    public List<Advice> sortCheckResult(List<Advice> advices){
+        List<Advice> newList = new ArrayList<Advice>();
+        if(advices == null || advices.size() <= 1){
+            return advices;
+        }
+        for(int i=0;i<4;++i) {
+            for (Advice advice : advices) {
+                List<CheckInfo> checkInfos = advice.getCheckInfoList();
+                if(i == 0 && getHighestLevelFromCheckInfoList(checkInfos) == 3){
+                    newList.add(advice);
+                }else if(i == 1 && getHighestLevelFromCheckInfoList(checkInfos) == 2){
+                    newList.add(advice);
+                }else if(i == 2 && getHighestLevelFromCheckInfoList(checkInfos) == 1){
+                    newList.add(advice);
+                }else if(i == 3 && getHighestLevelFromCheckInfoList(checkInfos) == 0){
+                    newList.add(advice);
+                }
+            }
+        }
+        return newList;
+
+    }
+
+    public int getHighestLevelFromCheckInfoList(List<CheckInfo> checkInfos){
+        int highestLevel = 0;
+        for(CheckInfo checkInfo: checkInfos){
+            if(highestLevel < Integer.parseInt(checkInfo.getREGULAR_WARNING_LEVEL())){
+                highestLevel = Integer.parseInt(checkInfo.getREGULAR_WARNING_LEVEL());
+            } else if(Integer.parseInt(checkInfo.getREGULAR_WARNING_LEVEL()) == -1 && highestLevel != 3){
+                highestLevel = 3;
+            }
+        }
+        return highestLevel;
     }
 }
