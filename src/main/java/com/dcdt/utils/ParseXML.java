@@ -308,10 +308,10 @@ public class ParseXML {
         for(PrescInfo prescInfo : prescInfos){
             if(prescInfo.getCheckInfos() != null && prescInfo.getCheckInfos().size() != 0){
                 for(CheckInfo checkInfo : prescInfo.getCheckInfos()){
-                    if("禁忌".equals(checkInfo.getWARNING_LEVEL()) && level == 0){
-                        level = 2;
-                    }else if("慎用".equals(checkInfo.getWARNING_LEVEL()) && (level == 0 || level == 2)){
+                    if("慎用".equals(checkInfo.getWARNING_LEVEL()) && level == 0){
                         level = 1;
+                    }else if("禁忌".equals(checkInfo.getWARNING_LEVEL()) && (level == 0 || level == 1)){
+                        level = 2;
                     }else if("拦截".equals(checkInfo.getWARNING_LEVEL())){
                         level = -1;
                     }
