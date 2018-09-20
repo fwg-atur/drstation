@@ -20,7 +20,10 @@ var cheServerPortInHos = "80";
  */
 var checkServerIpOutHos = "localhost";
 var cheServerPortOutHos = "80";
-
+//医生站超时返回的最长时间(毫秒)
+var timeStrapDoc = 5000;
+//药师站超时返回的最长时间(毫秒)
+var timeStrapPhar = 5000;
 /**
  * 存放临时变量
  * @type {string}
@@ -80,7 +83,7 @@ function getRetValUrl() {
 function checkIsQuit() {
     var url = getRetValUrl();
     var data = 'presId=' + presId;
-    var checkData = sendAjaxRequest(data, url);
+    var checkData = sendAjaxRequestForDoc(data, url);
 
     checkData = eval("(" + checkData + ")");
 
@@ -93,7 +96,7 @@ function checkIsQuit() {
     }
 }
 
-function sendAjaxRequest(data, url) {
+function sendAjaxRequestForDoc(data, url) {
     var xmlhttp;
     if (window.XMLHttpRequest) {
         //  IE7+, Firefox, Chrome, Opera, Safari
@@ -106,9 +109,40 @@ function sendAjaxRequest(data, url) {
     xmlhttp.open("POST", url, false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
+    var t1 = setTimeout(connectToFail,timeStrapDoc);
+    if(t1){
+        clearTimeout(t1);
+    }
 
     var checkData = xmlhttp.responseText;
     return checkData;
+}
+
+function sendAjaxRequestForPhar(data, url) {
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send(data);
+    var t2 = setTimeout(connectToFail,timeStrapDoc);
+    if(t2){
+        clearTimeout(t2);
+    }
+
+    var checkData = xmlhttp.responseText;
+    return checkData;
+}
+
+function connectToFail() {
+    if (xmlhttp) xmlhttp.abort();
+    alert ('超时！');
 }
 
 function getSendCheckUrl() {
@@ -122,7 +156,7 @@ function getCheckResultPageUrl(check) {
 function DoctorCheckForChrome(tag, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
     var url = getSendCheckUrl();
-    var checkData = sendAjaxRequest(data, url);
+    var checkData = sendAjaxRequestForDoc(data, url);
 
     var check = eval("(" + checkData + ")");
     if (tag == 2) {
@@ -234,7 +268,7 @@ function PharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, n
 function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
-    var checkData = sendAjaxRequest(data, url);
+    var checkData = sendAjaxRequestForPhar(data, url);
 
     var check = eval("(" + checkData + ")");
     if (tag == 2) {
@@ -252,7 +286,7 @@ function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml
 function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInfo, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
-    var checkData = sendAjaxRequest(data, url);
+    var checkData = sendAjaxRequestForPhar(data, url);
 
     var check = eval("(" + checkData + ")");
     if (tag == 2 || check.hasProblem == 0) {
@@ -278,7 +312,7 @@ function drawPharmacistCheckResultElem(url) {
 function pharmacistCheckIsQuit() {
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/getRetValue";
     var data = 'presId=' + pharmacist_presId;
-    var checkData = sendAjaxRequest(data, url);
+    var checkData = sendAjaxRequestForPhar(data, url);
 
     checkData = eval("(" + checkData + ")");
 
@@ -319,7 +353,7 @@ function test_pharmacistBack(val) {
 function sendPharmacistInterfere(xml) {
     var data = "xml=" + encodeURIComponent(xml);
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistInterfere";
-    var checkData = sendAjaxRequest(data, url);
+    var checkData = sendAjaxRequestForPhar(data, url);
     if(checkData != null || checkData != ""){
         alert("干预成功！");
         hidediv();

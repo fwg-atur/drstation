@@ -39,6 +39,7 @@ public class PrescCheckService {
      */
     public CheckMessage checkPresc(int tag, String data) {
         String url = checkServerUrl + "?tag=" + tag;
+        data = data.replace("&nbsp;"," ");
         String checkJson = HttpUtil.sendPost(url, data);
 //        String checkJson = getTestJson();
         logger.debug(checkJson);

@@ -18,6 +18,10 @@ var checkServerIpOutHos = "localhost";
 var cheServerPortOutHos = "80";
 //说明书地址
 var disUrl = 'http://localhost:80/DCStation/home/index?drugCode=@code@';
+//医生站超时返回的最长时间(毫秒)
+var timeStrapDoc = 5000;
+//药师站超时返回的最长时间(毫秒)
+var timeStrapPhar = 5000;
 
 
 function testCheck(tag) {
@@ -61,6 +65,10 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
+    var t1 = setTimeout(connectToFail,timeStrapDoc);
+    if(t1){
+        clearTimeout(t1);
+    }
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
@@ -123,9 +131,12 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
 
     var data = xmlhttp.responseText;
     data = eval("(" + data + ")");
-
-    // if (isDirectClose(data)) return -1;
     return data;
+}
+
+function connectToFail() {
+    if (xmlhttp) xmlhttp.abort();
+    alert ('超时！');
 }
 
 function isDirectClose(data) {
@@ -211,6 +222,10 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
     xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send(data);
+    var t2 = setTimeout(connectToFail,timeStrapDoc);
+    if(t2){
+        clearTimeout(t2);
+    }
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
