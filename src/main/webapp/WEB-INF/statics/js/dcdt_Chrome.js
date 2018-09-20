@@ -276,7 +276,7 @@ function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml
     }
     if (check.hasProblem == 0) {
         check_for_next();
-    } else if (check.hasProblem == 1) {
+    } else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
         pharmacist_presId = check.presId;
         drawPharmacistCheckResultElem(url);

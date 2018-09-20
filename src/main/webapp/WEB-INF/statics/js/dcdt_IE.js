@@ -232,7 +232,7 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
     if (tag == 2 || check.hasProblem == 0) {
         return 0;
     }
-    else if (check.hasProblem == 1) {
+    else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
 
         if(navigator.userAgent.indexOf("Chrome") >0 ){

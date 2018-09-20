@@ -310,7 +310,7 @@ public class ParseXML {
                 for(CheckInfo checkInfo : prescInfo.getCheckInfos()){
                     if("慎用".equals(checkInfo.getWARNING_LEVEL()) && level == 0){
                         level = 1;
-                    }else if("禁忌".equals(checkInfo.getWARNING_LEVEL()) && (level == 0 || level == 1)){
+                    }else if(("禁忌".equals(checkInfo.getWARNING_LEVEL()) || "禁用".equals(checkInfo.getWARNING_LEVEL())) && (level == 0 || level == 1)){
                         level = 2;
                     }else if("拦截".equals(checkInfo.getWARNING_LEVEL())){
                         level = -1;
