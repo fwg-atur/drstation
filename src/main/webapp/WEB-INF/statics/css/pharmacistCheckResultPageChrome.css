@@ -55,7 +55,7 @@ table.main-table-head th {
 table.main-table td {
     padding: 8px;
     border: 1px solid #d0d2d1;
-    height: 40px;
+    /*height: 40px;*/
     color: #015587;
     /*font-family: SourceHanSansCN-Bold, serif;*/
     font-size: 16px;

@@ -155,14 +155,16 @@ public class ParseXML {
                     checkInfo.setZYJL(checkInfoElement.getAttributeValue("ZYJL"));
                     checkInfo.setTYSM(checkInfoElement.getAttributeValue("TYSM"));
                     checkInfo.setLCSY(checkInfoElement.getAttributeValue("LCSY"));
-                    if("黄色".equals(checkInfo.getCOLOR())){
+                    if("慎用".equals(checkInfo.getWARNING_LEVEL())){
                         checkInfo.setREGULAR_WARNING_LEVEL("1");
                     }
-                    else if("橙色".equals(checkInfo.getCOLOR())){
-                        checkInfo.setREGULAR_WARNING_LEVEL("0");
+                    else if("禁忌".equals(checkInfo.getWARNING_LEVEL()) || "禁用".equals(checkInfo.getWARNING_LEVEL())){
+                        checkInfo.setREGULAR_WARNING_LEVEL("2");
                     }
-                    else if("红色".equals(checkInfo.getCOLOR())){
+                    else if("强制阻断".equals(checkInfo.getWARNING_LEVEL())){
                         checkInfo.setREGULAR_WARNING_LEVEL("-1");
+                    }else {
+                        checkInfo.setREGULAR_WARNING_LEVEL("0");
                     }
                     checkInfos.add(checkInfo);
                 }
