@@ -1,7 +1,8 @@
 package com.dcdt.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.dcdt.cache.Config;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.*;
@@ -16,9 +17,8 @@ public class HttpUtil {
     static String proxyHost = "127.0.0.1";
     static int proxyPort = 8087;
     //添加一个日志器
-    private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
-
-
+    private static final Logger logger = Logger.getLogger(HttpUtil.class);
+    static int timeOut = 5000;
     /**
      * 编码
      *
@@ -200,6 +200,10 @@ public class HttpUtil {
             } else {
                 conn = (HttpURLConnection) realUrl.openConnection();
             }
+
+            conn.setConnectTimeout(timeOut);
+            conn.setReadTimeout(timeOut);
+
             // 打开和URL之间的连接
 
             // 发送POST请求必须设置如下两行
@@ -229,8 +233,7 @@ public class HttpUtil {
                 result += line;
             }
         } catch (Exception e) {
-            logger.info("发送 POST 请求出现异常");
-            e.printStackTrace();
+            logger.error(null,e);
         }
         //使用finally块来关闭输出流、输入流
         finally {

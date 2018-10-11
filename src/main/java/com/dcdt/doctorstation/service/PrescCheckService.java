@@ -9,8 +9,7 @@ import com.dcdt.doctorstation.entity.CheckResults;
 import com.dcdt.utils.CommonUtil;
 import com.dcdt.utils.HttpUtil;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class PrescCheckService {
 
     private CacheService cacheService;
 
-    private static final Logger logger = LoggerFactory.getLogger(PrescCheckService.class);
+    private static final Logger logger = Logger.getLogger(PrescCheckService.class);
 
     /**
      * @param tag
@@ -40,14 +39,23 @@ public class PrescCheckService {
     public CheckMessage checkPresc(int tag, String data) {
         String url = checkServerUrl + "?tag=" + tag;
         data = data.replace("&nbsp;"," ");
-        String checkJson = HttpUtil.sendPost(url, data);
+        String checkJson = "";
+        checkJson = HttpUtil.sendPost(url, data);
 //        String checkJson = getTestJson();
         logger.debug(checkJson);
-        if (tag == 2) return new CheckMessage();
 
-        CheckMessage message = handleCheckJson(checkJson);
-        putXML2Cache(message.getPresId(), data);
-        return message;
+        CheckMessage checkMessage = new CheckMessage();
+        if (tag == 2) return checkMessage;
+
+        if(checkJson == null || checkJson.equals("")){
+            checkMessage.setHasProblem(-2);
+            return checkMessage;
+        }
+
+
+        checkMessage = handleCheckJson(checkJson);
+        putXML2Cache(checkMessage.getPresId(), data);
+        return checkMessage;
     }
 
     private void putXML2Cache(String presId, String xml) {
@@ -122,6 +130,9 @@ public class PrescCheckService {
      * @param checkJson
      */
     protected CheckMessage handleCheckJson(String checkJson) {
+        if(checkJson == null || checkJson.equals("")){
+            return new CheckMessage();
+        }
         Gson g = new Gson();
         CheckResults results = g.fromJson(checkJson, CheckResults.class);
         results.setAdvices(sortCheckResult(results.getAdvices()));

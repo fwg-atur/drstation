@@ -20,6 +20,7 @@ var cheServerPortInHos = "80";
  */
 var checkServerIpOutHos = "localhost";
 var cheServerPortOutHos = "80";
+
 //医生站超时返回的最长时间(毫秒)
 var timeStrapDoc = 5000;
 //药师站超时返回的最长时间(毫秒)
@@ -96,6 +97,23 @@ function checkIsQuit() {
     }
 }
 
+function ajax(xmlhttp, _method, _url, _param, _callback) {
+    if (typeof xmlhttp == 'undefined')
+        return;
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            _callback(xmlhttp);
+        }
+    };
+    xmlhttp.open(_method, _url, false);
+    if (_method == "POST") {
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+        xmlhttp.send(_param);
+    } else {
+        xmlhttp.send(null);
+    }
+}
+
 function sendAjaxRequestForDoc(data, url) {
     var xmlhttp;
     if (window.XMLHttpRequest) {
@@ -106,13 +124,27 @@ function sendAjaxRequestForDoc(data, url) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", url, false);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
-    xmlhttp.send(data);
-    var t1 = setTimeout(connectToFail,timeStrapDoc);
-    if(t1){
-        clearTimeout(t1);
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
     }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        alert("请求服务超时！")
+        return -2;
+    }
+    if(xmlhttp) {
+        ajax(xmlhttp, "POST", url, data, adduserok);
+        t1 = setTimeout(connecttoFail, timeStrapDoc);
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    // xmlhttp.open("POST", url, false);
+    // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
     return checkData;
@@ -128,21 +160,30 @@ function sendAjaxRequestForPhar(data, url) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", url, false);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
-    xmlhttp.send(data);
-    var t2 = setTimeout(connectToFail,timeStrapDoc);
-    if(t2){
-        clearTimeout(t2);
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
     }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        alert("请求服务超时！")
+        return -2;
+    }
+    if(xmlhttp) {
+        ajax(xmlhttp, "POST", url, data, adduserok);
+        t1 = setTimeout(connecttoFail, timeStrapPhar);
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    // xmlhttp.open("POST", url, false);
+    // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
     return checkData;
-}
-
-function connectToFail() {
-    if (xmlhttp) xmlhttp.abort();
-    alert ('超时！');
 }
 
 function getSendCheckUrl() {
@@ -169,6 +210,8 @@ function DoctorCheckForChrome(tag, xml) {
         presId = check.presId;
         drawCheckResultElem(url);
         checkIsQuitState = window.setInterval("checkIsQuit()", 500);
+    }else if(check.hasProblem == -2){
+        alert("请求中间层服务异常！");
     }
 }
 
@@ -276,6 +319,8 @@ function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml
     }
     if (check.hasProblem == 0) {
         check_for_next();
+    }else if(check.hasProblem == -2){
+        alert("请求中间层服务异常！");
     } else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
         pharmacist_presId = check.presId;
@@ -299,6 +344,9 @@ function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInf
     }
     else if (check.hasProblem == -1) {
         return -1;
+    }else if(check.hasProblem == -2){
+        alert("请求中间层服务异常！");
+        return 0;
     }
 }
 

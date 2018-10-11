@@ -62,13 +62,29 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", false);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
-    xmlhttp.send(data);
-    var t1 = setTimeout(connectToFail,timeStrapDoc);
-    if(t1){
-        clearTimeout(t1);
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
     }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        alert("请求服务超时！")
+        return -2;
+    }
+    if(xmlhttp) {
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", data, adduserok);
+        t1 = setTimeout(connecttoFail, timeStrapDoc);
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+
+
+    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheckForTest", false);
+    // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
@@ -123,6 +139,9 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
                 ';dialogHeight=' + iHeight +
                 ';center=yes;help=yes');
         }
+    }else if(check.hasProblem == -2){
+        alert("请求中间层服务异常！");
+        return -2;
     }
 
     xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/getRetValue", false);
@@ -134,10 +153,23 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     return data;
 }
 
-function connectToFail() {
-    if (xmlhttp) xmlhttp.abort();
-    alert ('超时！');
+function ajax(xmlhttp, _method, _url, _param, _callback) {
+    if (typeof xmlhttp == 'undefined')
+        return;
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            _callback(xmlhttp);
+        }
+    };
+    xmlhttp.open(_method, _url, false);
+    if (_method == "POST") {
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+        xmlhttp.send(_param);
+    } else {
+        xmlhttp.send(null);
+    }
 }
+
 
 function isDirectClose(data) {
     return data == -2;
@@ -219,20 +251,35 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
-    xmlhttp.send(data);
-    var t2 = setTimeout(connectToFail,timeStrapDoc);
-    if(t2){
-        clearTimeout(t2);
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
     }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        alert("请求服务超时！")
+        return -2;
+    }
+    if(xmlhttp) {
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", data, adduserok);
+        t1 = setTimeout(connecttoFail, timeStrapDoc);
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
+    //     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
     if (tag == 2 || check.hasProblem == 0) {
         return 0;
-    }
-    else {
+    }else if(check.hasProblem == -2){
+        alert("请求中间层服务异常！");
+    }else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
 
         if(navigator.userAgent.indexOf("Chrome") >0 ){
@@ -268,9 +315,27 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
-    xmlhttp.send(data);
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
+    }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        alert("请求服务超时！")
+        return -2;
+    }
+    if(xmlhttp) {
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", data, adduserok);
+        t1 = setTimeout(connecttoFail, timeStrapDoc);
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
+    // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
@@ -288,6 +353,9 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     else if (check.hasProblem == -1) {
         // alert("返回值为：-1");
         return -1;
+    }else if(check.hasProblem == -2){
+        alert("请求中间层服务异常！");
+        return 0;
     }
 }
 
@@ -317,4 +385,6 @@ function sendPharmacistInterfere(xml){
     }
     return checkData;
 }
+
+
 
