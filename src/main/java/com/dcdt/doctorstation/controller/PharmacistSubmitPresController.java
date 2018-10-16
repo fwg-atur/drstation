@@ -31,8 +31,8 @@ public class PharmacistSubmitPresController{
 
     @ResponseBody
     @RequestMapping("/sendPharmacistCheck_CP")
-    public CheckMessage sendPharmacistCheck_CP(String xml) {
-        return service.checkPharmacistPresc_CP(xml);
+    public CheckMessage sendPharmacistCheck_CP(String visitDate,String pharmacistInfo,String xml) {
+        return service.checkPharmacistPresc_CP(visitDate,pharmacistInfo,xml);
     }
 
     @ResponseBody

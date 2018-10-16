@@ -214,8 +214,10 @@ function testPharmacistCheckSilent(tag) {
 
 //药师站昌平
 function testPharmacistCheck_CP() {
+    var visitDate = document.getElementById("visitDate").value;
+    var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck_CP(dcdtXml,1);
+    PharmacistCheck_CP(visitDate,pharmacistInfo,dcdtXml,1);
 }
 
 function testPharmacistCheckSilent_CP() {
@@ -397,14 +399,14 @@ function sendPharmacistInterfere(xml){
     return checkData;
 }
 
-function PharmacistCheck_CP(xml,inHosFlag) {
+function PharmacistCheck_CP(visitDate,pharmacistInfo,xml,inHosFlag) {
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendPharmacistCheck_CP(xml, checkServerIpOutHos, cheServerPortOutHos);
+        return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendPharmacistCheck_CP(xml, checkServerIpInHos, cheServerPortInHos);
+        return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
     } else {
         alert("error:未识别的住院标识！");
     }
@@ -423,11 +425,11 @@ function PharmacistCheckSilent_CP(xml,inHosFlag) {
     }
 }
 
-function sendPharmacistCheck_CP(xml,checkServerIp, checkServerPort) {
+function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, checkServerPort) {
     var iWidth = '1000px';
     var iHeight = '700px';
     var xmlhttp;
-    var data = "xml=" + encodeURIComponent(xml);
+    var data = "xml=" + encodeURIComponent(xml)+ '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     if (window.XMLHttpRequest) {
         //  IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();
