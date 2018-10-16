@@ -29,6 +29,18 @@ public class PharmacistSubmitPresController{
         return service.checkPharmacistPresc(patientID,visitDate,pharmacistInfo,xml);
     }
 
+    @ResponseBody
+    @RequestMapping("/sendPharmacistCheck_CP")
+    public CheckMessage sendPharmacistCheck_CP(String xml) {
+        return service.checkPharmacistPresc_CP(xml);
+    }
+
+    @ResponseBody
+    @RequestMapping("/sendPharmacistCheckSilent_CP")
+    public CheckMessage sendPharmacistCheckSilent_CP(String xml) {
+        return service.checkPharmacistPrescSilent_CP(xml);
+    }
+
     @RequestMapping("/sendPharmacistInterfere")
     public String sendPharmacistInterfere(String xml) {
         return service.checkPharmacistInterfere(xml);

@@ -212,6 +212,17 @@ function testPharmacistCheckSilent(tag) {
     PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
 }
 
+//药师站昌平
+function testPharmacistCheck_CP() {
+    var dcdtXml = document.getElementById("dcdt").value;
+    PharmacistCheck_CP(dcdtXml,1);
+}
+
+function testPharmacistCheckSilent_CP() {
+    var dcdtXml = document.getElementById("dcdt").value;
+    PharmacistCheckSilent_CP(dcdtXml,1);
+}
+
 function PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
     if (inHosFlag == undefined) {
         inHosFlag = 1;
@@ -384,6 +395,153 @@ function sendPharmacistInterfere(xml){
         $("#next").css('background-position', 'center');
     }
     return checkData;
+}
+
+function PharmacistCheck_CP(xml,inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 1;
+    }
+    if (inHosFlag == 0) {
+        return sendPharmacistCheck_CP(xml, checkServerIpOutHos, cheServerPortOutHos);
+    } else if (inHosFlag == 1) {
+        return sendPharmacistCheck_CP(xml, checkServerIpInHos, cheServerPortInHos);
+    } else {
+        alert("error:未识别的住院标识！");
+    }
+}
+
+function PharmacistCheckSilent_CP(xml,inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 1;
+    }
+    if (inHosFlag == 0) {
+        return sendPharmacistCheckSilent_CP(xml, checkServerIpOutHos, cheServerPortOutHos);
+    } else if (inHosFlag == 1) {
+        return sendPharmacistCheckSilent_CP(xml, checkServerIpInHos, cheServerPortInHos);
+    } else {
+        alert("error:未识别的住院标识！");
+    }
+}
+
+function sendPharmacistCheck_CP(xml,checkServerIp, checkServerPort) {
+    var iWidth = '1000px';
+    var iHeight = '700px';
+    var xmlhttp;
+    var data = "xml=" + encodeURIComponent(xml);
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
+    }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        alert("请求服务超时！")
+        return -2;
+    }
+    if(xmlhttp) {
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck_CP", data, adduserok);
+        t1 = setTimeout(connecttoFail, timeStrapDoc);
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
+    //     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send(data);
+
+    var checkData = xmlhttp.responseText;
+    var check = eval("(" + checkData + ")");
+    if (check.hasProblem == 0) {
+        return 0;
+    }else if(check.hasProblem == -2){
+        alert("请求中间层服务异常！");
+    }else {
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
+
+        if(navigator.userAgent.indexOf("Chrome") >0 ){
+            var winOption = "height="+iHeight+",width="+iWidth+"," +
+                "top=50,left=50,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,fullscreen=0";
+            window.open(url,window, winOption);
+        } else {
+            window.showModalDialog(url, '',
+                'resizable:yes;scroll:yes;status:no;' +
+                'dialogWidth=' + iWidth +
+                ';dialogHeight=' + iHeight +
+                ';center=yes;help=yes');
+        }
+    }
+
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/getRetValue", false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send('presId=' + check.presId);
+
+    var data = xmlhttp.responseText;
+    data = eval("(" + data + ")");
+    return data;
+}
+
+function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
+    var xmlhttp;
+    var data = "xml=" + encodeURIComponent(xml);
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
+    }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        alert("请求服务超时！")
+        return -2;
+    }
+    if(xmlhttp) {
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheckSilent_CP", data, adduserok);
+        t1 = setTimeout(connecttoFail, timeStrapDoc);
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
+    // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send(data);
+
+    var checkData = xmlhttp.responseText;
+    var check = eval("(" + checkData + ")");
+    if (check.hasProblem == 0) {
+        alert("返回值为：0");
+        return 0;
+    }else if(check.hasProblem == 1) {
+        alert("返回值为：1");
+        return 1;
+    }
+    else if(check.hasProblem == 2) {
+        alert("返回值为：2");
+        return 2;
+    }
+    else if (check.hasProblem == -1) {
+        alert("返回值为：-1");
+        return -1;
+    }else if(check.hasProblem == -2){
+        alert("请求中间层服务异常！");
+        return 0;
+    }
 }
 
 

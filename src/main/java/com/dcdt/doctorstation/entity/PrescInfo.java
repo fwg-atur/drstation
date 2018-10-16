@@ -12,6 +12,11 @@ public class PrescInfo {
     protected String drug_lo_name;
     protected List<CheckInfo> checkInfos;
 
+    //昌平医院新增字段
+    protected String ganyu_state;
+    protected String ganyu_info;
+    protected String medication_flag;
+
 //    public PrescInfo(String order_id,String order_sub_id,String drug_lo_id,String drug_lo_name,List<CheckInfo> checkInfos){
 //        this.order_id = order_id;
 //        this.order_sub_id = order_sub_id;
@@ -63,5 +68,29 @@ public class PrescInfo {
 
     public void setCheckInfos(List<CheckInfo> checkInfos) {
         this.checkInfos = checkInfos;
+    }
+
+    public String getGanyu_state() {
+        return ganyu_state;
+    }
+
+    public void setGanyu_state(String ganyu_state) {
+        this.ganyu_state = ganyu_state;
+    }
+
+    public String getGanyu_info() {
+        return ganyu_info;
+    }
+
+    public void setGanyu_info(String ganyu_info) {
+        this.ganyu_info = ganyu_info;
+    }
+
+    public String getMedication_flag() {
+        return medication_flag;
+    }
+
+    public void setMedication_flag(String medication_flag) {
+        this.medication_flag = medication_flag;
     }
 }
