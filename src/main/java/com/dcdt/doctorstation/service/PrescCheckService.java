@@ -214,20 +214,19 @@ public class PrescCheckService {
         if(advices == null || advices.size() <= 1){
             return advices;
         }
-        for(int i=0;i<4;++i) {
-            for (Advice advice : advices) {
-                List<CheckInfo> checkInfos = advice.getCheckInfoList();
-                if(i == 0 && getHighestLevelFromCheckInfoList(checkInfos) == 3){
-                    newList0.add(advice);
-                }else if(i == 1 && getHighestLevelFromCheckInfoList(checkInfos) == 2){
-                    newList1.add(advice);
-                }else if(i == 2 && getHighestLevelFromCheckInfoList(checkInfos) == 1){
-                    newList2.add(advice);
-                }else if(i == 3 && getHighestLevelFromCheckInfoList(checkInfos) == 0){
-                    newList3.add(advice);
-                }
+        for (Advice advice : advices) {
+            List<CheckInfo> checkInfos = advice.getCheckInfoList();
+            if(getHighestLevelFromCheckInfoList(checkInfos) == 3){
+                newList3.add(advice);
+            }else if(getHighestLevelFromCheckInfoList(checkInfos) == 2){
+                newList2.add(advice);
+            }else if(getHighestLevelFromCheckInfoList(checkInfos) == 1){
+                newList1.add(advice);
+            }else if(getHighestLevelFromCheckInfoList(checkInfos) == 0){
+                newList0.add(advice);
             }
         }
+
         List<Advice> finalList = new ArrayList<Advice>();
         sortSameLevel(newList3);
         for(Advice advice:newList3){
@@ -300,15 +299,15 @@ public class PrescCheckService {
                     Advice advice = tempList.get(l);
                     if(Long.parseLong(advice.getORDER_SUB_NO()) == min2){
                         //给成组的处方加上左侧方括号
-                        if(tempList.size() > 1){
-                            if(x == 0){
-                                advice.setDRUG_LO_NAME("┍ "+advice.getDRUG_LO_NAME());
-                            }
-                            if(x == tempList.size()-1){
-                                advice.setDRUG_LO_NAME("┕ "+advice.getDRUG_LO_NAME());
-                            }
-                            x++;
-                        }
+//                        if(tempList.size() > 1){
+//                            if(x == 0){
+//                                advice.setDRUG_LO_NAME("┍ "+advice.getDRUG_LO_NAME());
+//                            }
+//                            if(x == tempList.size()-1){
+//                                advice.setDRUG_LO_NAME("┕ "+advice.getDRUG_LO_NAME());
+//                            }
+//                            x++;
+//                        }
                         finalList.add(advice);
                         advice.setORDER_SUB_NO("-1");
                     }

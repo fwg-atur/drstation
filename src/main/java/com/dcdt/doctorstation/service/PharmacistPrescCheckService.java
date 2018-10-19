@@ -332,18 +332,16 @@ public class PharmacistPrescCheckService {
         if(prescInfos == null || prescInfos.size() <= 1){
             return prescInfos;
         }
-        for(int i=0;i<4;++i) {
-            for (PrescInfo prescInfo : prescInfos) {
-                List<CheckInfo> checkInfos = prescInfo.getCheckInfos();
-                if(i == 0 && getHighestLevelFromCheckInfoList(checkInfos) == 3){
-                    newList0.add(prescInfo);
-                }else if(i == 1 && getHighestLevelFromCheckInfoList(checkInfos) == 2){
-                    newList1.add(prescInfo);
-                }else if(i == 2 && getHighestLevelFromCheckInfoList(checkInfos) == 1){
-                    newList2.add(prescInfo);
-                }else if(i == 3 && getHighestLevelFromCheckInfoList(checkInfos) == 0){
-                    newList3.add(prescInfo);
-                }
+        for (PrescInfo prescInfo : prescInfos) {
+            List<CheckInfo> checkInfos = prescInfo.getCheckInfos();
+            if(getHighestLevelFromCheckInfoList(checkInfos) == 3){
+                newList3.add(prescInfo);
+            }else if(getHighestLevelFromCheckInfoList(checkInfos) == 2){
+                newList2.add(prescInfo);
+            }else if(getHighestLevelFromCheckInfoList(checkInfos) == 1){
+                newList1.add(prescInfo);
+            }else if(getHighestLevelFromCheckInfoList(checkInfos) == 0){
+                newList0.add(prescInfo);
             }
         }
         List<PrescInfo> finalList = new ArrayList<PrescInfo>();
