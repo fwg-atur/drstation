@@ -138,6 +138,7 @@ public class ParseXML {
             for(Object presInfoObject : checkOutputElement.getChildren("PresInfo")){
                 Element presInfoElement = (Element) presInfoObject;
                 PrescInfo prescInfo = new PrescInfo();
+                prescInfo.setGroup_id(presInfoElement.getAttributeValue("GROUP_ID"));
                 prescInfo.setOrder_id(presInfoElement.getAttributeValue("ORDER_ID"));
                 prescInfo.setOrder_sub_id(presInfoElement.getAttributeValue("ORDER_SUB_ID"));
                 prescInfo.setDrug_lo_id(presInfoElement.getAttributeValue("DRUG_LO_ID"));
@@ -303,6 +304,7 @@ public class ParseXML {
         for(Object presInfoObject : checkOutputElement.getChildren("PresInfo")){
             Element presInfoElement = (Element) presInfoObject;
             PrescInfo prescInfo = new PrescInfo();
+            prescInfo.setGroup_id(presInfoElement.getAttributeValue("GROUP_ID"));
             prescInfo.setOrder_id(presInfoElement.getAttributeValue("ORDER_ID"));
             prescInfo.setOrder_sub_id(presInfoElement.getAttributeValue("ORDER_SUB_ID"));
             prescInfo.setDrug_lo_id(presInfoElement.getAttributeValue("DRUG_LO_ID"));

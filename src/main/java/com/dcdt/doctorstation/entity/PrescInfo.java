@@ -6,6 +6,7 @@ import java.util.List;
  * Created by wtwang on 2018/3/17.
  */
 public class PrescInfo {
+    protected String group_id;
     protected String order_id;
     protected String order_sub_id;
     protected String drug_lo_id;
@@ -29,6 +30,14 @@ public class PrescInfo {
 //        PrescInfo ret = new PrescInfo(order_id,order_sub_id,drug_lo_id,drug_lo_name,checkInfos);
 //        return ret;
 //    }
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
 
     public String getOrder_id() {
         return order_id;

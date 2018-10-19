@@ -60,7 +60,7 @@
                     </textarea>
                 </form>
                 <p>
-                    <button onclick="testPharmacistCheck_CP()" class="btn btn-primary btn-large">检查 »</button>
+                    <button onclick="testPharmacistCheck(1)" class="btn btn-primary btn-large">检查 »</button>
                     <button onclick="testPharmacistCheckSilent_CP()" class="btn btn-primary btn-large">静默检查 »</button>
                     <%--<button onclick="testCheck(2);" class="btn btn-primary btn-large">提交处方 »</button>--%>
                 </p>

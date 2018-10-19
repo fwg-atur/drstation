@@ -151,6 +151,7 @@ public class PharmacistPrescCheckService {
 
         //调用函数比较两个对象中的医嘱
         List<PrescInfo> list = compareCheck(checkPresInput,check.getCheckPresOutput());
+//        List<PrescInfo> list = check.getCheckPresOutput().getPrescInfos();
 
         //将与传入的xml中医嘱匹配的审核结果重新赋值给对象
         check.getCheckPresOutput().setPrescInfos(sortCheckResult(list));
@@ -323,7 +324,11 @@ public class PharmacistPrescCheckService {
     }
 
     public List<PrescInfo> sortCheckResult(List<PrescInfo> prescInfos){
-        List<PrescInfo> newList = new ArrayList<PrescInfo>();
+        //newList存放：已经按照问题级别从高到低排序好的处方
+        List<PrescInfo> newList0 = new ArrayList<PrescInfo>();
+        List<PrescInfo> newList1 = new ArrayList<PrescInfo>();
+        List<PrescInfo> newList2 = new ArrayList<PrescInfo>();
+        List<PrescInfo> newList3 = new ArrayList<PrescInfo>();
         if(prescInfos == null || prescInfos.size() <= 1){
             return prescInfos;
         }
@@ -331,18 +336,109 @@ public class PharmacistPrescCheckService {
             for (PrescInfo prescInfo : prescInfos) {
                 List<CheckInfo> checkInfos = prescInfo.getCheckInfos();
                 if(i == 0 && getHighestLevelFromCheckInfoList(checkInfos) == 3){
-                    newList.add(prescInfo);
+                    newList0.add(prescInfo);
                 }else if(i == 1 && getHighestLevelFromCheckInfoList(checkInfos) == 2){
-                    newList.add(prescInfo);
+                    newList1.add(prescInfo);
                 }else if(i == 2 && getHighestLevelFromCheckInfoList(checkInfos) == 1){
-                    newList.add(prescInfo);
+                    newList2.add(prescInfo);
                 }else if(i == 3 && getHighestLevelFromCheckInfoList(checkInfos) == 0){
-                    newList.add(prescInfo);
+                    newList3.add(prescInfo);
                 }
             }
         }
-        return newList;
+        List<PrescInfo> finalList = new ArrayList<PrescInfo>();
+        sortSameLevel(newList3);
+        for(PrescInfo prescInfo:newList3){
+            finalList.add(prescInfo);
+        }
+        sortSameLevel(newList2);
+        for(PrescInfo prescInfo:newList2){
+            finalList.add(prescInfo);
+        }
+        sortSameLevel(newList1);
+        for(PrescInfo prescInfo:newList1){
+            finalList.add(prescInfo);
+        }
+        sortSameLevel(newList0);
+        for(PrescInfo prescInfo:newList0){
+            finalList.add(prescInfo);
+        }
+        return finalList;
 
+
+    }
+
+    //对同一级别的问题按照order_id排序
+    public List<PrescInfo> sortSameLevel(List<PrescInfo> newList){
+        //finalList存放：按照order_id从小到到排列,按照order_sub_id从小到大排列
+        List<PrescInfo> finalList = new ArrayList<PrescInfo>();
+
+        //min存放：order_id一轮的最小值
+        long min = -1;
+        for(int i=0;i<newList.size();++i){
+            //本循环的目的：取到一轮遍历中order_id的最小值
+            for(int j=0;j<newList.size();++j){
+                PrescInfo prescInfo = newList.get(j);
+                //order_id为-1表示已经有序加到finalList中，不需要再处理
+                if("-1".equals(prescInfo.getOrder_id())){
+                    continue;
+                }
+                //取一轮遍历中order_id的最小值
+                if(min == -1 || Long.parseLong(prescInfo.getOrder_id()) < min){
+                    min = Long.parseLong(prescInfo.getOrder_id());
+                }
+            }
+            //tempList存放：order_id等于这次遍历最小值的处方
+            List<PrescInfo> tempList = new ArrayList<PrescInfo>();
+            for(int k=0;k<newList.size();++k){
+                PrescInfo prescInfo = newList.get(k);
+                if(Long.parseLong(prescInfo.getOrder_id()) == min){
+                    tempList.add(prescInfo);
+                }
+            }
+
+            //min2存放：order_id等于这次遍历最小值处方中的order_sub_id最小值
+            long min2 = -1;
+            int x = 0;
+            for(int m=0;m<tempList.size();++m){
+                //本循环的目的：取到相同order_id的order_sub_id最小值
+                for(int n=0;n<tempList.size();++n){
+                    PrescInfo prescInfo = tempList.get(n);
+                    //order_sub_id为-1表示已经有序加到finalList中，不需要再处理
+                    if("-1".equals(prescInfo.getOrder_sub_id())){
+                        continue;
+                    }
+                    //取一轮遍历中order_sub_id的最小值
+                    if(min2 == -1 || Long.parseLong(prescInfo.getOrder_sub_id()) < min2){
+                        min2 = Long.parseLong(prescInfo.getOrder_sub_id());
+                    }
+                }
+                //将order_sub_id等于最小值的处方加入到finalList中，并将order_sub_id改为-1表明已经处理过
+                for(int l=0;l<tempList.size();++l){
+                    PrescInfo prescInfo = tempList.get(l);
+                    if(Long.parseLong(prescInfo.getOrder_sub_id()) == min2){
+                        //给成组的处方加上左侧方括号
+                        if(tempList.size() > 1){
+                            if(x == 0){
+                                prescInfo.setDrug_lo_name("┍ "+prescInfo.getDrug_lo_name());
+                            }
+                            if(x == tempList.size()-1){
+                                prescInfo.setDrug_lo_name("┕ "+prescInfo.getDrug_lo_name());
+                            }
+                            x++;
+                        }
+                        finalList.add(prescInfo);
+                        prescInfo.setOrder_sub_id("-1");
+                    }
+                }
+                //将min2改为-1，进行下一次寻找order_sub_id的最小值
+                min2 = -1;
+            }
+            //将min改为-1，进行下一次寻找order_id的最小值
+            min = -1;
+        }
+
+        return finalList;
     }
 
     public int getHighestLevelFromCheckInfoList(List<CheckInfo> checkInfos){

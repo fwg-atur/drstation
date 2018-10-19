@@ -207,7 +207,10 @@ public class PrescCheckService {
     }
 
     public List<Advice> sortCheckResult(List<Advice> advices){
-        List<Advice> newList = new ArrayList<Advice>();
+        List<Advice> newList0 = new ArrayList<Advice>();
+        List<Advice> newList1 = new ArrayList<Advice>();
+        List<Advice> newList2 = new ArrayList<Advice>();
+        List<Advice> newList3 = new ArrayList<Advice>();
         if(advices == null || advices.size() <= 1){
             return advices;
         }
@@ -215,18 +218,109 @@ public class PrescCheckService {
             for (Advice advice : advices) {
                 List<CheckInfo> checkInfos = advice.getCheckInfoList();
                 if(i == 0 && getHighestLevelFromCheckInfoList(checkInfos) == 3){
-                    newList.add(advice);
+                    newList0.add(advice);
                 }else if(i == 1 && getHighestLevelFromCheckInfoList(checkInfos) == 2){
-                    newList.add(advice);
+                    newList1.add(advice);
                 }else if(i == 2 && getHighestLevelFromCheckInfoList(checkInfos) == 1){
-                    newList.add(advice);
+                    newList2.add(advice);
                 }else if(i == 3 && getHighestLevelFromCheckInfoList(checkInfos) == 0){
-                    newList.add(advice);
+                    newList3.add(advice);
                 }
             }
         }
-        return newList;
+        List<Advice> finalList = new ArrayList<Advice>();
+        sortSameLevel(newList3);
+        for(Advice advice:newList3){
+            finalList.add(advice);
+        }
+        sortSameLevel(newList2);
+        for(Advice advice:newList2){
+            finalList.add(advice);
+        }
+        sortSameLevel(newList1);
+        for(Advice advice:newList1){
+            finalList.add(advice);
+        }
+        sortSameLevel(newList0);
+        for(Advice advice:newList0){
+            finalList.add(advice);
+        }
+        return finalList;
 
+    }
+
+    //对同一级别的问题按照order_no排序
+    public List<Advice> sortSameLevel(List<Advice> newList){
+        //finalList存放：按照order_no从小到到排列,按照order_sub_no从小到大排列
+        List<Advice> finalList = new ArrayList<Advice>();
+
+        //min存放：order_no一轮的最小值
+        long min = -1;
+        for(int i=0;i<newList.size();++i){
+            //本循环的目的：取到一轮遍历中order_no的最小值
+            for(int j=0;j<newList.size();++j){
+                Advice advice = newList.get(j);
+                //order_no为-1表示已经有序加到finalList中，不需要再处理
+                if("-1".equals(advice.getORDER_NO())){
+                    continue;
+                }
+                //取一轮遍历中order_no的最小值
+                if(min == -1 || Long.parseLong(advice.getORDER_NO()) < min){
+                    min = Long.parseLong(advice.getORDER_NO());
+                }
+            }
+            //tempList存放：order_no等于这次遍历最小值的处方
+            List<Advice> tempList = new ArrayList<Advice>();
+            for(int k=0;k<newList.size();++k){
+                Advice advice = newList.get(k);
+                if(Long.parseLong(advice.getORDER_NO()) == min){
+                    tempList.add(advice);
+                }
+            }
+
+            //min2存放：order_no等于这次遍历最小值处方中的order_sub_no最小值
+            long min2 = -1;
+            int x = 0;
+            for(int m=0;m<tempList.size();++m){
+                //本循环的目的：取到相同order_no的order_sub_no最小值
+                for(int n=0;n<tempList.size();++n){
+                    Advice advice = tempList.get(n);
+                    //order_sub_no为-1表示已经有序加到finalList中，不需要再处理
+                    if("-1".equals(advice.getORDER_SUB_NO())){
+                        continue;
+                    }
+                    //取一轮遍历中order_sub_no的最小值
+                    if(min2 == -1 || Long.parseLong(advice.getORDER_SUB_NO()) < min2){
+                        min2 = Long.parseLong(advice.getORDER_SUB_NO());
+                    }
+                }
+
+                //将order_sub_no等于最小值的处方加入到finalList中，并将order_sub_no改为-1表明已经处理过
+                for(int l=0;l<tempList.size();++l){
+                    Advice advice = tempList.get(l);
+                    if(Long.parseLong(advice.getORDER_SUB_NO()) == min2){
+                        //给成组的处方加上左侧方括号
+                        if(tempList.size() > 1){
+                            if(x == 0){
+                                advice.setDRUG_LO_NAME("┍ "+advice.getDRUG_LO_NAME());
+                            }
+                            if(x == tempList.size()-1){
+                                advice.setDRUG_LO_NAME("┕ "+advice.getDRUG_LO_NAME());
+                            }
+                            x++;
+                        }
+                        finalList.add(advice);
+                        advice.setORDER_SUB_NO("-1");
+                    }
+                }
+                //将min2改为-1，进行下一次寻找order_sub_no的最小值
+                min2 = -1;
+            }
+            //将min改为-1，进行下一次寻找order_no的最小值
+            min = -1;
+        }
+
+        return finalList;
     }
 
     public int getHighestLevelFromCheckInfoList(List<CheckInfo> checkInfos){
