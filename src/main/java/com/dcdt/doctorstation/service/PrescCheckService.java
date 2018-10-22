@@ -273,6 +273,7 @@ public class PrescCheckService {
             for(int k=0;k<newList.size();++k){
                 Advice advice = newList.get(k);
                 if(Long.parseLong(advice.getORDER_NO()) == min){
+                    advice.setORDER_NO("-1");
                     tempList.add(advice);
                 }
             }
@@ -297,17 +298,25 @@ public class PrescCheckService {
                 //将order_sub_no等于最小值的处方加入到finalList中，并将order_sub_no改为-1表明已经处理过
                 for(int l=0;l<tempList.size();++l){
                     Advice advice = tempList.get(l);
+                    if("-1".equals(advice.getORDER_SUB_NO())){
+                        continue;
+                    }
                     if(Long.parseLong(advice.getORDER_SUB_NO()) == min2){
                         //给成组的处方加上左侧方括号
-//                        if(tempList.size() > 1){
-//                            if(x == 0){
-//                                advice.setDRUG_LO_NAME("┍ "+advice.getDRUG_LO_NAME());
-//                            }
-//                            if(x == tempList.size()-1){
-//                                advice.setDRUG_LO_NAME("┕ "+advice.getDRUG_LO_NAME());
-//                            }
-//                            x++;
-//                        }
+                        if(tempList.size() > 1){
+                            if(x == 0){
+                                advice.setKh("┍ ");
+                            }
+                            else if(x == tempList.size()-1){
+                                advice.setKh("┕ ");
+                            }
+                            else{
+                                advice.setKh("");
+                            }
+                            x++;
+                        }else{
+                            advice.setKh("");
+                        }
                         finalList.add(advice);
                         advice.setORDER_SUB_NO("-1");
                     }

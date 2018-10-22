@@ -18,6 +18,8 @@ public class PrescInfo {
     protected String ganyu_info;
     protected String medication_flag;
 
+    protected String kh;
+
 //    public PrescInfo(String order_id,String order_sub_id,String drug_lo_id,String drug_lo_name,List<CheckInfo> checkInfos){
 //        this.order_id = order_id;
 //        this.order_sub_id = order_sub_id;
@@ -101,5 +103,13 @@ public class PrescInfo {
 
     public void setMedication_flag(String medication_flag) {
         this.medication_flag = medication_flag;
+    }
+
+    public String getKh() {
+        return kh;
+    }
+
+    public void setKh(String kh) {
+        this.kh = kh;
     }
 }

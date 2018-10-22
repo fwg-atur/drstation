@@ -361,6 +361,7 @@
                     <table class="main-table-head">
                         <thead>
                         <tr>
+                            <th style="width: 20px;"></th>
                             <th style="width: 140px">药品名称</th>
                             <th>适应症</th>
                             <th>禁忌症<br>慎用症</th>
@@ -381,6 +382,7 @@
                         <tbody>
                         <c:forEach var="item" items="${pharmacistCheckResult.checkPresOutput.prescInfos}">
                             <tr>
+                                <td style="width: 20px">${item.kh}</td>
                                 <td style="width: 132px;">
                                     <a onclick="openDiscribLinked('${item.drug_lo_id}')">${item.drug_lo_name}</a>
                                 </td>
@@ -461,7 +463,7 @@
                     var checkInfo = checkInfoList[j];
                     if (checkInfo.NAME == problemType[k]) {
                         var problemLevel = parseInt(checkInfo.REGULAR_WARNING_LEVEL) + 1;
-                        var $chooseTd = $(".main-table tbody").children().eq(i).children().eq(k + 1);
+                        var $chooseTd = $(".main-table tbody").children().eq(i).children().eq(k + 2);
                         //如果问题等级是-1（拦截）或者问题等级大于当前等级，则更改图标
                         if (problemLevel == 0 || curProblemLevel < problemLevel) {
                             var className = problemLevelClassName[problemLevel];
@@ -488,7 +490,7 @@
         var row = data.row;
         var col = data.col;
 
-        var drug_name = $(".main-table tbody").children().eq(row).children().eq(0).children().html().replace(' ', '');
+        var drug_name = $(".main-table tbody").children().eq(row).children().eq(1).children().html().replace(' ', '');
         var error_name = problemType[col];
         $("#error_detail").html('');
         var tempHtml = "<thead id='problemName'><tr><th>" + error_name + "</th></tr></thead>";

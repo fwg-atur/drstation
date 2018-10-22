@@ -43,6 +43,8 @@ public class Advice {
     private String BAK_05;
     private String anti_drug_register;
 
+    private String kh;
+
     public Advice() {
 
     }
@@ -370,5 +372,13 @@ public class Advice {
 
     public void setAnti_drug_register(String anti_drug_register) {
         this.anti_drug_register = anti_drug_register;
+    }
+
+    public String getKh() {
+        return kh;
+    }
+
+    public void setKh(String kh) {
+        this.kh = kh;
     }
 }

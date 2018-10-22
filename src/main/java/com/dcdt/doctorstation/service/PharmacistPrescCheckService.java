@@ -414,16 +414,24 @@ public class PharmacistPrescCheckService {
                 //将order_sub_id等于最小值的处方加入到finalList中，并将order_sub_id改为-1表明已经处理过
                 for(int l=0;l<tempList.size();++l){
                     PrescInfo prescInfo = tempList.get(l);
+                    if("-1".equals(prescInfo.getOrder_sub_id())){
+                        continue;
+                    }
                     if(Long.parseLong(prescInfo.getOrder_sub_id()) == min2){
                         //给成组的处方加上左侧方括号
                         if(tempList.size() > 1){
                             if(x == 0){
-                                prescInfo.setDrug_lo_name("┍ "+prescInfo.getDrug_lo_name());
+                                prescInfo.setKh("┍ ");
                             }
-                            if(x == tempList.size()-1){
-                                prescInfo.setDrug_lo_name("┕ "+prescInfo.getDrug_lo_name());
+                            else if(x == tempList.size()-1){
+                                prescInfo.setKh("┕ ");
+                            }
+                            else{
+                                prescInfo.setKh("");
                             }
                             x++;
+                        }else{
+                            prescInfo.setKh("");
                         }
                         finalList.add(prescInfo);
                         prescInfo.setOrder_sub_id("-1");
