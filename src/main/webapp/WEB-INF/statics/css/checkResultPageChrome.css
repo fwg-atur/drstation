@@ -176,7 +176,7 @@ table.main-table td {
 .head-top {
     color: #FFFFFF;
     height: 40px;
-    width: 70%;
+    width: 80%;
     margin: auto;
     background: url(http://localhost:80/DCStation/image/titleTJJK_doc.png) no-repeat center;
 }
@@ -195,7 +195,7 @@ table.main-table td {
     width: 220px;
     height: 30px;
     padding-top: 10px;
-    margin-left: 40px;
+    margin-left: 95px;
 }
 
 #error_detail th {

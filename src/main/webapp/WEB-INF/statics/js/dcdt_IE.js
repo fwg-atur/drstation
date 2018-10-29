@@ -70,7 +70,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！")
+        alert("请求服务超时！");
         return -2;
     }
     if(xmlhttp) {
@@ -272,7 +272,7 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！")
+        alert("请求服务超时！");
         return -2;
     }
     if(xmlhttp) {
@@ -336,7 +336,7 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！")
+        alert("请求服务超时！");
         return -2;
     }
     if(xmlhttp) {
@@ -446,7 +446,7 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！")
+        alert("请求服务超时！");
         return -2;
     }
     if(xmlhttp) {
@@ -510,7 +510,7 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！")
+        alert("请求服务超时！");
         return -2;
     }
     if(xmlhttp) {

@@ -84,7 +84,20 @@ function getRetValUrl() {
 function checkIsQuit() {
     var url = getRetValUrl();
     var data = 'presId=' + presId;
-    var checkData = sendAjaxRequestForDoc(data, url);
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send(data);
+
+    var checkData = xmlhttp.responseText;
 
     checkData = eval("(" + checkData + ")");
 
@@ -132,7 +145,7 @@ function sendAjaxRequestForDoc(data, url) {
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！")
+        alert("请求服务超时！");
         return -2;
     }
     if(xmlhttp) {
@@ -168,7 +181,7 @@ function sendAjaxRequestForPhar(data, url) {
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！")
+        alert("请求服务超时！");
         return -2;
     }
     if(xmlhttp) {
@@ -360,8 +373,19 @@ function drawPharmacistCheckResultElem(url) {
 function pharmacistCheckIsQuit() {
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/getRetValue";
     var data = 'presId=' + pharmacist_presId;
-    var checkData = sendAjaxRequestForPhar(data, url);
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send(data);
 
+    var checkData = xmlhttp.responseText;
     checkData = eval("(" + checkData + ")");
 
     if (checkData == 0) {
