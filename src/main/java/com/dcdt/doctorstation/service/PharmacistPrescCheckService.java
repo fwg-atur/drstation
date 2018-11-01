@@ -333,7 +333,7 @@ public class PharmacistPrescCheckService {
             return prescInfos;
         }
         for (PrescInfo prescInfo : prescInfos) {
-            List<CheckInfo> checkInfos = prescInfo.getCheckInfos();
+            List<CheckInfo> checkInfos = handleCheckInfos(prescInfo.getCheckInfos());
             if(getHighestLevelFromCheckInfoList(checkInfos) == 3){
                 newList3.add(prescInfo);
             }else if(getHighestLevelFromCheckInfoList(checkInfos) == 2){
@@ -364,6 +364,17 @@ public class PharmacistPrescCheckService {
         return finalList;
 
 
+    }
+
+    //过滤药师站的用药监测问题
+    public List<CheckInfo> handleCheckInfos(List<CheckInfo> list){
+        List<CheckInfo> res = new ArrayList<CheckInfo>();
+        for(CheckInfo checkInfo : list){
+            if(!"用药监测".equals(checkInfo.getNAME())){
+                res.add(checkInfo);
+            }
+        }
+        return res;
     }
 
     //对同一级别的问题按照order_id排序

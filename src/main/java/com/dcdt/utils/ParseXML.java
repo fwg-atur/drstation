@@ -480,6 +480,9 @@ public class ParseXML {
         for(PrescInfo prescInfo : prescInfos){
             if(prescInfo.getCheckInfos() != null && prescInfo.getCheckInfos().size() != 0){
                 for(CheckInfo checkInfo : prescInfo.getCheckInfos()){
+                    if("用药监测".equals(checkInfo.getNAME())){
+                        continue;
+                    }
                     if("慎用".equals(checkInfo.getWARNING_LEVEL()) && level == 0){
                         level = 1;
                     }else if(("禁忌".equals(checkInfo.getWARNING_LEVEL()) || "禁用".equals(checkInfo.getWARNING_LEVEL())) && (level == 0 || level == 1)){
