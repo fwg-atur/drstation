@@ -63,7 +63,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     }
 
     var t1;
-    function adduserok(xmlhttp) {
+    function adduserok() {
         if (t1)
             clearTimeout(t1);
     }
@@ -123,6 +123,11 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
      **/
 
     if (tag == 2 || check.hasProblem == 0) {
+        if(tag == 2){
+            if(t1){
+                clearTimeout(t1);
+            }
+        }
         return 0;
     }
     else if (check.hasProblem == 1) {
@@ -277,7 +282,7 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
     }
     if(xmlhttp) {
         ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", data, adduserok);
-        t1 = setTimeout(connecttoFail, timeStrapDoc);
+        t1 = setTimeout(connecttoFail, timeStrapPhar);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -341,7 +346,7 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     }
     if(xmlhttp) {
         ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", data, adduserok);
-        t1 = setTimeout(connecttoFail, timeStrapDoc);
+        t1 = setTimeout(connecttoFail, timeStrapPhar);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -451,7 +456,7 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
     }
     if(xmlhttp) {
         ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck_CP", data, adduserok);
-        t1 = setTimeout(connecttoFail, timeStrapDoc);
+        t1 = setTimeout(connecttoFail, timeStrapPhar);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -515,7 +520,7 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
     }
     if(xmlhttp) {
         ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheckSilent_CP", data, adduserok);
-        t1 = setTimeout(connecttoFail, timeStrapDoc);
+        t1 = setTimeout(connecttoFail, timeStrapPhar);
     }else {
         alert("Init xmlhttprequest fail");
     }

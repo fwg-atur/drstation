@@ -50,6 +50,7 @@ var global_back_func_name;
 var global_back_func_args;
 var presId = null;
 var checkIsQuitState = null;
+var t1;
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
@@ -173,7 +174,6 @@ function sendAjaxRequestForPhar(data, url) {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    var t1;
     function adduserok(xmlhttp) {
         if (t1)
             clearTimeout(t1);
@@ -214,6 +214,9 @@ function DoctorCheckForChrome(tag, xml) {
 
     var check = eval("(" + checkData + ")");
     if (tag == 2) {
+        if(t1){
+            clearTimeout(t1);
+        }
         return 0;
     }
     if (check.hasProblem == 0) {
