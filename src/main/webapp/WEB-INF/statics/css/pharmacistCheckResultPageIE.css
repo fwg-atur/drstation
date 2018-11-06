@@ -167,13 +167,24 @@ table.main-table td {
     /*background-color: #f3fbfd;*/
 }
 
-.down-detail-content {
+.down-detail-content-left {
     color: #333333;
     font-size: 14px;
     /*font-family: SourceHanSansCN-Normal, serif;*/
     padding: 40px 10px;
     _padding: 20px 10px;
     /*height: 20px;*/
+    _height: 30px;
+    overflow: auto;
+}
+
+.down-detail-content-right {
+    color: #333333;
+    font-size: 14px;
+    /*font-family: SourceHanSansCN-Normal, serif;*/
+    padding: 40px 10px;
+    _padding: 20px 10px;
+    height: 20px;
     _height: 30px;
     overflow: auto;
 }

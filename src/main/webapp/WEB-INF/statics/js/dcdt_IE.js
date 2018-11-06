@@ -293,7 +293,10 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
-    if (tag == 2 || check.hasProblem == 0) {
+    if (check.hasProblem == 0) {
+        if(t1){
+            clearTimeout(t1);
+        }
         return 0;
     }else if(check.hasProblem == -2){
         alert("请求中间层服务异常！");
@@ -310,6 +313,9 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
                 'dialogWidth=' + iWidth +
                 ';dialogHeight=' + iHeight +
                 ';center=yes;help=yes');
+        }
+        if(t1){
+            clearTimeout(t1);
         }
     }
 
@@ -357,19 +363,31 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
-    if (tag == 2 || check.hasProblem == 0) {
+    if (check.hasProblem == 0) {
         // alert("返回值为：0");
+        if(t1){
+            clearTimeout(t1);
+        }
         return 0;
     }else if(check.hasProblem == 1) {
         // alert("返回值为：1");
+        if(t1){
+            clearTimeout(t1);
+        }
         return 1;
     }
     else if(check.hasProblem == 2) {
         // alert("返回值为：2");
+        if(t1){
+            clearTimeout(t1);
+        }
         return 2;
     }
     else if (check.hasProblem == -1) {
         // alert("返回值为：-1");
+        if(t1){
+            clearTimeout(t1);
+        }
         return -1;
     }else if(check.hasProblem == -2){
         alert("请求中间层服务异常！");
@@ -468,6 +486,9 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
     if (check.hasProblem == 0) {
+        if(t1){
+            clearTimeout(t1);
+        }
         return 0;
     }else if(check.hasProblem == -2){
         alert("请求中间层服务异常！");
@@ -484,6 +505,9 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
                 'dialogWidth=' + iWidth +
                 ';dialogHeight=' + iHeight +
                 ';center=yes;help=yes');
+        }
+        if(t1){
+            clearTimeout(t1);
         }
     }
 
@@ -532,17 +556,29 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
     if (check.hasProblem == 0) {
+        if(t1){
+            clearTimeout(t1);
+        }
         alert("返回值为：0");
         return 0;
     }else if(check.hasProblem == 1) {
+        if(t1){
+            clearTimeout(t1);
+        }
         alert("返回值为：1");
         return 1;
     }
     else if(check.hasProblem == 2) {
+        if(t1){
+            clearTimeout(t1);
+        }
         alert("返回值为：2");
         return 2;
     }
     else if (check.hasProblem == -1) {
+        if(t1){
+            clearTimeout(t1);
+        }
         alert("返回值为：-1");
         return -1;
     }else if(check.hasProblem == -2){
