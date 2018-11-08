@@ -178,7 +178,7 @@ public class ParseXML {
 
             Object checkPharmacistObject = checkElement.getChild("CheckPharmacist");
             Element checkPharmacistElement = (Element) checkPharmacistObject;
-            checkPharmacist.setPharmacistCheck(checkPharmacistElement.getText());
+            checkPharmacist.setPharmacistCheck(checkPharmacistElement.getValue().replaceAll("\\t","<br/>"));
 
         }
     }
@@ -347,7 +347,7 @@ public class ParseXML {
 
         Object checkPharmacistObject = root.getChild("CheckPharmacist");
         Element checkPharmacistElement = (Element) checkPharmacistObject;
-        checkPharmacist.setPharmacistCheck(checkPharmacistElement.getText());
+        checkPharmacist.setPharmacistCheck(checkPharmacistElement.getValue().replaceAll("\\t","<br/>"));
     }
 
 
