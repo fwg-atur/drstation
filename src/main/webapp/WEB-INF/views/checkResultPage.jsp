@@ -716,7 +716,7 @@
                         <thead>
                         <tr>
                             <th style="width: 20px"></th>
-                            <th id="drug_name_th" style="width: 132px">药品名称</th>
+                            <th id="drug_name_th" style="width: 180px">药品名称</th>
                             <th>适应症</th>
                             <th>禁用症<br>慎用症</th>
                             <th>用法<br>用量</th>
@@ -725,7 +725,7 @@
                             <th>配伍<br>禁忌</th>
                             <th>特殊<br>人群</th>
                             <th>药敏</th>
-                            <th style="width: 80px">用药<br>管理</th>
+                            <th style="width: 120px">用药<br>管理</th>
                             <th>用药<br>监测</th>
                         </tr>
                         </thead>
@@ -737,7 +737,7 @@
                         <c:forEach var="item" items="${checkResult.advices}">
                             <tr>
                                 <td style="width: 20px">${item.kh}</td>
-                                <td id="drug_name_td" style="width: 132px;_width:127px">
+                                <td id="drug_name_td" style="width: 178px;_width:127px">
                                     <a onclick="openDescribLinked('${item.DRUG_LO_ID}')">
                                             ${item.DRUG_LO_NAME}
                                     </a>
@@ -750,7 +750,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td style="width: 80px;"></td>
+                                <td style="width: 120px;"></td>
                                 <td></td>
                             </tr>
                         </c:forEach>

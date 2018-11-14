@@ -18,7 +18,7 @@ public class HttpUtil {
     static int proxyPort = 8087;
     //添加一个日志器
     private static final Logger logger = Logger.getLogger(HttpUtil.class);
-    static int timeOut = 5000;
+    static int timeOut = 10000;
     /**
      * 编码
      *

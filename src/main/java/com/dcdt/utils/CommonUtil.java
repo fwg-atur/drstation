@@ -26,7 +26,7 @@ public class CommonUtil {
 
     public static String changeXMLWithPattern(String xml, String presIdWithTime) {
         String s = xml.replaceAll("TAG=\"1\"", "TAG=\"3\"");
-        s = s.replaceAll("PRES_ID=\".*?\" ", String.format("PRES_ID=\"%s\" ", presIdWithTime));
+        s = s.replaceAll(" PRES_ID=\".*?\" ", String.format(" PRES_ID=\"%s\" ", presIdWithTime));
 //        s = s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
         return s;

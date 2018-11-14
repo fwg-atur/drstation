@@ -61,7 +61,7 @@
                 </form>
                 <p>
                     <button onclick="testPharmacistCheck(1)" class="btn btn-primary btn-large">检查 »</button>
-                    <button onclick="testPharmacistCheckSilent_CP()" class="btn btn-primary btn-large">静默检查 »</button>
+                    <button onclick="testPharmacistCheckSilent(1)" class="btn btn-primary btn-large">静默检查 »</button>
                     <%--<button onclick="testCheck(2);" class="btn btn-primary btn-large">提交处方 »</button>--%>
                 </p>
             </div>
@@ -91,8 +91,8 @@
 </div>
 </body>
 
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js"></script>--%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js"></script>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_Chrome.js"></script>--%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
 <%--<script type="text/javascript"--%>
 <%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>

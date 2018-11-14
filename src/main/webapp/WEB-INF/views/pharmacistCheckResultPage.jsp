@@ -362,7 +362,7 @@
                         <thead>
                         <tr>
                             <th style="width: 20px;"></th>
-                            <th style="width: 140px">药品名称</th>
+                            <th style="width: 180px">药品名称</th>
                             <th>适应症</th>
                             <th>禁忌症<br>慎用症</th>
                             <th>用法<br>用量</th>
@@ -372,7 +372,7 @@
                             <th>特殊<br>人群</th>
                             <th>药敏</th>
                             <th>医院<br>管理</th>
-                            <th style="width: 82px">处方<br>ID</th>
+                            <th style="width: 120px">处方<br>ID</th>
                         </tr>
                         </thead>
                     </table>
@@ -383,7 +383,7 @@
                         <c:forEach var="item" items="${pharmacistCheckResult.checkPresOutput.prescInfos}">
                             <tr>
                                 <td style="width: 20px">${item.kh}</td>
-                                <td style="width: 132px;">
+                                <td style="width: 180px;">
                                     <a onclick="openDiscribLinked('${item.drug_lo_id}')">${item.drug_lo_name}</a>
                                 </td>
                                 <td></td>
@@ -395,7 +395,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td style="width: 80px;word-wrap: break-word;word-break: break-all">${item.order_id}</td>
+                                <td style="width: 120px;word-wrap: break-word;word-break: break-all">${item.order_id}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -407,7 +407,7 @@
                 <div class="down-detail-info left-area">
                     <div class="head-info-sm"><p>干预操作说明</p></div>
                     <div class="down-detail-content-left" style="margin-top: -30px">
-                        实施干预步骤：1）鼠标左键单击要干预的药品的问题；2）点击“汇总”按钮；3）如果有多个问题要干预，则重复步骤1）和2）；4）点击“实施干预”按钮。
+                        实施干预步骤：<br/>①鼠标左键单击要干预的药品的问题；<br/> ②点击“汇总”按钮；<br/> ③如果有多个问题要干预，则重复步骤①和②；<br/>④点击“实施干预”按钮。
                     </div>
                 </div>
                 <div class="down-detail-info right-area">

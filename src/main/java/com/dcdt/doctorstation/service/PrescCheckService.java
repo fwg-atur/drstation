@@ -286,6 +286,10 @@ public class PrescCheckService {
                 for(int n=0;n<tempList.size();++n){
                     Advice advice = tempList.get(n);
                     //order_sub_no为-1表示已经有序加到finalList中，不需要再处理
+                    if("".equals(advice.getORDER_SUB_NO())){
+                        finalList.add(advice);
+                        continue;
+                    }
                     if("-1".equals(advice.getORDER_SUB_NO())){
                         continue;
                     }
@@ -298,7 +302,7 @@ public class PrescCheckService {
                 //将order_sub_no等于最小值的处方加入到finalList中，并将order_sub_no改为-1表明已经处理过
                 for(int l=0;l<tempList.size();++l){
                     Advice advice = tempList.get(l);
-                    if("-1".equals(advice.getORDER_SUB_NO())){
+                    if("-1".equals(advice.getORDER_SUB_NO()) || "".equals(advice.getORDER_SUB_NO())){
                         continue;
                     }
                     if(Long.parseLong(advice.getORDER_SUB_NO()) == min2){

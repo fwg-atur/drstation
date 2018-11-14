@@ -15,10 +15,11 @@
     padding-top: 10px;
     width: 100%;
     clear: both;
+    margin-left: -45px;
 }
 
 .table-area-content {
-    width: 960px;
+    width: 1050px;
     height: 200px;
     _height: 180px;
     /*margin-left: 55px;*/
@@ -28,7 +29,7 @@
 }
 
 table.main-table {
-    width: 890px;
+    width: 980px;
     border: 1px #d0d2d1;
     border-collapse: collapse;
     margin-left: 55px;
@@ -37,7 +38,7 @@ table.main-table {
 table.main-table-head {
     border: 1px #d0d2d1;
     border-collapse: collapse;
-    width: 890px;
+    width: 980px;
     height: 40px;
     margin-left: 55px;
 }
@@ -122,10 +123,10 @@ table.main-table td {
 
 .detail-info {
     margin-top: 5px;
-    width: 438px;
+    width: 480px;
     height: 200px;
     _height: 220px;
-    /*background-color: #f3fbfd;*/
+    background-color: #ffffff;
 }
 
 .detail-content {
@@ -140,7 +141,7 @@ table.main-table td {
 }
 
 .info-area {
-    width: 890px;
+    width: 980px;
     margin: 0 auto;
 }
 
