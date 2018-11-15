@@ -36,6 +36,9 @@ public class PharmacistPrescCheckService {
     @Value("${cpPharmacistCheckUrl}")
     private String cpPharmacistCheckUrl;
 
+    @Value("${orderNoFlag}")
+    private String orderNoFlag;
+
     private CacheService cacheService;
 
     private PharmacistInfo pharmacistInfo;
@@ -384,20 +387,30 @@ public class PharmacistPrescCheckService {
             //本循环的目的：取到一轮遍历中order_id的最小值
             for(int j=0;j<newList.size();++j){
                 PrescInfo prescInfo = newList.get(j);
-                //order_id为-1表示已经有序加到finalList中，不需要再处理
-                if("-1".equals(prescInfo.getOrder_id())){
+                //order_id_flag为true表示已经有序加到finalList中，不需要再处理
+                if(prescInfo.isOrder_id_flag() == true){
                     continue;
                 }
+                //对order_id中包含字母的处理
+                String n_order_id = prescInfo.getOrder_id();
+                if("1".equals(orderNoFlag)){
+                    n_order_id = n_order_id.substring(1,n_order_id.length());
+                }
                 //取一轮遍历中order_id的最小值
-                if(min == -1 || Long.parseLong(prescInfo.getOrder_id()) < min){
-                    min = Long.parseLong(prescInfo.getOrder_id());
+                if(min == -1 || Long.parseLong(n_order_id) < min){
+                    min = Long.parseLong(n_order_id);
                 }
             }
             //tempList存放：order_id等于这次遍历最小值的处方
             List<PrescInfo> tempList = new ArrayList<PrescInfo>();
             for(int k=0;k<newList.size();++k){
                 PrescInfo prescInfo = newList.get(k);
-                if(Long.parseLong(prescInfo.getOrder_id()) == min){
+                String n_order_id = prescInfo.getOrder_id();
+                if("1".equals(orderNoFlag)){
+                    n_order_id = n_order_id.substring(1,n_order_id.length());
+                }
+                if(Long.parseLong(n_order_id) == min){
+                    prescInfo.setOrder_id_flag(true);
                     tempList.add(prescInfo);
                 }
             }
@@ -409,12 +422,12 @@ public class PharmacistPrescCheckService {
                 //本循环的目的：取到相同order_id的order_sub_id最小值
                 for(int n=0;n<tempList.size();++n){
                     PrescInfo prescInfo = tempList.get(n);
-                    //order_sub_id为-1表示已经有序加到finalList中，不需要再处理
+                    //order_sub_id_flag为true表示已经有序加到finalList中，不需要再处理
                     if("".equals(prescInfo.getOrder_sub_id())){
                         finalList.add(prescInfo);
                         continue;
                     }
-                    if("-1".equals(prescInfo.getOrder_sub_id())){
+                    if(prescInfo.isOrder_sub_id_flag() == true){
                         continue;
                     }
                     //取一轮遍历中order_sub_id的最小值
@@ -422,10 +435,10 @@ public class PharmacistPrescCheckService {
                         min2 = Long.parseLong(prescInfo.getOrder_sub_id());
                     }
                 }
-                //将order_sub_id等于最小值的处方加入到finalList中，并将order_sub_id改为-1表明已经处理过
+                //将order_sub_id等于最小值的处方加入到finalList中，并将order_sub_id_flag改为true表明已经处理过
                 for(int l=0;l<tempList.size();++l){
                     PrescInfo prescInfo = tempList.get(l);
-                    if("-1".equals(prescInfo.getOrder_sub_id()) || "".equals(prescInfo.getOrder_sub_id())){
+                    if(prescInfo.isOrder_sub_id_flag() || "".equals(prescInfo.getOrder_sub_id())){
                         continue;
                     }
                     if(Long.parseLong(prescInfo.getOrder_sub_id()) == min2){
@@ -445,7 +458,7 @@ public class PharmacistPrescCheckService {
                             prescInfo.setKh("");
                         }
                         finalList.add(prescInfo);
-                        prescInfo.setOrder_sub_id("-1");
+                        prescInfo.setOrder_sub_id_flag(true);
                     }
                 }
                 //将min2改为-1，进行下一次寻找order_sub_id的最小值

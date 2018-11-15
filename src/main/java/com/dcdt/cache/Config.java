@@ -50,6 +50,9 @@ public class Config {
     @Value("${browserFlag}")
     private String browserFlag;
 
+    @Value("${orderNoFlag}")
+    private String orderNoFlag;
+
     public String getDrStationServerIp() {
         return drStationServerIp;
     }
@@ -104,5 +107,13 @@ public class Config {
 
     public String getBrowserFlag() {
         return browserFlag;
+    }
+
+    public String getOrderNoFlag() {
+        return orderNoFlag;
+    }
+
+    public void setOrderNoFlag(String orderNoFlag) {
+        this.orderNoFlag = orderNoFlag;
     }
 }

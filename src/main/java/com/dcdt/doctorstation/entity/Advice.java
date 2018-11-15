@@ -45,6 +45,11 @@ public class Advice {
 
     private String kh;
 
+    //在排序时用到的辅助字段，标识order_no是否已经处理过
+    private boolean order_no_flag;
+    //在排序时用到的辅助字段，标识order_sub_no是否已经处理过
+    private boolean order_sub_no_flag;
+
     public Advice() {
 
     }
@@ -380,5 +385,21 @@ public class Advice {
 
     public void setKh(String kh) {
         this.kh = kh;
+    }
+
+    public boolean isOrder_no_flag() {
+        return order_no_flag;
+    }
+
+    public void setOrder_no_flag(boolean order_no_flag) {
+        this.order_no_flag = order_no_flag;
+    }
+
+    public boolean isOrder_sub_no_flag() {
+        return order_sub_no_flag;
+    }
+
+    public void setOrder_sub_no_flag(boolean order_sub_no_flag) {
+        this.order_sub_no_flag = order_sub_no_flag;
     }
 }

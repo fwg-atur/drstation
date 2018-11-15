@@ -27,6 +27,9 @@ public class PrescCheckService {
     @Value("${checkServerUrl}")
     private String checkServerUrl;
 
+    @Value("${orderNoFlag}")
+    private String orderNoFlag;
+
     private CacheService cacheService;
 
     private static final Logger logger = Logger.getLogger(PrescCheckService.class);
@@ -259,21 +262,32 @@ public class PrescCheckService {
             //本循环的目的：取到一轮遍历中order_no的最小值
             for(int j=0;j<newList.size();++j){
                 Advice advice = newList.get(j);
-                //order_no为-1表示已经有序加到finalList中，不需要再处理
-                if("-1".equals(advice.getORDER_NO())){
+                //order_no_flag为true表示已经有序加到finalList中，不需要再处理
+                if(advice.isOrder_no_flag() == true){
                     continue;
                 }
+
+                //对order_no中包含字母的处理
+                String n_order_no = advice.getORDER_NO();
+                if("1".equals(orderNoFlag)){
+                    n_order_no = n_order_no.substring(1,n_order_no.length());
+                }
                 //取一轮遍历中order_no的最小值
-                if(min == -1 || Long.parseLong(advice.getORDER_NO()) < min){
-                    min = Long.parseLong(advice.getORDER_NO());
+                if(min == -1 || Long.parseLong(n_order_no) < min){
+                    min = Long.parseLong(n_order_no);
                 }
             }
             //tempList存放：order_no等于这次遍历最小值的处方
             List<Advice> tempList = new ArrayList<Advice>();
             for(int k=0;k<newList.size();++k){
                 Advice advice = newList.get(k);
-                if(Long.parseLong(advice.getORDER_NO()) == min){
-                    advice.setORDER_NO("-1");
+                String n_order_no = advice.getORDER_NO();
+                if("1".equals(orderNoFlag)){
+                    n_order_no = n_order_no.substring(1,n_order_no.length());
+                }
+
+                if(Long.parseLong(n_order_no) == min){
+                    advice.setOrder_no_flag(true);
                     tempList.add(advice);
                 }
             }
@@ -285,12 +299,12 @@ public class PrescCheckService {
                 //本循环的目的：取到相同order_no的order_sub_no最小值
                 for(int n=0;n<tempList.size();++n){
                     Advice advice = tempList.get(n);
-                    //order_sub_no为-1表示已经有序加到finalList中，不需要再处理
+                    //order_sub_no_flag为true表示已经有序加到finalList中，不需要再处理
                     if("".equals(advice.getORDER_SUB_NO())){
                         finalList.add(advice);
                         continue;
                     }
-                    if("-1".equals(advice.getORDER_SUB_NO())){
+                    if(advice.isOrder_sub_no_flag() == true){
                         continue;
                     }
                     //取一轮遍历中order_sub_no的最小值
@@ -299,10 +313,10 @@ public class PrescCheckService {
                     }
                 }
 
-                //将order_sub_no等于最小值的处方加入到finalList中，并将order_sub_no改为-1表明已经处理过
+                //将order_sub_no等于最小值的处方加入到finalList中，并将order_sub_no_flag改为true表明已经处理过
                 for(int l=0;l<tempList.size();++l){
                     Advice advice = tempList.get(l);
-                    if("-1".equals(advice.getORDER_SUB_NO()) || "".equals(advice.getORDER_SUB_NO())){
+                    if(advice.isOrder_sub_no_flag() == true || "".equals(advice.getORDER_SUB_NO())){
                         continue;
                     }
                     if(Long.parseLong(advice.getORDER_SUB_NO()) == min2){
@@ -322,7 +336,7 @@ public class PrescCheckService {
                             advice.setKh("");
                         }
                         finalList.add(advice);
-                        advice.setORDER_SUB_NO("-1");
+                        advice.setOrder_sub_no_flag(true);
                     }
                 }
                 //将min2改为-1，进行下一次寻找order_sub_no的最小值
