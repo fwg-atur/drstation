@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by LiRong on 2017/6/20.
@@ -269,7 +271,7 @@ public class PrescCheckService {
 
                 //对order_no中包含字母的处理
                 String n_order_no = advice.getORDER_NO();
-                if("1".equals(orderNoFlag)){
+                if("1".equals(orderNoFlag) && judgeContainCharater(n_order_no)){
                     n_order_no = n_order_no.substring(1,n_order_no.length());
                 }
                 //取一轮遍历中order_no的最小值
@@ -282,7 +284,7 @@ public class PrescCheckService {
             for(int k=0;k<newList.size();++k){
                 Advice advice = newList.get(k);
                 String n_order_no = advice.getORDER_NO();
-                if("1".equals(orderNoFlag)){
+                if("1".equals(orderNoFlag) && judgeContainCharater(n_order_no)){
                     n_order_no = n_order_no.substring(1,n_order_no.length());
                 }
 
@@ -359,5 +361,12 @@ public class PrescCheckService {
             }
         }
         return highestLevel;
+    }
+
+    //判断字符串中是否包含字母
+    public boolean judgeContainCharater(String s){
+        String regex = ".*[a-zA-Z]+.*";
+        Matcher m = Pattern.compile(regex).matcher(s);
+        return m.matches();
     }
 }

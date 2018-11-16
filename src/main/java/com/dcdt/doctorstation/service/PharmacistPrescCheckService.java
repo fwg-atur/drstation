@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by wtwang on 2017/12/11.
@@ -393,7 +395,7 @@ public class PharmacistPrescCheckService {
                 }
                 //对order_id中包含字母的处理
                 String n_order_id = prescInfo.getOrder_id();
-                if("1".equals(orderNoFlag)){
+                if("1".equals(orderNoFlag) && judgeContainCharater(n_order_id)){
                     n_order_id = n_order_id.substring(1,n_order_id.length());
                 }
                 //取一轮遍历中order_id的最小值
@@ -406,7 +408,7 @@ public class PharmacistPrescCheckService {
             for(int k=0;k<newList.size();++k){
                 PrescInfo prescInfo = newList.get(k);
                 String n_order_id = prescInfo.getOrder_id();
-                if("1".equals(orderNoFlag)){
+                if("1".equals(orderNoFlag) && judgeContainCharater(n_order_id)){
                     n_order_id = n_order_id.substring(1,n_order_id.length());
                 }
                 if(Long.parseLong(n_order_id) == min){
@@ -481,6 +483,13 @@ public class PharmacistPrescCheckService {
             }
         }
         return highestLevel;
+    }
+
+    //判断字符串中是否包含字母
+    public boolean judgeContainCharater(String s){
+        String regex = ".*[a-zA-Z]+.*";
+        Matcher m = Pattern.compile(regex).matcher(s);
+        return m.matches();
     }
 
 }
