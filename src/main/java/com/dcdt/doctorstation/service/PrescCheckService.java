@@ -29,9 +29,6 @@ public class PrescCheckService {
     @Value("${checkServerUrl}")
     private String checkServerUrl;
 
-    @Value("${orderNoFlag}")
-    private String orderNoFlag;
-
     private CacheService cacheService;
 
     private static final Logger logger = Logger.getLogger(PrescCheckService.class);
@@ -269,11 +266,8 @@ public class PrescCheckService {
                     continue;
                 }
 
-                //对order_no中包含字母的处理
-                String n_order_no = advice.getORDER_NO();
-                if("1".equals(orderNoFlag) && judgeContainCharater(n_order_no)){
-                    n_order_no = n_order_no.substring(1,n_order_no.length());
-                }
+                //对order_no中包含非数字的处理，替换非数字为空格
+                String n_order_no = advice.getORDER_NO().replaceAll("[^\\d]+", "");
                 //取一轮遍历中order_no的最小值
                 if(min == -1 || Long.parseLong(n_order_no) < min){
                     min = Long.parseLong(n_order_no);
@@ -283,10 +277,7 @@ public class PrescCheckService {
             List<Advice> tempList = new ArrayList<Advice>();
             for(int k=0;k<newList.size();++k){
                 Advice advice = newList.get(k);
-                String n_order_no = advice.getORDER_NO();
-                if("1".equals(orderNoFlag) && judgeContainCharater(n_order_no)){
-                    n_order_no = n_order_no.substring(1,n_order_no.length());
-                }
+                String n_order_no = advice.getORDER_NO().replaceAll("[^\\d]+", "");
 
                 if(Long.parseLong(n_order_no) == min){
                     advice.setOrder_no_flag(true);
@@ -363,10 +354,4 @@ public class PrescCheckService {
         return highestLevel;
     }
 
-    //判断字符串中是否包含字母
-    public boolean judgeContainCharater(String s){
-        String regex = ".*[a-zA-Z]+.*";
-        Matcher m = Pattern.compile(regex).matcher(s);
-        return m.matches();
-    }
 }

@@ -38,9 +38,6 @@ public class PharmacistPrescCheckService {
     @Value("${cpPharmacistCheckUrl}")
     private String cpPharmacistCheckUrl;
 
-    @Value("${orderNoFlag}")
-    private String orderNoFlag;
-
     private CacheService cacheService;
 
     private PharmacistInfo pharmacistInfo;
@@ -393,11 +390,9 @@ public class PharmacistPrescCheckService {
                 if(prescInfo.isOrder_id_flag() == true){
                     continue;
                 }
-                //对order_id中包含字母的处理
-                String n_order_id = prescInfo.getOrder_id();
-                if("1".equals(orderNoFlag) && judgeContainCharater(n_order_id)){
-                    n_order_id = n_order_id.substring(1,n_order_id.length());
-                }
+                //对order_id中包含非数字的处理，替换非数字为空格
+                String n_order_id = prescInfo.getOrder_id().replaceAll("[^\\d]+", "");
+
                 //取一轮遍历中order_id的最小值
                 if(min == -1 || Long.parseLong(n_order_id) < min){
                     min = Long.parseLong(n_order_id);
@@ -407,10 +402,8 @@ public class PharmacistPrescCheckService {
             List<PrescInfo> tempList = new ArrayList<PrescInfo>();
             for(int k=0;k<newList.size();++k){
                 PrescInfo prescInfo = newList.get(k);
-                String n_order_id = prescInfo.getOrder_id();
-                if("1".equals(orderNoFlag) && judgeContainCharater(n_order_id)){
-                    n_order_id = n_order_id.substring(1,n_order_id.length());
-                }
+                String n_order_id = prescInfo.getOrder_id().replaceAll("[^\\d]+", "");
+
                 if(Long.parseLong(n_order_id) == min){
                     prescInfo.setOrder_id_flag(true);
                     tempList.add(prescInfo);
@@ -483,13 +476,6 @@ public class PharmacistPrescCheckService {
             }
         }
         return highestLevel;
-    }
-
-    //判断字符串中是否包含字母
-    public boolean judgeContainCharater(String s){
-        String regex = ".*[a-zA-Z]+.*";
-        Matcher m = Pattern.compile(regex).matcher(s);
-        return m.matches();
     }
 
 }
