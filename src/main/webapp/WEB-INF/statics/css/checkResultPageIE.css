@@ -75,19 +75,20 @@ table.main-table td {
 }
 
 .common-problem {
-    background: url(http://localhost:80/DCStation/image/common-problem.png) no-repeat center;
+    /*background: url(http://localhost:80/DCStation/image/common-problem.png) no-repeat center;*/
+    background: url(../image/common-problem.png) no-repeat center;
 }
 
 .serious-problem {
-    background: url(http://localhost:80/DCStation/image/serious-problem.png) no-repeat center;
+    background: url(../image/serious-problem.png) no-repeat center;
 }
 
 .disaster-problem {
-    background: url(http://localhost:80/DCStation/image/disaster-problem.png) no-repeat center;
+    background: url(../image/disaster-problem.png) no-repeat center;
 }
 
 .disable-problem {
-    background: url(http://localhost:80/DCStation/image/nextdisabled.png) no-repeat center;
+    background: url(../image/nextdisabled.png) no-repeat center;
 }
 
 .button-area {
@@ -97,7 +98,7 @@ table.main-table td {
 }
 
 .button-area input {
-    background: transparent url(http://localhost:80/DCStation/image/circlerectangle.png);
+    background: transparent url(../image/circlerectangle.png);
     border: 0.1px solid #97adb0;
     color: #ffffff;
     text-align: center;
@@ -147,7 +148,7 @@ table.main-table td {
 
 .head-info-sm {
     /*background-color: #06bfc7;*/
-    background: url(http://localhost:80/DCStation/image/head-info-sm.png) center;
+    background: url(../image/head-info-sm.png) center;
     font-size: 16px;
     /*font-family: SourceHanSansCN-Bold, serif;*/
     color: #ffffff;
@@ -180,7 +181,7 @@ table.main-table td {
     height: 40px;
     width: 70%;
     margin: auto;
-    background: url(http://localhost:80/DCStation/image/titleTJJK_doc.png) no-repeat center;
+    background: url(../image/titleTJJK_doc.png) no-repeat center;
     /*background-size: cover;*/
 }
 
@@ -190,7 +191,7 @@ table.main-table td {
     height: 30px;
     padding-top: 10px;
     margin-left: 100px;
-    background: url(http://localhost:80/DCStation/image/tj.png) no-repeat center;
+    background: url(../image/tj.png) no-repeat center;
 }
 
 .right-head {
