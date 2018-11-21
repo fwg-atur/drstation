@@ -49,6 +49,8 @@ public class Advice {
     private boolean order_no_flag;
     //在排序时用到的辅助字段，标识order_sub_no是否已经处理过
     private boolean order_sub_no_flag;
+    //在排序时用到的辅助字段，标识group_id是否已经处理过
+    private boolean group_id_flag;
 
     public Advice() {
 
@@ -402,4 +404,13 @@ public class Advice {
     public void setOrder_sub_no_flag(boolean order_sub_no_flag) {
         this.order_sub_no_flag = order_sub_no_flag;
     }
+
+    public boolean isGroup_id_flag() {
+        return group_id_flag;
+    }
+
+    public void setGroup_id_flag(boolean group_id_flag) {
+        this.group_id_flag = group_id_flag;
+    }
 }
+

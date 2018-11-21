@@ -38,6 +38,9 @@ public class PharmacistPrescCheckService {
     @Value("${cpPharmacistCheckUrl}")
     private String cpPharmacistCheckUrl;
 
+    @Value("${groupFlag}")
+    private String groupFlag;
+
     private CacheService cacheService;
 
     private PharmacistInfo pharmacistInfo;
@@ -343,22 +346,12 @@ public class PharmacistPrescCheckService {
             }
         }
         List<PrescInfo> finalList = new ArrayList<PrescInfo>();
-        sortSameLevel(newList3);
-        for(PrescInfo prescInfo:newList3){
-            finalList.add(prescInfo);
-        }
-        sortSameLevel(newList2);
-        for(PrescInfo prescInfo:newList2){
-            finalList.add(prescInfo);
-        }
-        sortSameLevel(newList1);
-        for(PrescInfo prescInfo:newList1){
-            finalList.add(prescInfo);
-        }
-        sortSameLevel(newList0);
-        for(PrescInfo prescInfo:newList0){
-            finalList.add(prescInfo);
-        }
+
+        finalList = sortHelp(newList3,finalList);
+        finalList = sortHelp(newList2,finalList);
+        finalList = sortHelp(newList1,finalList);
+        finalList = sortHelp(newList0,finalList);
+
         return finalList;
 
 
@@ -375,8 +368,76 @@ public class PharmacistPrescCheckService {
         return res;
     }
 
+    //辅助方法，避免重复代码
+    public List<PrescInfo> sortHelp(List<PrescInfo> list,List<PrescInfo> finalList){
+        if("1".equals(groupFlag)){
+            list = sortSameLevelGroupId(list);
+        }
+        else if("2".equals(groupFlag)) {
+            list = sortSameLevelOrderNo(list);
+        }
+        for(PrescInfo prescInfo:list){
+            finalList.add(prescInfo);
+        }
+        return finalList;
+    }
+
+    //对同一级别的问题按照group_id排序
+    public List<PrescInfo> sortSameLevelGroupId(List<PrescInfo> newList){
+        //finalList存放：按照group_id从小到到排列
+        List<PrescInfo> finalList = new ArrayList<PrescInfo>();
+
+        //min存放：group_id一轮的最小值
+        long min = -1;
+        for(int i=0;i<newList.size();++i){
+            for(int j=0;j<newList.size();++j){
+                PrescInfo prescInfo = newList.get(j);
+                if(prescInfo.isGroup_id_flag() == true){
+                    continue;
+                }
+                if(min == -1 || Long.parseLong(prescInfo.getGroup_id())< min){
+                    min = Long.parseLong(prescInfo.getGroup_id());
+                }
+            }
+
+            //tempList存放：group_id等于这次遍历最小值的处方
+            List<PrescInfo> tempList = new ArrayList<PrescInfo>();
+            for(int k=0;k<newList.size();++k){
+                PrescInfo prescInfo = newList.get(k);
+
+                if(Long.parseLong(prescInfo.getGroup_id()) == min){
+                    prescInfo.setGroup_id_flag(true);
+                    tempList.add(prescInfo);
+                }
+            }
+
+            //将tempList中的处方加入到finalList中
+            int x = 0;
+            for(int l=0;l<tempList.size();++l){
+                PrescInfo prescInfo = tempList.get(l);
+                if(tempList.size() > 1){
+                    if(x == 0){
+                        prescInfo.setKh("┍ ");
+                    }
+                    else if(x == tempList.size()-1){
+                        prescInfo.setKh("┕ ");
+                    }
+                    else{
+                        prescInfo.setKh("");
+                    }
+                }else{
+                    prescInfo.setKh("");
+                }
+                ++x;
+                finalList.add(prescInfo);
+            }
+            min = -1;
+        }
+        return finalList;
+    }
+
     //对同一级别的问题按照order_id排序
-    public List<PrescInfo> sortSameLevel(List<PrescInfo> newList){
+    public List<PrescInfo> sortSameLevelOrderNo(List<PrescInfo> newList){
         //finalList存放：按照order_id从小到到排列,按照order_sub_id从小到大排列
         List<PrescInfo> finalList = new ArrayList<PrescInfo>();
 
@@ -448,10 +509,10 @@ public class PharmacistPrescCheckService {
                             else{
                                 prescInfo.setKh("");
                             }
-                            x++;
                         }else{
                             prescInfo.setKh("");
                         }
+                        x++;
                         finalList.add(prescInfo);
                         prescInfo.setOrder_sub_id_flag(true);
                     }

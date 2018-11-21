@@ -725,8 +725,9 @@
                             <th>配伍<br>禁忌</th>
                             <th>特殊<br>人群</th>
                             <th>药敏</th>
-                            <th style="width: 120px">用药<br>管理</th>
+                            <th>用药<br>管理</th>
                             <th>用药<br>监测</th>
+                            <th>医保<br>审核</th>
                         </tr>
                         </thead>
                     </table>
@@ -750,7 +751,8 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td style="width: 120px;"></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                             </tr>
                         </c:forEach>
@@ -779,7 +781,7 @@
 </div>
 
 <script type="text/javascript">
-    var problemType = ['适应症', '禁用症慎用症', '用法用量', '重复用药', '相互作用', '配伍禁忌', '特殊人群', '药敏', '医院管理', '用药监测'];
+    var problemType = ['适应症', '禁用症慎用症', '用法用量', '重复用药', '相互作用', '配伍禁忌', '特殊人群', '药敏', '医院管理', '用药监测', '医保审核'];
     var problemLevelClassName = ['disaster-problem', 'common-problem', 'common-problem', 'serious-problem'];
     var error_detail = $('#error_detail').html();
     $('#error_detail').html('');

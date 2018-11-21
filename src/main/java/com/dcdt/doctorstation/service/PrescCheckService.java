@@ -29,6 +29,9 @@ public class PrescCheckService {
     @Value("${checkServerUrl}")
     private String checkServerUrl;
 
+    @Value("${groupFlag}")
+    private String groupFlag;
+
     private CacheService cacheService;
 
     private static final Logger logger = Logger.getLogger(PrescCheckService.class);
@@ -230,28 +233,86 @@ public class PrescCheckService {
         }
 
         List<Advice> finalList = new ArrayList<Advice>();
-        sortSameLevel(newList3);
-        for(Advice advice:newList3){
-            finalList.add(advice);
-        }
-        sortSameLevel(newList2);
-        for(Advice advice:newList2){
-            finalList.add(advice);
-        }
-        sortSameLevel(newList1);
-        for(Advice advice:newList1){
-            finalList.add(advice);
-        }
-        sortSameLevel(newList0);
-        for(Advice advice:newList0){
-            finalList.add(advice);
-        }
+
+        finalList = sortHelp(newList3,finalList);
+        finalList = sortHelp(newList2,finalList);
+        finalList = sortHelp(newList1,finalList);
+        finalList = sortHelp(newList0,finalList);
+
         return finalList;
 
     }
 
+    //辅助方法，避免重复代码
+    public List<Advice> sortHelp(List<Advice> list,List<Advice> finalList){
+        if("1".equals(groupFlag)){
+            list = sortSameLevelGroupId(list);
+        }
+        else if("2".equals(groupFlag)) {
+            list = sortSameLevelOrderNo(list);
+        }
+        for(Advice advice:list){
+            finalList.add(advice);
+        }
+        return finalList;
+    }
+
+    //对同一级别的问题按照group_id排序
+    public List<Advice> sortSameLevelGroupId(List<Advice> newList){
+        //finalList存放：按照group_id从小到到排列
+        List<Advice> finalList = new ArrayList<Advice>();
+
+        //min存放：group_id一轮的最小值
+        long min = -1;
+        for(int i=0;i<newList.size();++i){
+            for(int j=0;j<newList.size();++j){
+                Advice advice = newList.get(j);
+                if(advice.isGroup_id_flag() == true){
+                    continue;
+                }
+                if(min == -1 || Long.parseLong(advice.getGROUP_ID())< min){
+                    min = Long.parseLong(advice.getGROUP_ID());
+                }
+            }
+
+            //tempList存放：group_id等于这次遍历最小值的处方
+            List<Advice> tempList = new ArrayList<Advice>();
+            for(int k=0;k<newList.size();++k){
+                Advice advice = newList.get(k);
+
+                if(Long.parseLong(advice.getGROUP_ID()) == min){
+                    advice.setGroup_id_flag(true);
+                    tempList.add(advice);
+                }
+            }
+
+            //将tempList中的处方加入到finalList中
+            int x = 0;
+            for(int l=0;l<tempList.size();++l){
+                Advice advice = tempList.get(l);
+                if(tempList.size() > 1){
+                    if(x == 0){
+                        advice.setKh("┍ ");
+                    }
+                    else if(x == tempList.size()-1){
+                        advice.setKh("┕ ");
+                    }
+                    else{
+                        advice.setKh("");
+                    }
+                }else{
+                    advice.setKh("");
+                }
+                ++x;
+                finalList.add(advice);
+            }
+            min = -1;
+        }
+        return finalList;
+    }
+
     //对同一级别的问题按照order_no排序
-    public List<Advice> sortSameLevel(List<Advice> newList){
+    public List<Advice> sortSameLevelOrderNo(List<Advice> newList){
         //finalList存放：按照order_no从小到到排列,按照order_sub_no从小到大排列
         List<Advice> finalList = new ArrayList<Advice>();
 
@@ -324,10 +385,10 @@ public class PrescCheckService {
                             else{
                                 advice.setKh("");
                             }
-                            x++;
                         }else{
                             advice.setKh("");
                         }
+                        ++x;
                         finalList.add(advice);
                         advice.setOrder_sub_no_flag(true);
                     }

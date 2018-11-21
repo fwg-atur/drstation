@@ -50,6 +50,9 @@ public class Config {
     @Value("${browserFlag}")
     private String browserFlag;
 
+    @Value("${groupFlag}")
+    private String groupFlag;
+
     public String getDrStationServerIp() {
         return drStationServerIp;
     }
@@ -106,4 +109,11 @@ public class Config {
         return browserFlag;
     }
 
+    public String getGroupFlag() {
+        return groupFlag;
+    }
+
+    public void setGroupFlag(String groupFlag) {
+        this.groupFlag = groupFlag;
+    }
 }

@@ -24,6 +24,8 @@ public class PrescInfo {
     private boolean order_id_flag;
     //在排序时用到的辅助字段，标识order_sub_id是否已经处理过
     private boolean order_sub_id_flag;
+    //在排序时用到的辅助字段，标识group_id是否已经处理过
+    private boolean group_id_flag;
 
 //    public PrescInfo(String order_id,String order_sub_id,String drug_lo_id,String drug_lo_name,List<CheckInfo> checkInfos){
 //        this.order_id = order_id;
@@ -132,5 +134,13 @@ public class PrescInfo {
 
     public void setOrder_sub_id_flag(boolean order_sub_id_flag) {
         this.order_sub_id_flag = order_sub_id_flag;
+    }
+
+    public boolean isGroup_id_flag() {
+        return group_id_flag;
+    }
+
+    public void setGroup_id_flag(boolean group_id_flag) {
+        this.group_id_flag = group_id_flag;
     }
 }
