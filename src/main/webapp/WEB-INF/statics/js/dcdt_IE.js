@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Created by on 2017/5/14.
  */
 /**
@@ -17,12 +17,18 @@ var cheServerPortInHos = "80";
 var checkServerIpOutHos = "localhost";
 var cheServerPortOutHos = "80";
 //说明书地址
-var disUrl = 'http://localhost:80/DCStation/home/index?drugCode=@code@';
+var disUrl = 'http://192.168.11.67:8040/DCStation/home/index?drugCode=@code@';
 //医生站超时返回的最长时间(毫秒)
 var timeStrapDoc = 5000;
 //药师站超时返回的最长时间(毫秒)
 var timeStrapPhar = 5000;
 
+var startTime = 0;
+var endTime = 0;
+
+function concurrentTest() {
+
+}
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
@@ -49,8 +55,9 @@ function DoctorCheck(tag, xml, inHosFlag) {
 }
 
 function sendCheck(tag, xml, checkServerIp, cheServerPort) {
+    startTime = new Date().getMilliseconds();
     var iWidth = '1000px';
-    var iHeight = '560px';
+    var iHeight = '547px';
     var xmlhttp;
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
 
@@ -155,6 +162,10 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
 
     var data = xmlhttp.responseText;
     data = eval("(" + data + ")");
+    endTime = new Date().getMilliseconds();
+    // alert("startTime:"+startTime);
+    // alert("endTime:"+endTime);
+    // alert((endTime-startTime)/1000);
     return data;
 }
 
