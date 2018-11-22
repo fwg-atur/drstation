@@ -597,7 +597,8 @@
         .container {
             width: 450px;
             border: 1px solid #6C9C2C;
-            height: 25px;
+			text-align: center;height:45px;line-height:45px;
+			font-size:30px;font-weight:bold;
         }
 
         #bar {
@@ -656,7 +657,7 @@
 <div>
     <div>
         <div class="main-content">
-            <div class="inner-main-content">
+            <div class="inner-main-content" style="overflow-x:hidden">
             <div class="head-top">
                 <div class="head-top left-head"></div>
                 <div class="head-top right-head">|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合理用药实时审核Web端</div>
@@ -715,8 +716,8 @@
                     <table class="main-table-head">
                         <thead>
                         <tr>
-                            <th style="width: 20px"></th>
-                            <th id="drug_name_th" style="width: 180px">药品名称</th>
+                            <th style="width: 10px"></th>
+                            <th id="drug_name_th" style="width: 190px">药品名称</th>
                             <th>适应症</th>
                             <th>禁用症<br>慎用症</th>
                             <th>用法<br>用量</th>
@@ -737,8 +738,8 @@
                         <tbody>
                         <c:forEach var="item" items="${checkResult.advices}">
                             <tr>
-                                <td style="width: 20px">${item.kh}</td>
-                                <td id="drug_name_td" style="width: 178px;_width:127px">
+                                <td style="width:10px">${item.kh}</td>
+                                <td id="drug_name_td" style="width:190px;_width:127px">
                                     <a onclick="openDescribLinked('${item.DRUG_LO_ID}')">
                                             ${item.DRUG_LO_NAME}
                                     </a>
@@ -751,16 +752,15 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td><!-- 120px-->
                                 <td></td>
-                                <td></td>
-                                <td></td>
+								<td></td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
                 </div>
             </div>
-
             <div class="button-area">
                 <%--<input id="appealBtn" type="button" style="display: none" value="我要反馈"/>--%>
                 <%--&nbsp;&nbsp;&nbsp;&nbsp;--%>
@@ -768,18 +768,14 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <input id="next" type="button" onclick="next()" value="下一步"/>
             </div>
-            </div>
+         </div>
         </div>
     </div>
-
 </div>
 <div class="dialog">
 </div>
-
-
 <div id="checkResult">
 </div>
-
 <script type="text/javascript">
     var problemType = ['适应症', '禁用症慎用症', '用法用量', '重复用药', '相互作用', '配伍禁忌', '特殊人群', '药敏', '医院管理', '用药监测', '医保审核'];
     var problemLevelClassName = ['disaster-problem', 'common-problem', 'common-problem', 'serious-problem'];

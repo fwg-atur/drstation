@@ -1,9 +1,9 @@
-/**
+﻿/**
  * Created by on 2017/5/14.
  */
 var checkServerIp = "localhost";
 var checkServerPort = "80";
-var disUrl = 'http://localhost:80/DCStation/home/index?drugCode=@code@';
+var disUrl = 'http://192.168.80.2:8010/DCStation/home/index?drugCode=@code@';
 
 /**
  * 住院医生站ip，端口。

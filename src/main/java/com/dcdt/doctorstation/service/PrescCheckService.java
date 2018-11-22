@@ -355,7 +355,6 @@ public class PrescCheckService {
                     Advice advice = tempList.get(n);
                     //order_sub_no_flag为true表示已经有序加到finalList中，不需要再处理
                     if("".equals(advice.getORDER_SUB_NO())){
-                        finalList.add(advice);
                         continue;
                     }
                     if(advice.isOrder_sub_no_flag() == true){
@@ -391,6 +390,30 @@ public class PrescCheckService {
                         ++x;
                         finalList.add(advice);
                         advice.setOrder_sub_no_flag(true);
+                    }
+                }
+
+                //将order_sub_no为空并且还未加到finalList的处方加入到finalList
+                for(int y=0;y<tempList.size();++y){
+                    Advice advice = tempList.get(y);
+                    if(advice.isOrder_sub_no_flag() == false) {
+                        if ("".equals(advice.getORDER_SUB_NO())) {
+                            //给成组的处方加上左侧方括号
+                            if (tempList.size() > 1) {
+                                if (x == 0) {
+                                    advice.setKh("┍ ");
+                                } else if (x == tempList.size() - 1) {
+                                    advice.setKh("┕ ");
+                                } else {
+                                    advice.setKh("");
+                                }
+                            } else {
+                                advice.setKh("");
+                            }
+                            ++x;
+                            finalList.add(advice);
+                            advice.setOrder_sub_no_flag(true);
+                        }
                     }
                 }
                 //将min2改为-1，进行下一次寻找order_sub_no的最小值

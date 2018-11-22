@@ -480,7 +480,6 @@ public class PharmacistPrescCheckService {
                     PrescInfo prescInfo = tempList.get(n);
                     //order_sub_id_flag为true表示已经有序加到finalList中，不需要再处理
                     if("".equals(prescInfo.getOrder_sub_id())){
-                        finalList.add(prescInfo);
                         continue;
                     }
                     if(prescInfo.isOrder_sub_id_flag() == true){
@@ -515,6 +514,30 @@ public class PharmacistPrescCheckService {
                         x++;
                         finalList.add(prescInfo);
                         prescInfo.setOrder_sub_id_flag(true);
+                    }
+                }
+
+                //将order_sub_no为空并且还未加到finalList的处方加入到finalList
+                for(int y=0;y<tempList.size();++y){
+                    PrescInfo prescInfo = tempList.get(y);
+                    if(prescInfo.isOrder_sub_id_flag() == false) {
+                        if ("".equals(prescInfo.getOrder_sub_id())) {
+                            //给成组的处方加上左侧方括号
+                            if (tempList.size() > 1) {
+                                if (x == 0) {
+                                    prescInfo.setKh("┍ ");
+                                } else if (x == tempList.size() - 1) {
+                                    prescInfo.setKh("┕ ");
+                                } else {
+                                    prescInfo.setKh("");
+                                }
+                            } else {
+                                prescInfo.setKh("");
+                            }
+                            ++x;
+                            finalList.add(prescInfo);
+                            prescInfo.setOrder_sub_id_flag(true);
+                        }
                     }
                 }
                 //将min2改为-1，进行下一次寻找order_sub_id的最小值

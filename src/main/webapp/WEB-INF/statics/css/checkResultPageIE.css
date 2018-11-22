@@ -65,8 +65,8 @@ table.main-table td {
 }
 
 .main-table tbody tr{
-    height:30px;
-    line-height:20px;
+	height:30px;
+	line-height:20px;
 }
 
 .main-table tbody tr:nth-child(even) td {
@@ -222,7 +222,7 @@ table.main-table td {
 .container {
     width: 450px;
     height: 80px;
-    text-align:center;
+	text-align:center;
 }
 
 #bar {
