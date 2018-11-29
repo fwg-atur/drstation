@@ -35,6 +35,7 @@
         var checkStateInterval = '${config.checkInterval}';
         var checkMessageInterval = '${config.checkInterval}';
         var longestWaitTime = '${config.longestWaitTime}';
+        var waitTimeSeconds = longestWaitTime / 1000;
         var checkInterveneStateURL = '${config.checkInterveneStateURL}';
         var checkInterveneMessageURL = '${config.checkInterveneMessageURL}';
         var interveneFlag = '${config.interveneFlag}';
@@ -213,12 +214,10 @@
 
         function showProgressBar() {
             var checkResultElem = document.getElementById("checkResult");
-            var waitTimeSeconds = longestWaitTime / 1000;
-            var currentWaitTime = 0;
-            timeout = window.setInterval("run()", longestWaitTime / 100);
 
-            checkResultElem.innerHTML = progress_bar;
-            checkResultElem.innerHTML.replace('@{longestWaitTime}',waitTimeSeconds).replace('@{currentWaitTime}',currentWaitTime);
+            timeout = window.setInterval("run()", 1000);
+
+            checkResultElem.innerHTML = progress_bar.replace('@{longestWaitTime}',waitTimeSeconds);
             showdiv();
         }
 
@@ -382,7 +381,10 @@
         function run() {
             var bar = document.getElementById("bar");
             var total = document.getElementById("total");
-            bar.style.width = parseInt(bar.style.width) + 1 + "%";
+            bar.style.width = parseFloat(bar.style.width) + 3.33 + "%";
+
+            var currentWaitTime = document.getElementById("currentWaitTime");
+            currentWaitTime.innerText = parseInt(currentWaitTime.innerText) + 1;
 
             if (stop_flag == true) {
                 clearAllInterval();
@@ -395,7 +397,7 @@
                 return;
             }
 
-            if (parseInt(bar.style.width) >= 100) {
+            if (parseInt(bar.style.width) >= 99) {
                 clearAllInterval();
                 hidediv();
                 nextOrBack(0)
