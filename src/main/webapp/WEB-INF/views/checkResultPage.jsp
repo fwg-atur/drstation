@@ -96,6 +96,7 @@
 
         /**************            *****************/
 
+
         function getRequestMessage(fun, message_text) {
             if (message_text == undefined) {
                 message_text = "";
@@ -212,8 +213,12 @@
 
         function showProgressBar() {
             var checkResultElem = document.getElementById("checkResult");
-            checkResultElem.innerHTML = progress_bar;
+            var waitTimeSeconds = longestWaitTime / 1000;
+            var currentWaitTime = 0;
             timeout = window.setInterval("run()", longestWaitTime / 100);
+
+            checkResultElem.innerHTML = progress_bar;
+            checkResultElem.innerHTML.replace('@{longestWaitTime}',waitTimeSeconds).replace('@{currentWaitTime}',currentWaitTime);
             showdiv();
         }
 
@@ -910,14 +915,13 @@
         showAppealBtn(drug_name, error_name, '${presId}');
     }
 
-
     function checkCanBeNext() {
-        if (highestWarningLevel == -1 || antiCheckNumber > 0) {
-            $("#next").attr('disabled', 'disabled');
-            $("#next").css('background-image', 'url(http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/image/nextdisabled.png)');
-            $("#next").css('background-repeat', 'no-repeat');
-            $("#next").css('background-position', 'center');
-        }
+        <%--if (highestWarningLevel == -1 || antiCheckNumber > 0) {--%>
+            <%--$("#next").attr('disabled', 'disabled');--%>
+            <%--$("#next").css('background-image', 'url(http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/image/nextdisabled.png)');--%>
+            <%--$("#next").css('background-repeat', 'no-repeat');--%>
+            <%--$("#next").css('background-position', 'center');--%>
+        <%--}--%>
     }
 
     (function isDisabled() {

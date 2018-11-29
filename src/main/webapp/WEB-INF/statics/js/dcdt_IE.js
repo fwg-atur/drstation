@@ -268,6 +268,7 @@ function PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosF
 }
 
 function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkServerIp, checkServerPort){
+    startTime = new Date().getMilliseconds();
     var iWidth = '1000px';
     var iHeight = '700px';
     var xmlhttp;
@@ -336,6 +337,8 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
 
     var data = xmlhttp.responseText;
     data = eval("(" + data + ")");
+    endTime = new Date().getMilliseconds();
+    // alert(endTime-startTime);
     return data;
 }
 

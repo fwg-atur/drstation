@@ -278,6 +278,7 @@ table .problemTypeTable {
     font-weight: bold;
     color: #333333;
     _margin-top: 30px;
+    text-align: left;
 }
 
 #error_detail td {

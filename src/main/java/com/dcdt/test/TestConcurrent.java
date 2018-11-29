@@ -12,8 +12,8 @@ public class TestConcurrent implements Runnable{
     private static int totalTime = 0;
     private static int i = 0;
     public static void main(String[] args) throws InterruptedException {
-        ExecutorService service = Executors.newFixedThreadPool(10);//10是线程数
-        for (int i = 0; i < 50; i++) {
+        ExecutorService service = Executors.newFixedThreadPool(500);//10是线程数
+        for (int i = 0; i < 500; i++) {
             TestConcurrent test = new TestConcurrent();
             service.execute(test);
             //Thread.sleep(1000);
@@ -26,29 +26,19 @@ public class TestConcurrent implements Runnable{
         String url = "http://10.201.17.201:8081/service/api/checkFromXmlToJson.do?tag=1";
         String url2 = "http://10.201.17.201:8081/service/api/query/QueryPresPharm.do?patientID=90280019&visitDate=20181110";
 //        String testURL = "http://localhost:80/DCStation/submit/testConcurrent";
-        String xml = "<CheckInput TAG=\"2\">\n" +
-                "    <Doctor NAME=\"王雁\" POSITION=\"主治医师\" USER_ID=\"00064834\" DEPT_NAME=\"心内\" DEPT_CODE=\"2512\" />\n" +
-                "    <Patient NAME=\"郑茜\" ID=\"90280019\" VISIT_ID=\"1\" PATIENT_PRES_ID=\"000347828234\" BIRTH=\"19651105\" HEIGHT=\"165\" WEIGHT=\"60\" GENDER=\"男\" PREGNANT=\"\" LACT=\"\" HEPATICAL=\"\" RENAL=\"\" PANCREAS=\"\" ALERGY_DRUGS=\"\" \n" +
-                "\tIDENTITY_TYPE=\"军人\" FEE_TYPE=\"\" \n" +
-                "\tSCR=\"\" SCR_UNIT=\"\" GESTATION_AGE=\"\" PRETERM_BIRTH=\"\" DRUG_HISTORY=\"\" FAMILY_DISEASE_HISTORY=\"\" GENETIC_DISEASE=\"\"\n" +
-                "\tMEDICARE_01=\"\" MEDICARE_02=\"\" MEDICARE_03=\"\" MEDICARE_04=\"\" MEDICARE_05=\"\"/>\n" +
-                "    <Diagnosises DIAGNOSISES=\"肺炎、行动不便\" />\n" +
-                "    <Advices>\n" +
-                "\t\t<Advice \n" +
-                "\t\tDRUG_LO_ID=\"1099028IJ2\" DRUG_LO_NAME=\"注射用卡铂\" ADMINISTRATION=\"口服\" DOSAGE=\"299\" DOSAGE_UNIT=\"g\" FREQ_COUNT=\"2\" FREQ_INTERVAL=\"1\" FREQ_INTERVAL_UNIT=\"日\" START_DAY=\"20150924\" END_DAY=\"\" REPEAT=\"1\" ORDER_NO=\"70285312\" ORDER_SUB_NO=\"\" \n" +
-                "\t\tDEPT_CODE=\"2046\" DOCTOR_NAME=\"王雁\" TITLE=\"医师\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" GROUP_ID=\"\" \n" +
-                "\t\tUSER_ID=\"00231\" PRES_ID=\"0006482\" PRES_DATE=\"20150924\" PRES_SEQ_ID=\"11170097620150924\" PK_ORDER_NO=\"111700976\" COURSE=\"3\" \n" +
-                "\t\tPKG_COUNT=\"10\" PKG_UNIT=\"盒\" \n" +
-                "\t\tBAK_01=\"\" BAK_02=\"\" BAK_03=\"注射剂\" BAK_04=\"0.1g\" BAK_05=\"杨子制药\" />\n" +
-                "\t\t<Advice \n" +
-                "\t\tDRUG_LO_ID=\"0199010IJ1\" DRUG_LO_NAME=\"甲硝唑氯化钠注射液\" ADMINISTRATION=\"口服\" DOSAGE=\"299\" DOSAGE_UNIT=\"m g\" FREQ_COUNT=\"2\" FREQ_INTERVAL=\"1\" FREQ_INTERVAL_UNIT=\"日\" START_DAY=\"20150924\" END_DAY=\"\" REPEAT=\"1\" ORDER_NO=\"70285312\" ORDER_SUB_NO=\"\" \n" +
-                "\t\tDEPT_CODE=\"2046\" DOCTOR_NAME=\"王雁\" TITLE=\"医师\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" GROUP_ID=\"\" \n" +
-                "\t\tUSER_ID=\"\" PRES_ID=\"0006482\" PRES_DATE=\"20150924\" PRES_SEQ_ID=\"11170097620150924\" PK_ORDER_NO=\"111700976\" COURSE=\"9\" \n" +
-                "\t\tPKG_COUNT=\"10\" PKG_UNIT=\"盒\" \n" +
-                "\t\tBAK_01=\"\" BAK_02=\"\" BAK_03=\"注射液\" BAK_04=\"25mg\" BAK_05=\"京曙光药业\" />\n" +
-                "\n" +
-                "\t</Advices>\n" +
-                "</CheckInput>\n";
+        String xml = "                        <CheckInput TAG=\"1\">\n" +
+                "                            <Doctor NAME=\"王雁\" POSITION=\"主治医师\" USER_ID=\"000683\" DEPT_NAME=\"呼吸科\" DEPT_CODE=\"FKNF\" />\n" +
+                "                            <Patient NAME=\"朱永东\" ID=\"0003478286\" VISIT_ID=\"1\" PATIENT_PRES_ID=\"000347828620150924000649\" BIRTH=\"19651105\" HEIGHT=\"165\" WEIGHT=\"60\" GENDER=\"男\" PREGNANT=\"\" LACT=\"\" HEPATICAL=\"\" RENAL=\"\" PANCREAS=\"\" ALERGY_DRUGS=\"\" IDENTITY_TYPE=\"\" FEE_TYPE=\"\" SCR=\"\" SCR_UNIT=\"\" GESTATION_AGE=\"\" PRETERM_BIRTH=\"\" DRUG_HISTORY=\"\" FAMILY_DISEASE_HISTORY=\"\" GENETIC_DISEASE=\"\" MEDICARE_01=\"\" MEDICARE_02=\"\" MEDICARE_03=\"\" MEDICARE_04=\"\" MEDICARE_05=\"\" />\n" +
+                "                            <Diagnosises DIAGNOSISES=\"呼吸道感染\" />\n" +
+                "                            <Advices>\n" +
+                "                                <Advice DRUG_LO_ID=\"MED00003\" DRUG_LO_NAME=\"布洛芬缓释胶囊\" ADMINISTRATION=\"991013\" DOSAGE=\"800\" DOSAGE_UNIT=\"mg\" FREQ_COUNT=\"3\" FREQ_INTERVAL=\"\" FREQ_INTERVAL_UNIT=\"\" START_DAY=\"20150924\" END_DAY=\"\" REPEAT=\"1\" ORDER_NO=\"70285312\" ORDER_SUB_NO=\"\" DEPT_CODE=\"HX\" DOCTOR_NAME=\"王雁\" TITLE=\"\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" GROUP_ID=\"\" USER_ID=\"000648\" PRES_ID=\"0003478286_2016:11:16:16:55:34\" PRES_DATE=\"20150924\" PRES_SEQ_ID=\"11170097620150924\" PK_ORDER_NO=\"111700976\" COURSE=\"1\" PKG_COUNT=\"0\" PKG_UNIT=\"盒\" BAK_01=\"2\" BAK_02=\"否\" BAK_03=\"\" BAK_04=\"\" BAK_05=\"\" />\n" +
+                "                                <Advice DRUG_LO_ID=\"MED00009\" DRUG_LO_NAME=\"头孢拉定胶囊\" ADMINISTRATION=\"991013\" DOSAGE=\"500\" DOSAGE_UNIT=\"ml\" FREQ_COUNT=\"3\" FREQ_INTERVAL=\"\" FREQ_INTERVAL_UNIT=\"\" START_DAY=\"20150924\" END_DAY=\"\" REPEAT=\"1\" ORDER_NO=\"70285314\" ORDER_SUB_NO=\"\" DEPT_CODE=\"HX\" DOCTOR_NAME=\"王雁\" TITLE=\"\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" GROUP_ID=\"\" USER_ID=\"000648\" PRES_ID=\"0003478286_2016:11:16:16:55:34\" PRES_DATE=\"20150924\" PRES_SEQ_ID=\"11170097620150924\" PK_ORDER_NO=\"111700976\" COURSE=\"1\" PKG_COUNT=\"101\" PKG_UNIT=\"盒\" BAK_01=\"2\" BAK_02=\"否\" BAK_03=\"\" BAK_04=\"\" BAK_05=\"\" />\n" +
+                "                                <Advice DRUG_LO_ID=\"MED00223\" DRUG_LO_NAME=\"氯沙坦钾氢氯噻嗪片\" ADMINISTRATION=\"991013\" DOSAGE=\"500\" DOSAGE_UNIT=\"ml\" FREQ_COUNT=\"3\" FREQ_INTERVAL=\"\" FREQ_INTERVAL_UNIT=\"\" START_DAY=\"20150924\" END_DAY=\"\" REPEAT=\"1\" ORDER_NO=\"70285314\" ORDER_SUB_NO=\"\" DEPT_CODE=\"HX\" DOCTOR_NAME=\"王雁\" TITLE=\"\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" GROUP_ID=\"\" USER_ID=\"000683\" PRES_ID=\"0003478286_2016:11:16:16:55:34\" PRES_DATE=\"20150924\" PRES_SEQ_ID=\"11170097620150924\" PK_ORDER_NO=\"111700976\" COURSE=\"1\" PKG_COUNT=\"9\" PKG_UNIT=\"盒\" BAK_01=\"2\" BAK_02=\"否\" BAK_03=\"\" BAK_04=\"\" BAK_05=\"\" />\n" +
+                "                                <Advice DRUG_LO_ID=\"MED00238\" DRUG_LO_NAME=\"马来酸依那普利片\" ADMINISTRATION=\"991013\" DOSAGE=\"500\" DOSAGE_UNIT=\"ml\" FREQ_COUNT=\"3\" FREQ_INTERVAL=\"\" FREQ_INTERVAL_UNIT=\"\" START_DAY=\"20150924\" END_DAY=\"\" REPEAT=\"1\" ORDER_NO=\"70285314\" ORDER_SUB_NO=\"\" DEPT_CODE=\"HX\" DOCTOR_NAME=\"王雁\" TITLE=\"\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" GROUP_ID=\"\" USER_ID=\"000683\" PRES_ID=\"0003478286_2016:11:16:16:55:34\" PRES_DATE=\"20150924\" PRES_SEQ_ID=\"11170097620150924\" PK_ORDER_NO=\"111700976\" COURSE=\"1\" PKG_COUNT=\"9\" PKG_UNIT=\"盒\" BAK_01=\"2\" BAK_02=\"否\" BAK_03=\"\" BAK_04=\"\" BAK_05=\"\" />\n" +
+                "                                <Advice DRUG_LO_ID=\"MED00168\" DRUG_LO_NAME=\"注射用美罗培南\" ADMINISTRATION=\"030101\" DOSAGE=\"20\" DOSAGE_UNIT=\"mg\" FREQ_COUNT=\"3\" FREQ_INTERVAL=\"\" FREQ_INTERVAL_UNIT=\"\" START_DAY=\"20150114\" END_DAY=\"20150114\" REPEAT=\"0\" ORDER_NO=\"32325701\" ORDER_SUB_NO=\"\" DEPT_CODE=\"XW  \" DOCTOR_NAME=\"李晓丽\" TITLE=\"\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" GROUP_ID=\"\" USER_ID=\"002329\" PRES_ID=\"31388291\" PRES_DATE=\"20150114\" PRES_SEQ_ID=\"3138829120150114\" PK_ORDER_NO=\"\" COURSE=\"1\" PKG_COUNT=\"\" PKG_UNIT=\"\" BAK_01=\"\" BAK_02=\"\" BAK_03=\"\" BAK_04=\"\" BAK_05=\"\"/>\n" +
+                "                            </Advices>\n" +
+                "                        </CheckInput>\n" +
+                "                ";
         String data = xml;
         String checkJson = HttpUtil.sendPost(url, data);
         System.out.println(checkJson);
