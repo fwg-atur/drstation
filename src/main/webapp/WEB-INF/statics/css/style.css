@@ -11,6 +11,8 @@
 }
 
 .triangle {
+    margin-left: -70px;
+    margin-right: -70px;
     position: absolute;
     top: 50%;
     margin-top: -8px;
@@ -63,6 +65,8 @@
 }
 
 .article {
+    margin-left: -70px;
+    margin-right: -70px;
     white-space: pre-wrap;
     *white-space: pre;
     *word-wrap: break-word;

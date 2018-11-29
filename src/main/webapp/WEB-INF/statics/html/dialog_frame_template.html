@@ -1,5 +1,5 @@
 <div id="bg"></div>
-<div id="show" style="top: 10%;left: 10%;width: 80%;height: 80%;">
+<div id="show" style="top: 5%;left: 10%;width: 80%;height: 80%;">
     <div class="dialog-header">
         <p>审方药师干预会话</p>
     </div>
@@ -13,7 +13,7 @@
         <div class="clearfix" style="margin-top: 10px;">
             <div class="">
                 <textarea id="message-area"
-                          style="border:1px solid #a7f1fd;float: left;height: auto;width: 80%;height: 80px"></textarea>
+                          style="border:1px solid #a7f1fd;float: left;height: auto;width: 80%;height: 80px" onkeydown="if(event.keyCode==13) sendMessage()"></textarea>
             </div>
             <div class="button-area">
                 <div style="margin: 5px auto;"><input type="button" value="发送" onclick="sendMessage()"/></div>

@@ -341,7 +341,7 @@
         };
 
         var sendMessage = function () {
-            var message = $("#message-area").val();
+            var message = $("#message-area").val().trim();
             if(message != null && message != '') {
                 sendRealMessage(message);
             }
