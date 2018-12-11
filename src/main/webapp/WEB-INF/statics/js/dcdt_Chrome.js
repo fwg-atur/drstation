@@ -68,7 +68,8 @@ function setInHosFlag(inHosFlag) {
         checkServerIpTemp = checkServerIpInHos;
         cheServerPortTemp = cheServerPortInHos;
     } else {
-        alert("error:未识别的住院标识！");
+        // alert("error:未识别的住院标识！");
+        return -4;
     }
 }
 
@@ -146,8 +147,8 @@ function sendAjaxRequestForDoc(data, url) {
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！");
-        return -2;
+        // alert("请求服务超时！");
+        return -3;
     }
     if(xmlhttp) {
         ajax(xmlhttp, "POST", url, data, adduserok);
@@ -181,8 +182,8 @@ function sendAjaxRequestForPhar(data, url) {
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！");
-        return -2;
+        // alert("请求服务超时！");
+        return -3;
     }
     if(xmlhttp) {
         ajax(xmlhttp, "POST", url, data, adduserok);
@@ -233,7 +234,8 @@ function DoctorCheckForChrome(tag, xml) {
         drawCheckResultElem(url);
         checkIsQuitState = window.setInterval("checkIsQuit()", 500);
     }else if(check.hasProblem == -2){
-        alert("请求中间层服务异常！");
+        // alert("请求中间层服务异常！");
+        return -2;
     }
 }
 
@@ -343,7 +345,8 @@ function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml
         }
         check_for_next();
     }else if(check.hasProblem == -2){
-        alert("请求中间层服务异常！");
+        // alert("请求中间层服务异常！");
+        return -2;
     } else {
         if(t1){
             clearTimeout(t1);
@@ -383,8 +386,8 @@ function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInf
         }
         return -1;
     }else if(check.hasProblem == -2){
-        alert("请求中间层服务异常！");
-        return 0;
+        // alert("请求中间层服务异常！");
+        return -2;
     }
 }
 
