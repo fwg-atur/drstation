@@ -50,13 +50,13 @@ public class PrescCheckService {
         logger.debug(checkJson);
 
         CheckMessage checkMessage = new CheckMessage();
-        if (tag == 2) return checkMessage;
 
         if(checkJson == null || checkJson.equals("")){
             checkMessage.setHasProblem(-2);
             return checkMessage;
         }
 
+        if (tag == 2) return checkMessage;
 
         checkMessage = handleCheckJson(checkJson);
         putXML2Cache(checkMessage.getPresId(), data);
@@ -135,11 +135,13 @@ public class PrescCheckService {
      * @param checkJson
      */
     protected CheckMessage handleCheckJson(String checkJson) {
-        if(checkJson == null || checkJson.equals("")){
-            return new CheckMessage();
-        }
         Gson g = new Gson();
         CheckResults results = g.fromJson(checkJson, CheckResults.class);
+        if(results.getCheckInfoMap() == null){
+            CheckMessage message = new CheckMessage();
+            message.setHasProblem(-2);
+            return message;
+        }
         results.setAdvices(sortCheckResult(results.getAdvices()));
 
         String presId = results.getPatient().getPATIENT_PRES_ID();

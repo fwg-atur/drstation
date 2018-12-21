@@ -2,6 +2,7 @@ package com.dcdt.doctorstation.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by LiRong on 2017/7/2.
@@ -13,6 +14,7 @@ public class CheckResults {
     private List<Advice> advices;
     private int HIGHEST_WARNING_LEVEL;
     private int WARNING_COUNT;
+    private Map<String,List<CheckInfo>> checkInfoMap;
 
     public CheckResults clone() {
         CheckResults ret = new CheckResults();
@@ -22,6 +24,7 @@ public class CheckResults {
         ret.setAdvices(new ArrayList<Advice>());    //to-do
         ret.setHIGHEST_WARNING_LEVEL(HIGHEST_WARNING_LEVEL);
         ret.setWARNING_COUNT(WARNING_COUNT);
+        ret.setCheckInfoMap(checkInfoMap);
         return ret;
     }
 
@@ -71,5 +74,13 @@ public class CheckResults {
 
     public void setWARNING_COUNT(int WARNING_COUNT) {
         this.WARNING_COUNT = WARNING_COUNT;
+    }
+
+    public Map<String, List<CheckInfo>> getCheckInfoMap() {
+        return checkInfoMap;
+    }
+
+    public void setCheckInfoMap(Map<String, List<CheckInfo>> checkInfoMap) {
+        this.checkInfoMap = checkInfoMap;
     }
 }
