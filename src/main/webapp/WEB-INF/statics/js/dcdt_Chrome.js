@@ -64,9 +64,11 @@ function setInHosFlag(inHosFlag) {
     if (inHosFlag == 0) {
         checkServerIpTemp = checkServerIpOutHos;
         cheServerPortTemp = cheServerPortOutHos;
+        return 0;
     } else if (inHosFlag == 1) {
         checkServerIpTemp = checkServerIpInHos;
         cheServerPortTemp = cheServerPortInHos;
+        return 0;
     } else {
         // alert("error:未识别的住院标识！");
         return -4;
@@ -74,9 +76,12 @@ function setInHosFlag(inHosFlag) {
 }
 
 function DoctorCheck(tag, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
-    setInHosFlag(inHosFlag);
-    loacl_next_func(next_func_name, next_fun_args, back_func_name, back_func_args);
-    DoctorCheckForChrome(tag, xml);
+    if(setInHosFlag(inHosFlag) == -4){
+        return -4;
+    }else {
+        loacl_next_func(next_func_name, next_fun_args, back_func_name, back_func_args);
+        return DoctorCheckForChrome(tag, xml);
+    }
 }
 
 function getRetValUrl() {
@@ -212,15 +217,20 @@ function DoctorCheckForChrome(tag, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
     var url = getSendCheckUrl();
     var checkData = sendAjaxRequestForDoc(data, url);
+    if(checkData == -3){
+        return -3;
+    }
 
     var check = eval("(" + checkData + ")");
-    if (tag == 2) {
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    }else if (tag == 2) {
         if(t1){
             clearTimeout(t1);
         }
         return 0;
-    }
-    if (check.hasProblem == 0) {
+    } else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
@@ -233,9 +243,6 @@ function DoctorCheckForChrome(tag, xml) {
         presId = check.presId;
         drawCheckResultElem(url);
         checkIsQuitState = window.setInterval("checkIsQuit()", 500);
-    }else if(check.hasProblem == -2){
-        // alert("请求中间层服务异常！");
-        return -2;
     }
 }
 
@@ -321,32 +328,41 @@ function testPharmacistCheckSilent(tag) {
 }
 
 function PharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
-    setInHosFlag(inHosFlag);
-    local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
-    PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml);
+    if (setInHosFlag(inHosFlag) == -4) {
+        return -4;
+    } else {
+        local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
+        return PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml);
+    }
 }
 
 function PharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
-    setInHosFlag(inHosFlag);
-    local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
-    PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInfo, xml);
+    if(setInHosFlag(inHosFlag) == -4){
+        return -4;
+    }else {
+        local_next_func_pharmacist(next_func_name, next_fun_args, back_func_name, back_func_args);
+        return PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInfo, xml);
+    }
 }
 
 function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
     var checkData = sendAjaxRequestForPhar(data, url);
+    if(checkData == -3){
+        return -3;
+    }
 
     var check = eval("(" + checkData + ")");
 
-    if (check.hasProblem == 0) {
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    }else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
         check_for_next();
-    }else if(check.hasProblem == -2){
-        // alert("请求中间层服务异常！");
-        return -2;
     } else {
         if(t1){
             clearTimeout(t1);
@@ -361,9 +377,15 @@ function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInf
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
     var checkData = sendAjaxRequestForPhar(data, url);
+    if(checkData == -3){
+        return -3;
+    }
 
     var check = eval("(" + checkData + ")");
-    if (check.hasProblem == 0) {
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    }else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
@@ -385,9 +407,6 @@ function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInf
             clearTimeout(t1);
         }
         return -1;
-    }else if(check.hasProblem == -2){
-        // alert("请求中间层服务异常！");
-        return -2;
     }
 }
 
@@ -454,6 +473,9 @@ function sendPharmacistInterfere(xml) {
     var data = "xml=" + encodeURIComponent(xml);
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistInterfere";
     var checkData = sendAjaxRequestForPhar(data, url);
+    if(checkData == -3){
+        return -3;
+    }
     if(checkData != null || checkData != ""){
         alert("干预成功！");
         hidediv();

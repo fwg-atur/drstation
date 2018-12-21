@@ -131,8 +131,11 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
         alert("处方没有问题！");
     }
      **/
-
-    if (tag == 2 || check.hasProblem == 0) {
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    }
+    else if (tag == 2 || check.hasProblem == 0) {
         if(tag == 2){
             if(t1){
                 clearTimeout(t1);
@@ -154,9 +157,6 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
                 ';dialogHeight=' + iHeight +
                 ';center=yes;help=yes');
         }
-    }else if(check.hasProblem == -2){
-        // alert("请求中间层服务异常！");
-        return -2;
     }
 
     xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/getRetValue", false);
@@ -321,14 +321,14 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
-    if (check.hasProblem == 0) {
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    } else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
         return 0;
-    }else if(check.hasProblem == -2){
-        // alert("请求中间层服务异常！");
-        return -2;
     }else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
 
@@ -394,7 +394,10 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
-    if (check.hasProblem == 0) {
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    }else if (check.hasProblem == 0) {
         // alert("返回值为：0");
         if(t1){
             clearTimeout(t1);
@@ -420,9 +423,6 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
             clearTimeout(t1);
         }
         return -1;
-    }else if(check.hasProblem == -2){
-        // alert("请求中间层服务异常！");
-        return -2;
     }
 }
 
@@ -518,14 +518,14 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
-    if (check.hasProblem == 0) {
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    }else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
         return 0;
-    }else if(check.hasProblem == -2){
-        // alert("请求中间层服务异常！");
-        return -2;
     }else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
 
@@ -589,7 +589,10 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
 
     var checkData = xmlhttp.responseText;
     var check = eval("(" + checkData + ")");
-    if (check.hasProblem == 0) {
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    }else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
@@ -615,9 +618,6 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
         }
         // alert("返回值为：-1");
         return -1;
-    }else if(check.hasProblem == -3){
-        // alert("请求中间层服务异常！");
-        return -2;
     }
 }
 

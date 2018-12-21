@@ -667,7 +667,7 @@
             <div class="inner-main-content" style="overflow-x:hidden">
             <div class="head-top">
                 <div class="head-top left-head"></div>
-                <div class="head-top right-head">|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合理用药实时审核Web端</div>
+                <div class="head-top right-head">|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合理用药实时审核Web端</div>
             </div>
             <div class="info-area">
                 <div class="detail-info left-area">
@@ -918,12 +918,12 @@
     }
 
     function checkCanBeNext() {
-        <%--if (highestWarningLevel == -1 || antiCheckNumber > 0) {--%>
-            <%--$("#next").attr('disabled', 'disabled');--%>
-            <%--$("#next").css('background-image', 'url(http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/image/nextdisabled.png)');--%>
-            <%--$("#next").css('background-repeat', 'no-repeat');--%>
-            <%--$("#next").css('background-position', 'center');--%>
-        <%--}--%>
+        if (highestWarningLevel == -1 || antiCheckNumber > 0) {
+            $("#next").attr('disabled', 'disabled');
+            $("#next").css('background-image', 'url(http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/image/nextdisabled.png)');
+            $("#next").css('background-repeat', 'no-repeat');
+            $("#next").css('background-position', 'center');
+        }
     }
 
     (function isDisabled() {
