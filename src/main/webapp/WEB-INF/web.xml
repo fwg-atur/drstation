@@ -9,6 +9,17 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <listener>
+        <listener-class>
+            org.springframework.web.util.Log4jConfigListener
+        </listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>file:${catalina.home}\lib\DCStation\log4j.properties</param-value>
+    </context-param>
+
     <filter>
         <filter-name>encoding</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -42,11 +53,6 @@
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
-
-    <context-param>
-        <param-name>log4jConfigLocation</param-name>
-        <param-value>file:${catalina.home}\lib\DCStation\log4j.properties</param-value>
-    </context-param>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>

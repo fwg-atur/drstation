@@ -28,4 +28,12 @@ public class HomeController {
         return "pharmacistIndex";
     }
 
+    @RequestMapping("/nurseIndex")
+    public  String nurseIndex(){
+        //输出日志文件
+        logger.info("the first jsp pages of nurseStation");
+        //返回nurseIndex.jsp这个视图
+        return "nurseIndex";
+    }
+
 }

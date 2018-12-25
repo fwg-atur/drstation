@@ -25,12 +25,9 @@ var timeStrapPhar = 5000;
 //区分昌平药师站，1为昌平，0为其他，默认0
 var cpFlag = 0;
 
-var startTime = 0;
-var endTime = 0;
+var checkServerIp;
+var checkServerPort;
 
-function concurrentTest() {
-
-}
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
@@ -48,8 +45,12 @@ function DoctorCheck(tag, xml, inHosFlag) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
+        checkServerIp = checkServerIpOutHos;
+        checkServerPort = cheServerPortOutHos;
         return sendCheck(tag, xml, checkServerIpOutHos, cheServerPortOutHos);
     } else if (inHosFlag == 1) {
+        checkServerIp = checkServerIpInHos;
+        checkServerPort = cheServerPortInHos;
         return sendCheck(tag, xml, checkServerIpInHos, cheServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
@@ -58,7 +59,6 @@ function DoctorCheck(tag, xml, inHosFlag) {
 }
 
 function sendCheck(tag, xml, checkServerIp, cheServerPort) {
-    startTime = new Date().getMilliseconds();
     var iWidth = '1000px';
     var iHeight = '547px';
     var xmlhttp;
@@ -165,10 +165,6 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
 
     var data = xmlhttp.responseText;
     data = eval("(" + data + ")");
-    endTime = new Date().getMilliseconds();
-    // alert("startTime:"+startTime);
-    // alert("endTime:"+endTime);
-    // alert((endTime-startTime)/1000);
     return data;
 }
 
@@ -284,7 +280,6 @@ function PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosF
 }
 
 function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkServerIp, checkServerPort){
-    startTime = new Date().getMilliseconds();
     var iWidth = '1000px';
     var iHeight = '700px';
     var xmlhttp;
@@ -354,8 +349,6 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
 
     var data = xmlhttp.responseText;
     data = eval("(" + data + ")");
-    endTime = new Date().getMilliseconds();
-    // alert(endTime-startTime);
     return data;
 }
 
@@ -619,6 +612,99 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
         // alert("返回值为：-1");
         return -1;
     }
+}
+
+function testNurseCheck() {
+    var dcdtXml = document.getElementById("dcdt").value;
+    NurseCheck(dcdtXml,1);
+}
+/**
+ *
+ * @param xml
+ * @param inHosFlag 住院门诊标识，1住院，0门诊 。默认使用住院医生站。
+ * @constructor
+ */
+function NurseCheck(xml, inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 1;
+    }
+    if (inHosFlag == 0) {
+        return sendNurseCheck(xml, checkServerIpOutHos, cheServerPortOutHos);
+    } else if (inHosFlag == 1) {
+        return sendNurseCheck(xml, checkServerIpInHos, cheServerPortInHos);
+    } else {
+        // alert("error:未识别的住院标识！");
+        return -4;
+    }
+}
+
+function sendNurseCheck(xml, checkServerIp, checkServerPort) {
+    var iWidth = '1000px';
+    var iHeight = '700px';
+    var xmlhttp;
+    var data = "xml=" + encodeURIComponent(xml);
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
+    }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        // alert("请求服务超时！");
+        return -3;
+    }
+    if(xmlhttp) {
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/sendNurseCheck", data, adduserok);
+        t1 = setTimeout(connecttoFail, timeStrapPhar);
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    var checkData = xmlhttp.responseText;
+    var check = eval("(" + checkData + ")");
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    } else if (check.hasProblem == 0) {
+        if(t1){
+            clearTimeout(t1);
+        }
+        return 0;
+    }else {
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/nurseCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
+
+        if(navigator.userAgent.indexOf("Chrome") >0 ){
+            var winOption = "height="+iHeight+",width="+iWidth+"," +
+                "top=50,left=50,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,fullscreen=0";
+            window.open(url,window, winOption);
+        } else {
+            window.showModalDialog(url, '',
+                'resizable:yes;scroll:yes;status:no;' +
+                'dialogWidth=' + iWidth +
+                ';dialogHeight=' + iHeight +
+                ';center=yes;help=yes');
+        }
+        if(t1){
+            clearTimeout(t1);
+        }
+    }
+
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/getRetValue", false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send('presId=' + check.presId);
+
+    var data = xmlhttp.responseText;
+    data = eval("(" + data + ")");
+    return data;
 }
 
 

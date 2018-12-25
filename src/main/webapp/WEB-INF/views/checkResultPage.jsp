@@ -27,7 +27,6 @@
     <script type="text/javascript">
         var checkServerIp = '${config.drStationServerIp}';
         var cheServerPost = '${config.drStationServerPort}';
-        var cheServerPost = '${config.drStationServerPort}';
         //药品说明书链接
         var disUrl = '${config.drugDescriptionURL}';
         var presId = '${presId}';

@@ -1,9 +1,6 @@
 ﻿/**
  * Created by on 2017/5/14.
  */
-var checkServerIp = "localhost";
-var checkServerPort = "80";
-var disUrl = 'http://192.168.80.2:8010/DCStation/home/index?drugCode=@code@';
 
 /**
  * 住院医生站ip，端口。
@@ -25,12 +22,10 @@ var cheServerPortOutHos = "80";
 var timeStrapDoc = 5000;
 //药师站超时返回的最长时间(毫秒)
 var timeStrapPhar = 5000;
-/**
- * 存放临时变量
- * @type {string}
- */
-var checkServerIpTemp;
-var cheServerPortTemp;
+
+var checkServerIp;
+var checkServerPort;
+var disUrl = 'http://192.168.80.2:8010/DCStation/home/index?drugCode=@code@';
 
 var checkResultTemp =
     '<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 100%;' +
@@ -62,12 +57,12 @@ function setInHosFlag(inHosFlag) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        checkServerIpTemp = checkServerIpOutHos;
-        cheServerPortTemp = cheServerPortOutHos;
+        checkServerIp = checkServerIpOutHos;
+        checkServerPort = cheServerPortOutHos;
         return 0;
     } else if (inHosFlag == 1) {
-        checkServerIpTemp = checkServerIpInHos;
-        cheServerPortTemp = cheServerPortInHos;
+        checkServerIp = checkServerIpInHos;
+        checkServerPort = cheServerPortInHos;
         return 0;
     } else {
         // alert("error:未识别的住院标识！");
@@ -85,7 +80,7 @@ function DoctorCheck(tag, xml, next_func_name, next_fun_args, back_func_name, ba
 }
 
 function getRetValUrl() {
-    return "http://" + checkServerIpTemp + ":" + cheServerPortTemp + "/DCStation/submit/getRetValue";
+    return "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/getRetValue";
 }
 
 function checkIsQuit() {
@@ -206,11 +201,11 @@ function sendAjaxRequestForPhar(data, url) {
 }
 
 function getSendCheckUrl() {
-    return "http://" + checkServerIpTemp + ":" + cheServerPortTemp + "/DCStation/submit/sendCheck";
+    return "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck";
 }
 
 function getCheckResultPageUrl(check) {
-    return "http://" + checkServerIpTemp + ":" + cheServerPortTemp + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+    return "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
 }
 
 function DoctorCheckForChrome(tag, xml) {
@@ -373,6 +368,7 @@ function PharmacistCheckForChrome(tag, patientID, visitDate, pharmacistInfo, xml
         pharmacistCheckIsQuitState = window.setInterval("pharmacistCheckIsQuit()", 500);
     }
 }
+
 function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInfo, xml) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag + '&' + 'patientID=' + patientID + '&' + 'visitDate=' + visitDate + '&' + 'pharmacistInfo=' + pharmacistInfo;
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck";
@@ -487,4 +483,79 @@ function sendPharmacistInterfere(xml) {
     }
 }
 
+function testNurseCheck() {
+    var dcdtXml = document.getElementById("dcdt").value;
+    NurseCheck(dcdtXml, test_next, 1, test_back, 2, 1);
+}
 
+function NurseCheck(xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
+    if(setInHosFlag(inHosFlag) == -4){
+        return -4;
+    }else {
+        loacl_next_func(next_func_name, next_fun_args, back_func_name, back_func_args);
+        return NurseCheckForChrome(xml);
+    }
+}
+
+function NurseCheckForChrome(xml) {
+    var data = "xml=" + encodeURIComponent(xml);
+    var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/sendNurseCheck";
+    var checkData = sendAjaxRequestForPhar(data, url);
+    if(checkData == -3){
+        return -3;
+    }
+
+    var check = eval("(" + checkData + ")");
+
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        return -2;
+    }else if (check.hasProblem == 0) {
+        if(t1){
+            clearTimeout(t1);
+        }
+        check_for_next();
+    } else {
+        if(t1){
+            clearTimeout(t1);
+        }
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/nurseCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
+        nurse_presId = check.presId;
+        drawNurseCheckResultElem(url);
+        nurseCheckIsQuitState = window.setInterval("nurseCheckIsQuit()", 500);
+    }
+}
+
+function drawNurseCheckResultElem(url) {
+    var checkResultElem = document.getElementById("checkResult");
+    checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+    document.getElementById("checkResultButton").click();
+    showdiv();
+}
+
+function nurseCheckIsQuit() {
+    var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/getRetValue";
+    var data = 'presId=' + nurse_presId;
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send(data);
+
+    var checkData = xmlhttp.responseText;
+    checkData = eval("(" + checkData + ")");
+
+    if (checkData == 0) {
+        window.clearInterval(nurseCheckIsQuitState);
+        pharmacistCheck_for_next()
+    } else if (checkData == -1) {
+        window.clearInterval(nurseCheckIsQuitState);
+        pharmacistCheck_for_back();
+    }
+}

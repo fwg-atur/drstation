@@ -39,7 +39,6 @@ public class SubmitPrescController {
         return checkPresInput.getDoctor().getDEPT_CODE();
     }
 
-
     @ResponseBody
     @RequestMapping("/beginIntervene")
     public String beginIntervene(@RequestBody String presId) {
