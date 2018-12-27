@@ -59,6 +59,9 @@ public class PrescCheckService {
         if (tag == 2) return checkMessage;
 
         checkMessage = handleCheckJson(checkJson);
+        if(checkMessage.getHasProblem() == -2){
+            return checkMessage;
+        }
         putXML2Cache(checkMessage.getPresId(), data);
         return checkMessage;
     }
