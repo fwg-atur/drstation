@@ -183,11 +183,6 @@
             document.getElementById("show").style.display = 'none';
         }
 
-        function openDescribLinked(code) {
-            var urlTemp = disUrl.replace("@code@", code);
-            drawCheckResultElem(urlTemp);
-        }
-
         /*** 查询干预状态 ***/
 
 
@@ -746,7 +741,7 @@
                             <tr>
                                 <td style="width:10px">${item.kh}</td>
                                 <td id="drug_name_td" style="width:190px;_width:127px">
-                                    <a onclick="openDescribLinked('${item.DRUG_LO_ID}')">
+                                    <a onclick="openDiscribLinked('${item.DRUG_LO_ID}')">
                                             ${item.DRUG_LO_NAME}
                                     </a>
                                 </td>
@@ -770,9 +765,9 @@
             <div class="button-area">
                 <%--<input id="appealBtn" type="button" style="display: none" value="我要反馈"/>--%>
                 <%--&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                <input id="back" type="button" onclick="nextOrBack(-1)" value="返回"/>
+                <input id="back" type="button" onclick="nextOrBack(-1)" value="返回修改"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="next" type="button" onclick="next()" value="下一步"/>
+                <input id="next" type="button" onclick="next()" value="继续保存"/>
             </div>
          </div>
         </div>

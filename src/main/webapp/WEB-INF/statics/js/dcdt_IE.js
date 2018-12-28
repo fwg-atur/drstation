@@ -28,7 +28,6 @@ var cpFlag = 0;
 var checkServerIp;
 var checkServerPort;
 
-
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
     DoctorCheck(tag, dcdtXml,1);
@@ -706,6 +705,8 @@ function sendNurseCheck(xml, checkServerIp, checkServerPort) {
     data = eval("(" + data + ")");
     return data;
 }
+
+
 
 
 

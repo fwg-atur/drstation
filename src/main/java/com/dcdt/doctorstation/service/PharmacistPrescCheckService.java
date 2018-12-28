@@ -395,8 +395,9 @@ public class PharmacistPrescCheckService {
                 if(prescInfo.isGroup_id_flag() == true){
                     continue;
                 }
-                if(min == -1 || Long.parseLong(prescInfo.getGroup_id())< min){
-                    min = Long.parseLong(prescInfo.getGroup_id());
+                String n_group_id = prescInfo.getGroup_id().replaceAll("[^\\d]+", "");
+                if(min == -1 || Long.parseLong(n_group_id)< min){
+                    min = Long.parseLong(n_group_id);
                 }
             }
 
@@ -404,8 +405,9 @@ public class PharmacistPrescCheckService {
             List<PrescInfo> tempList = new ArrayList<PrescInfo>();
             for(int k=0;k<newList.size();++k){
                 PrescInfo prescInfo = newList.get(k);
+                String n_group_id = prescInfo.getGroup_id().replaceAll("[^\\d]+", "");
 
-                if(Long.parseLong(prescInfo.getGroup_id()) == min){
+                if(Long.parseLong(n_group_id) == min){
                     prescInfo.setGroup_id_flag(true);
                     tempList.add(prescInfo);
                 }

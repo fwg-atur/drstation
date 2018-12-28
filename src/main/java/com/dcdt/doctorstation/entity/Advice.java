@@ -43,6 +43,9 @@ public class Advice {
     private String BAK_05;
     private String anti_drug_register;
 
+    private String ENTER_DATE_TIME; //下达时间
+    private String SELF_DRUG;       //是否自带药
+
     private String kh;
 
     //在排序时用到的辅助字段，标识order_no是否已经处理过
@@ -411,6 +414,22 @@ public class Advice {
 
     public void setGroup_id_flag(boolean group_id_flag) {
         this.group_id_flag = group_id_flag;
+    }
+
+    public String getENTER_DATE_TIME() {
+        return ENTER_DATE_TIME;
+    }
+
+    public void setENTER_DATE_TIME(String ENTER_DATE_TIME) {
+        this.ENTER_DATE_TIME = ENTER_DATE_TIME;
+    }
+
+    public String getSELF_DRUG() {
+        return SELF_DRUG;
+    }
+
+    public void setSELF_DRUG(String SELF_DRUG) {
+        this.SELF_DRUG = SELF_DRUG;
     }
 }
 

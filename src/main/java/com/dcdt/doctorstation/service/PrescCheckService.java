@@ -275,8 +275,9 @@ public class PrescCheckService {
                 if(advice.isGroup_id_flag() == true){
                     continue;
                 }
-                if(min == -1 || Long.parseLong(advice.getGROUP_ID())< min){
-                    min = Long.parseLong(advice.getGROUP_ID());
+                String n_group_id = advice.getGROUP_ID().replaceAll("[^\\d]+", "");
+                if(min == -1 || Long.parseLong(n_group_id)< min){
+                    min = Long.parseLong(n_group_id);
                 }
             }
 
@@ -284,8 +285,8 @@ public class PrescCheckService {
             List<Advice> tempList = new ArrayList<Advice>();
             for(int k=0;k<newList.size();++k){
                 Advice advice = newList.get(k);
-
-                if(Long.parseLong(advice.getGROUP_ID()) == min){
+                String n_group_id = advice.getGROUP_ID().replaceAll("[^\\d]+", "");
+                if(Long.parseLong(n_group_id) == min){
                     advice.setGroup_id_flag(true);
                     tempList.add(advice);
                 }

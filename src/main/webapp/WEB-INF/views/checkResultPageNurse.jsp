@@ -49,7 +49,7 @@
                                 <tr>
                                     <td style="width:10px">${item.kh}</td>
                                     <td id="drug_name_td" style="width:190px;_width:127px">
-                                        <a onclick="openDescribLinked('${item.DRUG_LO_ID}')">
+                                        <a onclick="openDiscribLinked('${item.DRUG_LO_ID}')">
                                                 ${item.DRUG_LO_NAME}
                                         </a>
                                     </td>

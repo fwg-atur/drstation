@@ -217,10 +217,6 @@
             document.getElementById("bg").style.display = 'none';
             document.getElementById("show").style.display = 'none';
         }
-        function openDiscribLinked(code) {
-            var urlTemp = disUrl.replace("@code@", code);
-            drawCheckResultElem(urlTemp);
-        }
 
         function openDoctorInfo() {
             drawDoctorInfoELem();
@@ -428,9 +424,9 @@
 
                 <%--<input id="help" type="button" value="帮助"/>--%>
                 <input id="interfere" class="long" type="button" value="实施干预" onclick="drawInterfereInfoElem()"/>
-                <input id="back" class="long" type="button" onclick="nextOrBack(-1)" value="返回"/>
+                <input id="back" class="long" type="button" onclick="nextOrBack(-1)" value="返回修改"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="next" class="long" type="button" onclick="nextOrBack(0)" value="下一步"/>
+                <input id="next" class="long" type="button" onclick="nextOrBack(0)" value="继续保存"/>
             </div>
             </div>
         </div>
