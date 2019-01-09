@@ -395,6 +395,9 @@ public class PharmacistPrescCheckService {
                 if(prescInfo.isGroup_id_flag() == true){
                     continue;
                 }
+                if(prescInfo.getGroup_id() == null || "".equals(prescInfo.getGroup_id())){
+                    prescInfo.setGroup_id("0");
+                }
                 String n_group_id = prescInfo.getGroup_id().replaceAll("[^\\d]+", "");
                 if(min == -1 || Long.parseLong(n_group_id)< min){
                     min = Long.parseLong(n_group_id);
@@ -452,6 +455,9 @@ public class PharmacistPrescCheckService {
                 //order_id_flag为true表示已经有序加到finalList中，不需要再处理
                 if(prescInfo.isOrder_id_flag() == true){
                     continue;
+                }
+                if(prescInfo.getOrder_id() == null || "".equals(prescInfo.getOrder_id())){
+                    prescInfo.setOrder_id("0");
                 }
                 //对order_id中包含非数字的处理，替换非数字为空格
                 String n_order_id = prescInfo.getOrder_id().replaceAll("[^\\d]+", "");

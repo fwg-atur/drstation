@@ -183,6 +183,11 @@
             document.getElementById("show").style.display = 'none';
         }
 
+        function openDiscribLinked(code) {
+            var urlTemp = disUrl.replace("@code@", code);
+            drawCheckResultElem(urlTemp);
+        }
+
         /*** 查询干预状态 ***/
 
 

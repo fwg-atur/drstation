@@ -151,8 +151,8 @@ function sendAjaxRequestForDoc(data, url) {
         return -3;
     }
     if(xmlhttp) {
-        ajax(xmlhttp, "POST", url, data, adduserok);
         t1 = setTimeout(connecttoFail, timeStrapDoc);
+        ajax(xmlhttp, "POST", url, data, adduserok);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -186,8 +186,8 @@ function sendAjaxRequestForPhar(data, url) {
         return -3;
     }
     if(xmlhttp) {
-        ajax(xmlhttp, "POST", url, data, adduserok);
         t1 = setTimeout(connecttoFail, timeStrapPhar);
+        ajax(xmlhttp, "POST", url, data, adduserok);
     }else {
         alert("Init xmlhttprequest fail");
     }

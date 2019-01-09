@@ -79,12 +79,12 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        // alert("请求服务超时！");
+        alert("请求服务超时！");
         return -3;
     }
     if(xmlhttp) {
-        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", data, adduserok);
         t1 = setTimeout(connecttoFail, timeStrapDoc);
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", data, adduserok);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -131,7 +131,9 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     }
      **/
     if(check.hasProblem == -2){
-        // alert("请求中间层服务异常！");
+        if (xmlhttp)
+            xmlhttp.abort();
+        alert("请求中间层服务异常！");
         return -2;
     }
     else if (tag == 2 || check.hasProblem == 0) {
@@ -303,8 +305,8 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
         return -3;
     }
     if(xmlhttp) {
-        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", data, adduserok);
         t1 = setTimeout(connecttoFail, timeStrapPhar);
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", data, adduserok);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -374,8 +376,8 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
         return -3;
     }
     if(xmlhttp) {
-        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", data, adduserok);
         t1 = setTimeout(connecttoFail, timeStrapPhar);
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", data, adduserok);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -498,8 +500,8 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
         return -3;
     }
     if(xmlhttp) {
-        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck_CP", data, adduserok);
         t1 = setTimeout(connecttoFail, timeStrapPhar);
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck_CP", data, adduserok);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -569,8 +571,8 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
         return -3;
     }
     if(xmlhttp) {
-        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheckSilent_CP", data, adduserok);
         t1 = setTimeout(connecttoFail, timeStrapPhar);
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheckSilent_CP", data, adduserok);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -662,8 +664,8 @@ function sendNurseCheck(xml, checkServerIp, checkServerPort) {
         return -3;
     }
     if(xmlhttp) {
-        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/sendNurseCheck", data, adduserok);
         t1 = setTimeout(connecttoFail, timeStrapPhar);
+        ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/sendNurseCheck", data, adduserok);
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -679,7 +681,7 @@ function sendNurseCheck(xml, checkServerIp, checkServerPort) {
         }
         return 0;
     }else {
-        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/nurseCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/nurseCheckResultPage?random=" + Math.random();
 
         if(navigator.userAgent.indexOf("Chrome") >0 ){
             var winOption = "height="+iHeight+",width="+iWidth+"," +
@@ -697,14 +699,22 @@ function sendNurseCheck(xml, checkServerIp, checkServerPort) {
         }
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/getRetValue", false);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
-    xmlhttp.send('presId=' + check.presId);
-
-    var data = xmlhttp.responseText;
-    data = eval("(" + data + ")");
-    return data;
+    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/getRetValue", false);
+    // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send('presId=' + check.presId);
+    //
+    // var data = xmlhttp.responseText;
+    // data = eval("(" + data + ")");
+    // return data;
 }
+
+// function sortByBedNo() {
+//
+// }
+//
+// function sortBySerious() {
+//
+// }
 
 
 

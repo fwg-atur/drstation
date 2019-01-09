@@ -217,6 +217,10 @@
             document.getElementById("bg").style.display = 'none';
             document.getElementById("show").style.display = 'none';
         }
+        function openDiscribLinked(code) {
+            var urlTemp = disUrl.replace("@code@", code);
+            drawCheckResultElem(urlTemp);
+        }
 
         function openDoctorInfo() {
             drawDoctorInfoELem();

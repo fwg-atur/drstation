@@ -275,6 +275,9 @@ public class PrescCheckService {
                 if(advice.isGroup_id_flag() == true){
                     continue;
                 }
+                if(advice.getGROUP_ID() == null || "".equals(advice.getGROUP_ID())){
+                    advice.setGROUP_ID("0");
+                }
                 String n_group_id = advice.getGROUP_ID().replaceAll("[^\\d]+", "");
                 if(min == -1 || Long.parseLong(n_group_id)< min){
                     min = Long.parseLong(n_group_id);
@@ -333,6 +336,9 @@ public class PrescCheckService {
                     continue;
                 }
 
+                if(advice.getORDER_NO() == null || "".equals(advice.getORDER_NO())){
+                    advice.setORDER_NO("0");
+                }
                 //对order_no中包含非数字的处理，替换非数字为空格
                 String n_order_no = advice.getORDER_NO().replaceAll("[^\\d]+", "");
                 //取一轮遍历中order_no的最小值
