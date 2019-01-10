@@ -148,11 +148,14 @@ function sendAjaxRequestForDoc(data, url) {
         if (xmlhttp)
             xmlhttp.abort();
         // alert("请求服务超时！");
-        return -3;
     }
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapDoc);
-        ajax(xmlhttp, "POST", url, data, adduserok);
+        try {
+            ajax(xmlhttp, "POST", url, data, adduserok);
+        }catch (e){
+            return -3;
+        }
     }else {
         alert("Init xmlhttprequest fail");
     }
@@ -183,11 +186,14 @@ function sendAjaxRequestForPhar(data, url) {
         if (xmlhttp)
             xmlhttp.abort();
         // alert("请求服务超时！");
-        return -3;
     }
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapPhar);
-        ajax(xmlhttp, "POST", url, data, adduserok);
+        try {
+            ajax(xmlhttp, "POST", url, data, adduserok);
+        }catch (e){
+            return -3;
+        }
     }else {
         alert("Init xmlhttprequest fail");
     }

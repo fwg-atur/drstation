@@ -31,14 +31,22 @@
                 <form id="queryForm" method="get">
                 <textarea id="dcdt" name="dcdt" style="min-height: 400px;width: 100%">
                         &lt;CheckPatients&gt;
-                            &lt;CheckPatient PATIENT_ID="001" VISIT_ID="1" PATIENT_PRES_ID="001_01"&gt;
+                            &lt;CheckPatient PATIENT_ID="1" VISIT_ID="1" PATIENT_PRES_ID="1" BED_NO="1"&gt;
                                 &lt;Advices&gt;
-                                    &lt;Advice PRES_ID="00101" DRUG_CODE="10001" ORDER_NO="01" ORDER_SUB_NO="1" /&gt;
-                                    &lt;Advice PRES_ID="00101" DRUG_CODE="10002" ORDER_NO="01" ORDER_SUB_NO="2" /&gt;
-                                    &lt;Advice PRES_ID="00102" DRUG_CODE="10003" ORDER_NO="02" ORDER_SUB_NO="1" /&gt;
+                                    &lt;Advice PRES_ID="0003478286_2016:11:16:16:55:34" DRUG_CODE="MED00223" ORDER_NO="70285314" ORDER_SUB_NO="1"  ENTER_DATE_TIME ="2018-12-28 11:41:00" SELF_DRUG="0" /&gt;
+                                    &lt;Advice PRES_ID="0003478286_2016:11:16:16:55:34" DRUG_CODE="MED00238" ORDER_NO="1" ORDER_SUB_NO="2" ENTER_DATE_TIME ="2018-12-28 11:41:00" SELF_DRUG="1" /&gt;
+                                    <%--&lt;Advice PRES_ID="3" DRUG_CODE="3" ORDER_NO="2" ORDER_SUB_NO="1" ENTER_DATE_TIME ="2018-12-28 11:41:00" SELF_DRUG="0"/&gt;--%>
                                 &lt;/Advices&gt;
                             &lt;/CheckPatient&gt;
-                        &lt;CheckPatients&gt;
+                            &lt;CheckPatient PATIENT_ID="2" VISIT_ID="2" PATIENT_PRES_ID="2" BED_NO="2"&gt;
+                                &lt;Advices&gt;
+                                    &lt;Advice PRES_ID="0003478286_2016:11:16:16:55:34" DRUG_CODE="MED00223" ORDER_NO="70285314" ORDER_SUB_NO="1"  ENTER_DATE_TIME ="2018-12-28 11:41:00" SELF_DRUG="0" /&gt;
+                                    &lt;Advice PRES_ID="0003478286_2016:11:16:16:55:34" DRUG_CODE="MED00238" ORDER_NO="1" ORDER_SUB_NO="2" ENTER_DATE_TIME ="2018-12-28 11:41:00" SELF_DRUG="1" /&gt;
+                                    <%--&lt;Advice PRES_ID="3" DRUG_CODE="3" ORDER_NO="2" ORDER_SUB_NO="1" ENTER_DATE_TIME ="2018-12-28 11:41:00" SELF_DRUG="0"/&gt;--%>
+                                &lt;/Advices&gt;
+                            &lt;/CheckPatient&gt;
+                        &lt;/CheckPatients&gt;
+
 
                 </textarea>
                 </form>

@@ -33,13 +33,13 @@ public class Patient {
     private String MEDICARE_04;
     private String MEDICARE_05;
 
-    private String bed_no;
+    private String BED_NO;
 
     public Patient(){
 
     }
 
-    public Patient(String NAME, String ID, String GENDER, String BIRTH, String WEIGHT, String HEIGHT, String ALERGY_DRUGS, String PREGNANT, String LACT, String HEPATICAL, String RENAL, String PANCREAS, String VISIT_ID, String PATIENT_PRES_ID, String IDENTITY_TYPE, String FEE_TYPE, String SCR, String SCR_UNIT, String GESTATION_AGE, String PRETERM_BIRTH, String DRUG_HISTORY, String FAMILY_DISEASE_HISTORY, String GENETIC_DISEASE, String MEDICARE_01, String MEDICARE_02, String MEDICARE_03, String MEDICARE_04, String MEDICARE_05, String bed_no) {
+    public Patient(String NAME, String ID, String GENDER, String BIRTH, String WEIGHT, String HEIGHT, String ALERGY_DRUGS, String PREGNANT, String LACT, String HEPATICAL, String RENAL, String PANCREAS, String VISIT_ID, String PATIENT_PRES_ID, String IDENTITY_TYPE, String FEE_TYPE, String SCR, String SCR_UNIT, String GESTATION_AGE, String PRETERM_BIRTH, String DRUG_HISTORY, String FAMILY_DISEASE_HISTORY, String GENETIC_DISEASE, String MEDICARE_01, String MEDICARE_02, String MEDICARE_03, String MEDICARE_04, String MEDICARE_05, String BED_NO) {
         this.NAME = NAME;
         this.ID = ID;
         this.GENDER = GENDER;
@@ -69,7 +69,7 @@ public class Patient {
         this.MEDICARE_04 = MEDICARE_04;
         this.MEDICARE_05 = MEDICARE_05;
 
-        this.bed_no = bed_no;
+        this.BED_NO = BED_NO;
     }
 
     public Patient clone(){
@@ -78,7 +78,7 @@ public class Patient {
                 VISIT_ID, PATIENT_PRES_ID, IDENTITY_TYPE, FEE_TYPE, SCR,
                 SCR_UNIT, GESTATION_AGE, PRETERM_BIRTH, DRUG_HISTORY,
                 FAMILY_DISEASE_HISTORY, GENETIC_DISEASE, MEDICARE_01,
-                MEDICARE_02, MEDICARE_03, MEDICARE_04, MEDICARE_05, bed_no);
+                MEDICARE_02, MEDICARE_03, MEDICARE_04, MEDICARE_05, BED_NO);
         return ret;
     }
 
@@ -306,11 +306,11 @@ public class Patient {
         this.MEDICARE_05 = MEDICARE_05;
     }
 
-    public String getBed_no() {
-        return bed_no;
+    public String getBED_NO() {
+        return BED_NO;
     }
 
-    public void setBed_no(String bed_no) {
-        this.bed_no = bed_no;
+    public void setBED_NO(String BED_NO) {
+        this.BED_NO = BED_NO;
     }
 }
