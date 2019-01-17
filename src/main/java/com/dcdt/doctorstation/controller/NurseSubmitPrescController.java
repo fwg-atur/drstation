@@ -28,6 +28,17 @@ public class NurseSubmitPrescController {
         return service.checkNursePresc(xml);
     }
 
+    /**
+     * 测试用
+     * @param xml
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/sendNurseCheckForTest")
+    public CheckMessage sendNurseCheckForTest(String xml) {
+        return service.checkNursePrescForTest(xml);
+    }
+
     @RequestMapping("/nurseCheckResultPage")
     public String findCheckResult(Model model) {
         List<NurseCheckResult> checkList = service.getNurseCheckResults();

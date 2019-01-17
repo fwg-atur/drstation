@@ -29,6 +29,20 @@ public class PharmacistSubmitPresController{
         return service.checkPharmacistPresc(patientID,visitDate,pharmacistInfo,xml);
     }
 
+    /**
+     * 测试用
+     * @param patientID
+     * @param visitDate
+     * @param pharmacistInfo
+     * @param xml
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/sendPharmacistCheckForTest")
+    public CheckMessage sendPharmacistCheckForTest(String patientID,String visitDate,String pharmacistInfo,String xml) {
+        return service.checkPharmacistPrescForTest(patientID,visitDate,pharmacistInfo,xml);
+    }
+
     @ResponseBody
     @RequestMapping("/sendPharmacistCheck_CP")
     public CheckMessage sendPharmacistCheck_CP(String visitDate,String pharmacistInfo,String xml) {

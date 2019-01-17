@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -145,7 +143,7 @@ public class PrescCheckService {
             message.setHasProblem(-2);
             return message;
         }
-        results.setAdvices(sortCheckResult(results.getAdvices()));
+        results.setAdvices(sortgroupAdvice(results.getAdvices(),groupFlag));
 
         String presId = results.getPatient().getPATIENT_PRES_ID();
         if(presId == null || "".equals(presId)){
@@ -216,6 +214,8 @@ public class PrescCheckService {
         return presId;
     }
 
+
+    @Deprecated
     public List<Advice> sortCheckResult(List<Advice> advices){
         List<Advice> newList0 = new ArrayList<Advice>();
         List<Advice> newList1 = new ArrayList<Advice>();
@@ -249,6 +249,7 @@ public class PrescCheckService {
     }
 
     //辅助方法，避免重复代码
+    @Deprecated
     public List<Advice> sortHelp(List<Advice> list,List<Advice> finalList){
         if("1".equals(groupFlag)){
             list = sortSameLevelGroupId(list);
@@ -263,8 +264,9 @@ public class PrescCheckService {
     }
 
     //对同一级别的问题按照group_id排序
+    @Deprecated
     public List<Advice> sortSameLevelGroupId(List<Advice> newList){
-        //finalList存放：按照group_id从小到到排列
+        //finalList存放：按照group_id从小到大排列
         List<Advice> finalList = new ArrayList<Advice>();
 
         //min存放：group_id一轮的最小值
@@ -320,7 +322,183 @@ public class PrescCheckService {
         return finalList;
     }
 
+    /**
+     * add by wtwang @2019.01.16
+     * group_id或者order_no相同为一组，同一组的医嘱在一起，计算组中最高的问题级别
+     * 将原始问题医嘱列表按照group_id或者order_no成组分好
+     * 并且成组的问题按照问题级别排好序
+     * 各个组之间按照组的最高问题级别排好序
+     * flag为1表示按照group_id分组，flag为2表示按照order_no分组
+     * @param list
+     * @return
+     */
+    public List<Advice> sortgroupAdvice(List<Advice> list,String flag){
+        List<Advice> result = new ArrayList<Advice>();
+        Map<Long,List<Advice>> map = new HashMap<Long, List<Advice>>();
+        for(Advice advice : list){
+            String s_id = "";
+            // 区分按照group_id分组还是按照order_no分组
+            if("1".equals(flag)){
+                if(advice.getGROUP_ID() == null || "".equals(advice.getGROUP_ID())){
+                    advice.setGROUP_ID("0");
+                }
+                s_id = advice.getGROUP_ID().replaceAll("[^\\d]+", "");
+            }else if("2".equals(flag)){
+                if(advice.getORDER_NO() == null || "".equals(advice.getORDER_NO())){
+                    advice.setORDER_NO("0");
+                }
+                s_id = advice.getORDER_NO().replaceAll("[^\\d]+", "");
+            }
+            // 遍历list，将一组的医嘱存入同一个list中
+            if(!map.containsKey(Long.parseLong(s_id))){
+                List<Advice> tempList = new ArrayList<Advice>();
+                tempList.add(advice);
+                map.put(Long.parseLong(s_id),tempList);
+            }else{
+                map.get(Long.parseLong(s_id)).add(advice);
+            }
+        }
+
+        // list_i表示成组医嘱中最该问题级别为i的集合
+        List<List<Advice>> list_3 = new ArrayList<List<Advice>>();
+        List<List<Advice>> list_2 = new ArrayList<List<Advice>>();
+        List<List<Advice>> list_1 = new ArrayList<List<Advice>>();
+        List<List<Advice>> list_0 = new ArrayList<List<Advice>>();
+        // 遍历map中的成组医嘱，计算每组医嘱的最高问题级别
+        for(List<Advice> tempList : map.values()){
+            // 在此时将成组的医嘱按照问题级别从高到低排好序
+            tempList = sortSameGroup(tempList);
+            // 将同一组的医嘱用括号标识括起来
+            tempList = handleSameGroup(tempList);
+
+            int level = getHighestLevelFromAdviceList(tempList);
+            // 根据最高问题级别将医嘱组加入到不同的list中
+            switch (level){
+                case 3:
+                    list_3.add(tempList);
+                    break;
+                case 2:
+                    list_2.add(tempList);
+                    break;
+                case 1:
+                    list_1.add(tempList);
+                    break;
+                case 0:
+                    list_0.add(tempList);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        // 将各个问题级别的医嘱组按照顺序加入到结果中
+        for(List<Advice> list3 : list_3){
+            for(Advice advice : list3){
+                result.add(advice);
+            }
+        }
+        for(List<Advice> list2 : list_2){
+            for(Advice advice : list2){
+                result.add(advice);
+            }
+        }
+        for(List<Advice> list1 : list_1){
+            for(Advice advice : list1){
+                result.add(advice);
+            }
+        }
+        for(List<Advice> list0 : list_0){
+            for(Advice advice : list0){
+                result.add(advice);
+            }
+        }
+
+
+        return result;
+    }
+
+    /**
+     * 将同组的医嘱用括号括起来
+     * @param list
+     * @return
+     */
+    public List<Advice> handleSameGroup(List<Advice> list){
+        int x = 0;
+        for(int l=0;l<list.size();++l){
+            Advice advice = list.get(l);
+            if(list.size() > 1){
+                if(x == 0){
+                    advice.setKh("┍ ");
+                }
+                else if(x == list.size()-1){
+                    advice.setKh("┕ ");
+                }
+                else{
+                    advice.setKh("");
+                }
+            }else{
+                advice.setKh("");
+            }
+            ++x;
+        }
+        return list;
+    }
+
+    /**
+     * add by wtwang @2019.01.17
+     * 将同一分组的医嘱按照问题级别从高到低排序
+     * @param list
+     * @return
+     */
+    public List<Advice> sortSameGroup(List<Advice> list){
+        List<Advice> result = new ArrayList<Advice>();
+        Map<Integer,List<Advice>> map = new HashMap<Integer, List<Advice>>();
+
+        // 遍历list，将问题级别相同医嘱放入同一个list中
+        for(Advice advice : list){
+            List<CheckInfo> checkInfos = advice.getCheckInfoList();
+            int warning_level = getHighestLevelFromCheckInfoList(checkInfos);
+            if(!map.containsKey(warning_level)){
+                List<Advice> tempList = new ArrayList<Advice>();
+                tempList.add(advice);
+                map.put(warning_level,tempList);
+            }else{
+                map.get(warning_level).add(advice);
+            }
+        }
+
+        // i从3到0表示问题级别，按照问题级别从高到低从map中取出医嘱加入到result中
+        for(int i=3;i>=0;--i){
+            List<Advice> tempList = map.get(i);
+            if(tempList != null && tempList.size() != 0){
+                for(Advice advice : tempList){
+                    result.add(advice);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * add by wtwang @2019.01.17
+     * 同一组的医嘱计算最高问题级别
+     * @param list
+     * @return
+     */
+    public int getHighestLevelFromAdviceList(List<Advice> list){
+        int highestLevel = 0;
+        for(Advice advice : list){
+            List<CheckInfo> checkInfos = advice.getCheckInfoList();
+            int tempLevel = getHighestLevelFromCheckInfoList(checkInfos);
+            highestLevel = Math.max(highestLevel,tempLevel);
+        }
+        return highestLevel;
+    }
+
     //对同一级别的问题按照order_no排序
+    @Deprecated
     public List<Advice> sortSameLevelOrderNo(List<Advice> newList){
         //finalList存放：按照order_no从小到到排列,按照order_sub_no从小到大排列
         List<Advice> finalList = new ArrayList<Advice>();
@@ -437,6 +615,7 @@ public class PrescCheckService {
 
         return finalList;
     }
+
 
     public int getHighestLevelFromCheckInfoList(List<CheckInfo> checkInfos){
         int highestLevel = 0;

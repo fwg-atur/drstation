@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,6 +54,20 @@ public class PharmacistPrescCheckService {
     private static final Logger logger = LoggerFactory.getLogger(PharmacistPrescCheckService.class);
 
     /**
+     * 测试用
+     * @param patientID
+     * @param visitDate
+     * @param pharmacistInfoXML
+     * @param xml
+     * @return
+     */
+    public CheckMessage checkPharmacistPrescForTest(String patientID,String visitDate,String pharmacistInfoXML, String xml) {
+        String checkXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><CheckList><Check><CheckInput TAG=\"2\">    <Doctor NAME=\"门急诊医生\" POSITION=\"副主任医师\" USER_ID=\"123\" DEPT_NAME=\"骨科\" DEPT_CODE=\"030401\"/>    <Patient NAME=\"门急诊病人1\" ID=\"1\" VISIT_ID=\"1233\" PATIENT_PRES_ID=\"1\" BIRTH=\"19840908\" HEIGHT=\"100\" WEIGHT=\"20\" GENDER=\"男\" PREGNANT=\"是\" LACT=\"是\" HEPATICAL=\"是\" RENAL=\"否\" PANCREAS=\"否\" ALERGY_DRUGS=\"选择性5-HT3受体抑制药类\" IDENTITY_TYPE=\"军人\" FEE_TYPE=\"医保\" SCR=\"\" SCR_UNIT=\"\" GESTATION_AGE=\"\" PRETERM_BIRTH=\"\" DRUG_HISTORY=\"\" FAMILY_DISEASE_HISTORY=\"\" GENETIC_DISEASE=\"\" MEDICARE_01=\"\" MEDICARE_02=\"\" MEDICARE_03=\"\" MEDICARE_04=\"\" MEDICARE_05=\"\"/>    <Diagnosises DIAGNOSISES=\"_感染\"/>    <Advices>        <Advice DRUG_LO_ID=\"0101003CP0\" DRUG_LO_NAME=\"阿莫西林胶囊\" ADMINISTRATION=\"静滴\" DOSAGE=\"5\" DOSAGE_UNIT=\"粒\" FREQ_COUNT=\"1\" FREQ_INTERVAL=\"1\" FREQ_INTERVAL_UNIT=\"日\" START_DAY=\"20150114\" END_DAY=\"20150114\" REPEAT=\"0\" ORDER_NO=\"1\" ORDER_SUB_NO=\"2\" DEPT_CODE=\"2426\" DOCTOR_NAME=\"闫洪生\" TITLE=\"副主任医师\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"1,2\" GROUP_ID=\"\" USER_ID=\"123\" PRES_ID=\"1\" PRES_DATE=\"20150114\" PRES_SEQ_ID=\"3138829120150114\" PK_ORDER_NO=\"\" COURSE=\"\" PKG_COUNT=\"101\" PKG_UNIT=\"粒\" BAK_01=\"\" BAK_02=\"\" BAK_03=\"胶囊\" BAK_04=\"0.25g\" BAK_05=\"昆明贝克诺\"/>        <Advice DRUG_LO_ID=\"3012302CP0\" DRUG_LO_NAME=\"安替可胶囊\" ADMINISTRATION=\"\" DOSAGE=\"100\" DOSAGE_UNIT=\"\" FREQ_COUNT=\"5\" FREQ_INTERVAL=\"1\" FREQ_INTERVAL_UNIT=\"日\" START_DAY=\"20150114\" END_DAY=\"20150114\" REPEAT=\"0\" ORDER_NO=\"6\" ORDER_SUB_NO=\"1\" DEPT_CODE=\"骨科\" DOCTOR_NAME=\"朱宏勋\" TITLE=\"主任医师\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"1,2\" GROUP_ID=\"\" USER_ID=\"009284\" PRES_ID=\"1\" PRES_DATE=\"20150114\" PRES_SEQ_ID=\"3138829120150114\" PK_ORDER_NO=\"\" COURSE=\"\" PKG_COUNT=\"2\" PKG_UNIT=\"\" BAK_01=\"\" BAK_02=\"\" BAK_03=\"\" BAK_04=\"0.22g\" BAK_05=\"\"/>    </Advices></CheckInput><CheckOutput AntiDrugPos=\"\">    <PresInfo ORDER_ID=\"1\" ORDER_SUB_ID=\"2\" DRUG_LO_ID=\"0101003CP0\" DRUG_LO_NAME=\"阿莫西林胶囊\">        <CheckInfo COLOR=\"红色\" NAME=\"医院管理\" WARNING_LEVEL=\"禁用\" WARNING_INFO=\"患者月最大定量：    100.00，患者已用：    202.00，当前处方用量：    101.00\" REF_SOURCE=\"医院药控相关规定。\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/>    </PresInfo>    <PresInfo ORDER_ID=\"6\" ORDER_SUB_ID=\"1\" DRUG_LO_ID=\"3012302CP0\" DRUG_LO_NAME=\"安替可胶囊\">        <CheckInfo COLOR=\"黄色\" NAME=\"适应症\" WARNING_LEVEL=\"慎用\" WARNING_INFO=\"超适应症用药。药品说明书适应症为：。医生诊断为：_感染\" REF_SOURCE=\"药品说明书及医院相关规定\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/>    </PresInfo></CheckOutput><CheckPharmacist>我觉得这个处方很好</CheckPharmacist></Check></CheckList>";
+        return handleCheckXml(xml,checkXml);
+    }
+
+
+    /**
 
      * @param xml
      * @return 返回审核结果标识（flag,presId）,不包括审核结果字符串
@@ -67,7 +83,6 @@ public class PharmacistPrescCheckService {
         }
         checkXml = checkXml.replace("&nbsp;"," ");
         logger.debug(checkXml);
-//        String checkXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><CheckList><Check><CheckInput TAG=\"2\">    <Doctor NAME=\"门急诊医生\" POSITION=\"副主任医师\" USER_ID=\"123\" DEPT_NAME=\"骨科\" DEPT_CODE=\"030401\"/>    <Patient NAME=\"门急诊病人1\" ID=\"1\" VISIT_ID=\"1233\" PATIENT_PRES_ID=\"1\" BIRTH=\"19840908\" HEIGHT=\"100\" WEIGHT=\"20\" GENDER=\"男\" PREGNANT=\"是\" LACT=\"是\" HEPATICAL=\"是\" RENAL=\"否\" PANCREAS=\"否\" ALERGY_DRUGS=\"选择性5-HT3受体抑制药类\" IDENTITY_TYPE=\"军人\" FEE_TYPE=\"医保\" SCR=\"\" SCR_UNIT=\"\" GESTATION_AGE=\"\" PRETERM_BIRTH=\"\" DRUG_HISTORY=\"\" FAMILY_DISEASE_HISTORY=\"\" GENETIC_DISEASE=\"\" MEDICARE_01=\"\" MEDICARE_02=\"\" MEDICARE_03=\"\" MEDICARE_04=\"\" MEDICARE_05=\"\"/>    <Diagnosises DIAGNOSISES=\"_感染\"/>    <Advices>        <Advice DRUG_LO_ID=\"0101003CP0\" DRUG_LO_NAME=\"阿莫西林胶囊\" ADMINISTRATION=\"静滴\" DOSAGE=\"5\" DOSAGE_UNIT=\"粒\" FREQ_COUNT=\"1\" FREQ_INTERVAL=\"1\" FREQ_INTERVAL_UNIT=\"日\" START_DAY=\"20150114\" END_DAY=\"20150114\" REPEAT=\"0\" ORDER_NO=\"1\" ORDER_SUB_NO=\"2\" DEPT_CODE=\"2426\" DOCTOR_NAME=\"闫洪生\" TITLE=\"副主任医师\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"1,2\" GROUP_ID=\"\" USER_ID=\"123\" PRES_ID=\"1\" PRES_DATE=\"20150114\" PRES_SEQ_ID=\"3138829120150114\" PK_ORDER_NO=\"\" COURSE=\"\" PKG_COUNT=\"101\" PKG_UNIT=\"粒\" BAK_01=\"\" BAK_02=\"\" BAK_03=\"胶囊\" BAK_04=\"0.25g\" BAK_05=\"昆明贝克诺\"/>        <Advice DRUG_LO_ID=\"3012302CP0\" DRUG_LO_NAME=\"安替可胶囊\" ADMINISTRATION=\"\" DOSAGE=\"100\" DOSAGE_UNIT=\"\" FREQ_COUNT=\"5\" FREQ_INTERVAL=\"1\" FREQ_INTERVAL_UNIT=\"日\" START_DAY=\"20150114\" END_DAY=\"20150114\" REPEAT=\"0\" ORDER_NO=\"6\" ORDER_SUB_NO=\"1\" DEPT_CODE=\"骨科\" DOCTOR_NAME=\"朱宏勋\" TITLE=\"主任医师\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"1,2\" GROUP_ID=\"\" USER_ID=\"009284\" PRES_ID=\"1\" PRES_DATE=\"20150114\" PRES_SEQ_ID=\"3138829120150114\" PK_ORDER_NO=\"\" COURSE=\"\" PKG_COUNT=\"2\" PKG_UNIT=\"\" BAK_01=\"\" BAK_02=\"\" BAK_03=\"\" BAK_04=\"0.22g\" BAK_05=\"\"/>    </Advices></CheckInput><CheckOutput AntiDrugPos=\"\">    <PresInfo ORDER_ID=\"1\" ORDER_SUB_ID=\"2\" DRUG_LO_ID=\"0101003CP0\" DRUG_LO_NAME=\"阿莫西林胶囊\">        <CheckInfo COLOR=\"红色\" NAME=\"医院管理\" WARNING_LEVEL=\"禁用\" WARNING_INFO=\"患者月最大定量：    100.00，患者已用：    202.00，当前处方用量：    101.00\" REF_SOURCE=\"医院药控相关规定。\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/>    </PresInfo>    <PresInfo ORDER_ID=\"6\" ORDER_SUB_ID=\"1\" DRUG_LO_ID=\"3012302CP0\" DRUG_LO_NAME=\"安替可胶囊\">        <CheckInfo COLOR=\"黄色\" NAME=\"适应症\" WARNING_LEVEL=\"慎用\" WARNING_INFO=\"超适应症用药。药品说明书适应症为：。医生诊断为：_感染\" REF_SOURCE=\"药品说明书及医院相关规定\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/>    </PresInfo></CheckOutput><CheckPharmacist>我觉得这个处方很好</CheckPharmacist></Check></CheckList>";
         pharmacistInfo = parseXML.parsePharmacistInfo(pharmacistInfoXML);
         date = visitDate;
         message = handleCheckXml(checkXml,xml);
@@ -155,7 +170,7 @@ public class PharmacistPrescCheckService {
         List<PrescInfo> list = compareCheck(checkPresInput,check.getCheckPresOutput());
 
         //将与传入的xml中医嘱匹配的审核结果重新赋值给对象
-        check.getCheckPresOutput().setPrescInfos(sortCheckResult(list));
+        check.getCheckPresOutput().setPrescInfos(sortgroupPresInfo(list,groupFlag));
 
         String presId = checkPresInput.getPatient().getPATIENT_PRES_ID();
         if(presId == null || "".equals(presId)){
@@ -215,7 +230,7 @@ public class PharmacistPrescCheckService {
         List<PrescInfo> list = compareCheck(checkPresInput,check.getCheckPresOutput());
 
         //将与传入的xml中医嘱匹配的审核结果重新赋值给对象
-        check.getCheckPresOutput().setPrescInfos(sortCheckResult(list));
+        check.getCheckPresOutput().setPrescInfos(sortgroupPresInfo(list,groupFlag));
 
         String presId = checkPresInput.getPatient().getPATIENT_PRES_ID();
         if(presId == null || "".equals(presId)){
@@ -324,6 +339,7 @@ public class PharmacistPrescCheckService {
         return date;
     }
 
+    @Deprecated
     public List<PrescInfo> sortCheckResult(List<PrescInfo> prescInfos){
         //newList存放：已经按照问题级别从高到低排序好的处方
         List<PrescInfo> newList0 = new ArrayList<PrescInfo>();
@@ -369,6 +385,7 @@ public class PharmacistPrescCheckService {
     }
 
     //辅助方法，避免重复代码
+    @Deprecated
     public List<PrescInfo> sortHelp(List<PrescInfo> list,List<PrescInfo> finalList){
         if("1".equals(groupFlag)){
             list = sortSameLevelGroupId(list);
@@ -383,6 +400,7 @@ public class PharmacistPrescCheckService {
     }
 
     //对同一级别的问题按照group_id排序
+    @Deprecated
     public List<PrescInfo> sortSameLevelGroupId(List<PrescInfo> newList){
         //finalList存放：按照group_id从小到到排列
         List<PrescInfo> finalList = new ArrayList<PrescInfo>();
@@ -442,6 +460,7 @@ public class PharmacistPrescCheckService {
     }
 
     //对同一级别的问题按照order_id排序
+    @Deprecated
     public List<PrescInfo> sortSameLevelOrderNo(List<PrescInfo> newList){
         //finalList存放：按照order_id从小到到排列,按照order_sub_id从小到大排列
         List<PrescInfo> finalList = new ArrayList<PrescInfo>();
@@ -556,6 +575,181 @@ public class PharmacistPrescCheckService {
         }
 
         return finalList;
+    }
+
+
+    /**
+     * add by wtwang @2019.01.17
+     * group_id或者order_no相同为一组，同一组的医嘱在一起，计算组中最高的问题级别
+     * 将原始问题医嘱列表按照group_id或者order_no成组分好
+     * 并且成组的问题按照问题级别排好序
+     * 各个组之间按照组的最高问题级别排好序
+     * flag为1表示按照group_id分组，flag为2表示按照order_no分组
+     * @param list
+     * @return
+     */
+    public List<PrescInfo> sortgroupPresInfo(List<PrescInfo> list,String flag){
+        List<PrescInfo> result = new ArrayList<PrescInfo>();
+        Map<Long,List<PrescInfo>> map = new HashMap<Long, List<PrescInfo>>();
+        for(PrescInfo prescInfo : list){
+            String s_id = "";
+            // 区分按照group_id分组还是按照order_no分组
+            if("1".equals(flag)){
+                if(prescInfo.getGroup_id() == null || "".equals(prescInfo.getGroup_id())){
+                    prescInfo.setGroup_id("0");
+                }
+                s_id = prescInfo.getGroup_id().replaceAll("[^\\d]+", "");
+            }else if("2".equals(flag)){
+                if(prescInfo.getOrder_id() == null || "".equals(prescInfo.getOrder_id())){
+                    prescInfo.setOrder_id("0");
+                }
+                s_id = prescInfo.getOrder_id().replaceAll("[^\\d]+", "");
+            }
+            // 遍历list，将一组的医嘱存入同一个list中
+            if(!map.containsKey(Long.parseLong(s_id))){
+                List<PrescInfo> tempList = new ArrayList<PrescInfo>();
+                tempList.add(prescInfo);
+                map.put(Long.parseLong(s_id),tempList);
+            }else{
+                map.get(Long.parseLong(s_id)).add(prescInfo);
+            }
+        }
+
+        // list_i表示成组医嘱中最该问题级别为i的集合
+        List<List<PrescInfo>> list_3 = new ArrayList<List<PrescInfo>>();
+        List<List<PrescInfo>> list_2 = new ArrayList<List<PrescInfo>>();
+        List<List<PrescInfo>> list_1 = new ArrayList<List<PrescInfo>>();
+        List<List<PrescInfo>> list_0 = new ArrayList<List<PrescInfo>>();
+        // 遍历map中的成组医嘱，计算每组医嘱的最高问题级别
+        for(List<PrescInfo> tempList : map.values()){
+            // 在此时将成组的医嘱按照问题级别从高到低排好序
+            tempList = sortSameGroup(tempList);
+            // 将同一组的医嘱用括号标识括起来
+            tempList = handleSameGroup(tempList);
+            int level = getHighestLevelFromPresInfoList(tempList);
+            // 根据最高问题级别将医嘱组加入到不同的list中
+            switch (level){
+                case 3:
+                    list_3.add(tempList);
+                    break;
+                case 2:
+                    list_2.add(tempList);
+                    break;
+                case 1:
+                    list_1.add(tempList);
+                    break;
+                case 0:
+                    list_0.add(tempList);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        // 将各个问题级别的医嘱组按照顺序加入到结果中
+        for(List<PrescInfo> list3 : list_3){
+            for(PrescInfo prescInfo : list3){
+                result.add(prescInfo);
+            }
+        }
+        for(List<PrescInfo> list2 : list_2){
+            for(PrescInfo prescInfo : list2){
+                result.add(prescInfo);
+            }
+        }
+        for(List<PrescInfo> list1 : list_1){
+            for(PrescInfo prescInfo : list1){
+                result.add(prescInfo);
+            }
+        }
+        for(List<PrescInfo> list0 : list_0){
+            for(PrescInfo prescInfo : list0){
+                result.add(prescInfo);
+            }
+        }
+
+
+        return result;
+    }
+
+    /**
+     * add by wtwang @2019.01.17
+     * 将同一分组的医嘱按照问题级别从高到低排序
+     * @param list
+     * @return
+     */
+    public List<PrescInfo> sortSameGroup(List<PrescInfo> list){
+        List<PrescInfo> result = new ArrayList<PrescInfo>();
+        Map<Integer,List<PrescInfo>> map = new HashMap<Integer, List<PrescInfo>>();
+
+        // 遍历list，将问题级别相同医嘱放入同一个list中
+        for(PrescInfo prescInfo : list){
+            List<CheckInfo> checkInfos = handleCheckInfos(prescInfo.getCheckInfos());
+            int warning_level = getHighestLevelFromCheckInfoList(checkInfos);
+            if(!map.containsKey(warning_level)){
+                List<PrescInfo> tempList = new ArrayList<PrescInfo>();
+                tempList.add(prescInfo);
+                map.put(warning_level,tempList);
+            }else{
+                map.get(warning_level).add(prescInfo);
+            }
+        }
+
+        // i从3到0表示问题级别，按照问题级别从高到低从map中取出医嘱加入到result中
+        for(int i=3;i>=0;--i){
+            List<PrescInfo> tempList = map.get(i);
+            if(tempList != null && tempList.size() != 0){
+                for(PrescInfo prescInfo : tempList){
+                    result.add(prescInfo);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * 将同组的医嘱用括号括起来
+     * @param list
+     * @return
+     */
+    public List<PrescInfo> handleSameGroup(List<PrescInfo> list){
+        int x = 0;
+        for(int l=0;l<list.size();++l){
+            PrescInfo prescInfo = list.get(l);
+            if(list.size() > 1){
+                if(x == 0){
+                    prescInfo.setKh("┍ ");
+                }
+                else if(x == list.size()-1){
+                    prescInfo.setKh("┕ ");
+                }
+                else{
+                    prescInfo.setKh("");
+                }
+            }else{
+                prescInfo.setKh("");
+            }
+            ++x;
+        }
+        return list;
+    }
+
+    /**
+     * add by wtwang @2019.01.17
+     * 同一组的医嘱计算最高问题级别
+     * @param list
+     * @return
+     */
+    public int getHighestLevelFromPresInfoList(List<PrescInfo> list){
+        int highestLevel = 0;
+        for(PrescInfo prescInfo : list){
+            List<CheckInfo> checkInfos = handleCheckInfos(prescInfo.getCheckInfos());
+            int tempLevel = getHighestLevelFromCheckInfoList(checkInfos);
+            highestLevel = Math.max(highestLevel,tempLevel);
+        }
+        return highestLevel;
     }
 
     public int getHighestLevelFromCheckInfoList(List<CheckInfo> checkInfos){

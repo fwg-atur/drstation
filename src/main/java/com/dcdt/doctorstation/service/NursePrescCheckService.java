@@ -29,6 +29,22 @@ public class NursePrescCheckService {
 
     private static final Logger logger = Logger.getLogger(NursePrescCheckService.class);
 
+    /**
+     * 测试用
+     * @param data
+     * @return
+     */
+    public CheckMessage checkNursePrescForTest(String data) {
+        String checkJson = "<CheckList><Check><CheckInput><Doctor POSITION=\"副主任\" NAME=\"武欣\" DEPT_CODE=\"030401\" DEPT_NAME=\"(杨)产科(1B)\" USER_ID=\"6230\"/><Patient NAME=\"范芸莹\" ID=\"26384916\" GENDER=\"女\" BIRTH=\"20150403\" WEIGHT=\"\" HEIGHT=\"\" ALERGY_DRUGS=\"\" PREGNANT=\"是\" LACT=\"否\" HEPATICAL=\"\" RENAL=\"\" PANCREAS=\"\" VISIT_ID=\"1-1\" PATIENT_PRES_ID=\"2018112800084\" IDENTITY_TYPE=\"\" FEE_TYPE=\"\" SCR=\"\" SCR_UNIT=\"umol/L\" GESTATION_AGE=\"12\" PRETERM_BIRTH=\"\" DRUG_HISTORY=\"\" FAMILY_DISEASE_HISTORY=\"\" GENETIC_DISEASE=\"\" MEDICARE_01=\"\" MEDICARE_02=\"\" MEDICARE_03=\"\" MEDICARE_04=\"\" MEDICARE_05=\"\" WARD_CODE=\"\" WARD_NAME=\"\" BED_NO=\"\" INPATIENT_NO=\"\"/><Diagnosises DIAGNOSISES=\"阿尔茨海默病\"/><Advices><Advice REPEAT=\"\" DRUG_LO_NAME=\"注射用替考拉宁(进口)\" DRUG_LO_ID=\"010101\" ADMINISTRATION=\"口服\" DOSAGE=\"0.4\" DOSAGE_UNIT=\"克\" FREQ_COUNT=\"1\" FREQ_INTERVAL=\"1\" FREQ_INTERVAL_UNIT=\"日\" START_DAY=\"20181128\" END_DAY=\"\" DEPT_CODE=\"23940\" DOCTOR_NAME=\"武欣\" ORDER_NO=\"1\" ORDER_SUB_NO=\"1\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" TITLE=\"副主任\" GROUP_ID=\"1\" USER_ID=\"6230\" PRES_ID=\"2018112800084\" PRES_DATE=\"20181128\" PRES_SEQ_ID=\"\" PK_ORDER_NO=\"\" COURSE=\"24\" PKG_COUNT=\"1\" PKG_UNIT=\"盒\" BAK_01=\"\" BAK_02=\"\" BAK_03=\"片剂\" BAK_04=\"12克\" BAK_05=\"杨子制药\" PERFORM_SCHEDULE=\"10|16|20\"/></Advices></CheckInput><CheckOutput><PresInfo ORDER_ID=\"1\" ORDER_SUB_ID=\"1\" DRUG_LO_ID=\"010101\" DRUG_LO_NAME=\"注射用替考拉宁(进口)\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"><CheckInfo COLOR=\"红色\" NAME=\"适应症\" WARNING_LEVEL=\"禁用\" WARNING_INFO=\"超适应症用药。药品说明书适应症为：肚子疼、屁股疼、脑子疼、心房颤动。医生诊断为：阿尔茨海默病\" REF_SOURCE=\"临床用药指南\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/></PresInfo></CheckOutput></Check></CheckList>";
+        CheckMessage checkMessage = new CheckMessage();
+        nurseCheckResults = processCheckList(handleNurseCheckXml(checkJson));
+        if(nurseCheckResults.size()!=0){
+            checkMessage.setHasProblem(1);
+        }
+//        putXML2Cache(checkMessage.getPresId(), checkJson);
+        return checkMessage;
+    }
+
     public CheckMessage checkNursePresc(String data) {
         String url = nurseCheckServerUrl;
 //        String checkJson = "<CheckList><Check><CheckInput><Doctor POSITION=\"副主任\" NAME=\"武欣\" DEPT_CODE=\"030401\" DEPT_NAME=\"(杨)产科(1B)\" USER_ID=\"6230\"/><Patient NAME=\"范芸莹\" ID=\"26384916\" GENDER=\"女\" BIRTH=\"20150403\" WEIGHT=\"\" HEIGHT=\"\" ALERGY_DRUGS=\"\" PREGNANT=\"是\" LACT=\"否\" HEPATICAL=\"\" RENAL=\"\" PANCREAS=\"\" VISIT_ID=\"1-1\" PATIENT_PRES_ID=\"2018112800084\" IDENTITY_TYPE=\"\" FEE_TYPE=\"\" SCR=\"\" SCR_UNIT=\"umol/L\" GESTATION_AGE=\"12\" PRETERM_BIRTH=\"\" DRUG_HISTORY=\"\" FAMILY_DISEASE_HISTORY=\"\" GENETIC_DISEASE=\"\" MEDICARE_01=\"\" MEDICARE_02=\"\" MEDICARE_03=\"\" MEDICARE_04=\"\" MEDICARE_05=\"\" WARD_CODE=\"\" WARD_NAME=\"\" BED_NO=\"\" INPATIENT_NO=\"\"/><Diagnosises DIAGNOSISES=\"阿尔茨海默病\"/><Advices><Advice REPEAT=\"\" DRUG_LO_NAME=\"注射用替考拉宁(进口)\" DRUG_LO_ID=\"010101\" ADMINISTRATION=\"口服\" DOSAGE=\"0.4\" DOSAGE_UNIT=\"克\" FREQ_COUNT=\"1\" FREQ_INTERVAL=\"1\" FREQ_INTERVAL_UNIT=\"日\" START_DAY=\"20181128\" END_DAY=\"\" DEPT_CODE=\"23940\" DOCTOR_NAME=\"武欣\" ORDER_NO=\"1\" ORDER_SUB_NO=\"1\" AUTHORITY_LEVELS=\"\" ALERT_LEVELS=\"\" TITLE=\"副主任\" GROUP_ID=\"1\" USER_ID=\"6230\" PRES_ID=\"2018112800084\" PRES_DATE=\"20181128\" PRES_SEQ_ID=\"\" PK_ORDER_NO=\"\" COURSE=\"24\" PKG_COUNT=\"1\" PKG_UNIT=\"盒\" BAK_01=\"\" BAK_02=\"\" BAK_03=\"片剂\" BAK_04=\"12克\" BAK_05=\"杨子制药\" PERFORM_SCHEDULE=\"10|16|20\"/></Advices></CheckInput><CheckOutput><PresInfo ORDER_ID=\"1\" ORDER_SUB_ID=\"1\" DRUG_LO_ID=\"010101\" DRUG_LO_NAME=\"注射用替考拉宁(进口)\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"><CheckInfo COLOR=\"红色\" NAME=\"适应症\" WARNING_LEVEL=\"禁用\" WARNING_INFO=\"超适应症用药。药品说明书适应症为：肚子疼、屁股疼、脑子疼、心房颤动。医生诊断为：阿尔茨海默病\" REF_SOURCE=\"临床用药指南\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/></PresInfo></CheckOutput></Check></CheckList>";
@@ -139,9 +155,8 @@ public class NursePrescCheckService {
     public int getHighestLevelFromAdvicesList(List<Advice> advices){
         int highestLevel = 0;
         for(Advice advice:advices){
-            if(highestLevel < getHighestLevelFromCheckInfoList(advice.getCheckInfoList())){
-                highestLevel = getHighestLevelFromCheckInfoList(advice.getCheckInfoList());
-            }
+            int tempLevel = getHighestLevelFromCheckInfoList(advice.getCheckInfoList());
+            highestLevel = Math.max(highestLevel,tempLevel);
         }
         return highestLevel;
     }
