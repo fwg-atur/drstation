@@ -12,6 +12,8 @@
     <title>实时审核Web版-护士站</title>
     <script type="text/javascript"
             src="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/js/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/js/jquery.xdomainrequest.min.js"></script>
     <link href="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/css/checkResultPage${config.browserFlag}.css"
           rel="stylesheet" type="text/css"/>
     <link href="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/css/style.css"
@@ -135,8 +137,8 @@
                                         <td>${advice.SELF_DRUG}</td>
                                         <td>${advice.DOSAGE}</td>
                                         <td>${advice.DOSAGE_UNIT}</td>
-                                        <td>${advice.FREQ_COUNT}</td>
                                         <td>${advice.ADMINISTRATION}</td>
+                                        <td>${advice.FREQ_COUNT}</td>
                                         <td>${advice.DOCTOR_NAME}</td>
                                         <td><a onclick="openProblemDetail('${advice.checkInfoList[0].NAME}','${advice.checkInfoList[0].WARNING_INFO}','${advice.checkInfoList[0].REF_SOURCE}','${advice.DRUG_LO_NAME}')">${advice.checkInfoList[0].NAME}</a></td>
                                         </tr>

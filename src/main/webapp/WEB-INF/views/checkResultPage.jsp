@@ -18,6 +18,8 @@
 
     <script type="text/javascript"
             src="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/js/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/js/jquery.xdomainrequest.min.js"></script>
 
     <link href="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/css/checkResultPage${config.browserFlag}.css"
           rel="stylesheet" type="text/css"/>
@@ -686,13 +688,9 @@
                     </div>
                 </div>
                 <div class="detail-info right-area">
-                    <div class="head-info-sm">
-                        <div class="head-info-sm-up>"></div>
-                        <p>使用说明</p>
-                        <div class="head-info-sm-down>"></div>
-                    </div>
+                    <div class="head-info-sm"><p>使用说明</p></div>
                     <div class="detail-content">
-                        <table style="_margin-top: 50px">
+                        <table>
                             <tr>
                                 <td>1、单击问题所在单元，可查看详细信息</td>
                             </tr>
@@ -722,8 +720,8 @@
                     <table class="main-table-head">
                         <thead>
                         <tr>
-                            <th style="width: 10px"></th>
-                            <th id="drug_name_th" style="width: 190px">药品名称</th>
+                            <th style="width: 10px;_width: 10px"></th>
+                            <th id="drug_name_th" style="width: 190px;_width: 190px">药品名称</th>
                             <th>适应症</th>
                             <th>禁用症<br>慎用症</th>
                             <th>用法<br>用量</th>
@@ -744,8 +742,8 @@
                         <tbody>
                         <c:forEach var="item" items="${checkResult.advices}">
                             <tr>
-                                <td style="width:10px">${item.kh}</td>
-                                <td id="drug_name_td" style="width:190px;_width:127px">
+                                <td style="width:10px;_width:10px">${item.kh}</td>
+                                <td id="drug_name_td" style="width:190px;_width: 190px">
                                     <a onclick="openDiscribLinked('${item.DRUG_LO_ID}')">
                                             ${item.DRUG_LO_NAME}
                                     </a>

@@ -129,7 +129,7 @@ table.main-table td {
     margin-top: 5px;
     width: 480px;
     height: 200px;
-    _height: 220px;
+    _height: 200px;
     background-color: #ffffff;
 }
 
@@ -138,9 +138,9 @@ table.main-table td {
     font-size: 15px;
     /*font-family: SourceHanSansCN-Normal, serif;*/
     padding: 40px 10px;
-    _padding: 20px 10px;
+    _padding: 40px 10px;
     height: 140px;
-    _height: 160px;
+    _height: 140px;
     overflow: auto;
 }
 

@@ -79,12 +79,12 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！");
+        // alert("请求服务超时！");
     }
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapDoc);
         try {
-            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", data, adduserok);
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheckForTest", data, adduserok);
         }catch (e){
             return -3;
         }
@@ -99,6 +99,9 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
+    if(checkData == ""){
+        return -3;
+    }
     var check = eval("(" + checkData + ")");
 
     // var url = "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck";
@@ -136,7 +139,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     if(check.hasProblem == -2){
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求中间层服务异常！");
+        // alert("请求中间层服务异常！");
         return -2;
     }
     else if (tag == 2 || check.hasProblem == 0) {
@@ -304,7 +307,7 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
     function connecttoFail() {
         if (xmlhttp)
             xmlhttp.abort();
-        alert("请求服务超时！");
+        // alert("请求服务超时！");
     }
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapPhar);
@@ -322,6 +325,9 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
     // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
+    if(checkData == ""){
+        return -3;
+    }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
@@ -396,6 +402,9 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
+    if(checkData == ""){
+        return -3;
+    }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
@@ -523,6 +532,9 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
     // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
+    if(checkData == ""){
+        return -3;
+    }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
@@ -597,6 +609,9 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
     // xmlhttp.send(data);
 
     var checkData = xmlhttp.responseText;
+    if(checkData == ""){
+        return -3;
+    }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
@@ -656,7 +671,7 @@ function NurseCheck(xml, inHosFlag) {
 
 function sendNurseCheck(xml, checkServerIp, checkServerPort) {
     var iWidth = '1000px';
-    var iHeight = '700px';
+    var iHeight = '550px';
     var xmlhttp;
     var data = "xml=" + encodeURIComponent(xml);
     if (window.XMLHttpRequest) {
@@ -680,7 +695,7 @@ function sendNurseCheck(xml, checkServerIp, checkServerPort) {
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapPhar);
         try {
-            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/sendNurseCheck", data, adduserok);
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/sendNurseCheckForTest", data, adduserok);
         }catch (e){
             return -3;
         }
@@ -689,6 +704,9 @@ function sendNurseCheck(xml, checkServerIp, checkServerPort) {
     }
 
     var checkData = xmlhttp.responseText;
+    if(checkData == ""){
+        return -3;
+    }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");

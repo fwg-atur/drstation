@@ -310,6 +310,9 @@
 
     <script type="text/javascript"
             src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_${config.browserFlag}.js"></script>
+    <script type="text/javascript"
+            src="http://${config.drStationServerIp}:${config.drStationServerPort}/DCStation/js/jquery.xdomainrequest.min.js"></script>
     <link href="${pageContext.servletContext.contextPath}/css/pharmacistCheckResultPage${config.browserFlag}.css" rel="stylesheet" type="text/css"/>
 
     <style type="text/css">
@@ -598,5 +601,4 @@
     }
 </script>
 </body>
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js"></script>
 </html>

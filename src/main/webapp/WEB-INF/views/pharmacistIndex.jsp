@@ -95,7 +95,7 @@
 <%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_Chrome.js"></script>--%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>
 <%--<script type="text/javascript"--%>
-<%--src="http://223.3.71.149:8081/${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>--%>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.xdomainrequest.min.js"></script>
 
 
 </html>

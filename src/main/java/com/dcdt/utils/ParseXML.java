@@ -521,6 +521,8 @@ public class ParseXML {
             patient.setMEDICARE_03(patientElement.getAttributeValue("MEDICARE_03"));
             patient.setMEDICARE_04(patientElement.getAttributeValue("MEDICARE_04"));
             patient.setMEDICARE_05(patientElement.getAttributeValue("MEDICARE_05"));
+
+            patient.setBED_NO(patientElement.getAttributeValue("BED_NO"));
             checkPresInput.setPatient(patient);
 
             Object diagnosisObject = checkInputElement.getChild("Diagnosises");
@@ -567,6 +569,9 @@ public class ParseXML {
                 advice.setBAK_03(adviceElement.getAttributeValue("BAK_03"));
                 advice.setBAK_04(adviceElement.getAttributeValue("BAK_04"));
                 advice.setBAK_05(adviceElement.getAttributeValue("BAK_05"));
+
+                advice.setENTER_DATE_TIME(adviceElement.getAttributeValue("ENTER_DATE_TIME"));
+                advice.setSELF_DRUG(adviceElement.getAttributeValue("SELF_DRUG"));
                 advices.add(advice);
             }
             checkPresInput.setAdvices(advices);
