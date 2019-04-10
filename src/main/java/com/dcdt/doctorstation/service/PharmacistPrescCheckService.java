@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -406,7 +407,7 @@ public class PharmacistPrescCheckService {
         List<PrescInfo> finalList = new ArrayList<PrescInfo>();
 
         //min存放：group_id一轮的最小值
-        long min = -1;
+        BigDecimal min = new BigDecimal(-1);
         for(int i=0;i<newList.size();++i){
             for(int j=0;j<newList.size();++j){
                 PrescInfo prescInfo = newList.get(j);
@@ -417,8 +418,8 @@ public class PharmacistPrescCheckService {
                     prescInfo.setGroup_id("0");
                 }
                 String n_group_id = prescInfo.getGroup_id().replaceAll("[^\\d]+", "");
-                if(min == -1 || Long.parseLong(n_group_id)< min){
-                    min = Long.parseLong(n_group_id);
+                if(min.equals(-1) || new BigDecimal(n_group_id).compareTo(min) == -1){
+                    min = new BigDecimal(n_group_id);
                 }
             }
 
@@ -428,7 +429,7 @@ public class PharmacistPrescCheckService {
                 PrescInfo prescInfo = newList.get(k);
                 String n_group_id = prescInfo.getGroup_id().replaceAll("[^\\d]+", "");
 
-                if(Long.parseLong(n_group_id) == min){
+                if(new BigDecimal(n_group_id).equals(min)){
                     prescInfo.setGroup_id_flag(true);
                     tempList.add(prescInfo);
                 }
@@ -454,7 +455,7 @@ public class PharmacistPrescCheckService {
                 ++x;
                 finalList.add(prescInfo);
             }
-            min = -1;
+            min = new BigDecimal(-1);
         }
         return finalList;
     }
@@ -466,7 +467,7 @@ public class PharmacistPrescCheckService {
         List<PrescInfo> finalList = new ArrayList<PrescInfo>();
 
         //min存放：order_id一轮的最小值
-        long min = -1;
+        BigDecimal min = new BigDecimal(-1);
         for(int i=0;i<newList.size();++i){
             //本循环的目的：取到一轮遍历中order_id的最小值
             for(int j=0;j<newList.size();++j){
@@ -482,8 +483,8 @@ public class PharmacistPrescCheckService {
                 String n_order_id = prescInfo.getOrder_id().replaceAll("[^\\d]+", "");
 
                 //取一轮遍历中order_id的最小值
-                if(min == -1 || Long.parseLong(n_order_id) < min){
-                    min = Long.parseLong(n_order_id);
+                if(min.equals(-1) || new BigDecimal(n_order_id).compareTo(min) == -1){
+                    min = new BigDecimal(n_order_id);
                 }
             }
             //tempList存放：order_id等于这次遍历最小值的处方
@@ -492,14 +493,14 @@ public class PharmacistPrescCheckService {
                 PrescInfo prescInfo = newList.get(k);
                 String n_order_id = prescInfo.getOrder_id().replaceAll("[^\\d]+", "");
 
-                if(Long.parseLong(n_order_id) == min){
+                if(new BigDecimal(n_order_id).equals(min)){
                     prescInfo.setOrder_id_flag(true);
                     tempList.add(prescInfo);
                 }
             }
 
             //min2存放：order_id等于这次遍历最小值处方中的order_sub_id最小值
-            long min2 = -1;
+            BigDecimal min2 = new BigDecimal(-1);
             int x = 0;
             for(int m=0;m<tempList.size();++m){
                 //本循环的目的：取到相同order_id的order_sub_id最小值
@@ -513,8 +514,8 @@ public class PharmacistPrescCheckService {
                         continue;
                     }
                     //取一轮遍历中order_sub_id的最小值
-                    if(min2 == -1 || Long.parseLong(prescInfo.getOrder_sub_id()) < min2){
-                        min2 = Long.parseLong(prescInfo.getOrder_sub_id());
+                    if(min2.equals(-1) || new BigDecimal(prescInfo.getOrder_sub_id()).compareTo(min2) == -1){
+                        min2 = new BigDecimal(prescInfo.getOrder_sub_id());
                     }
                 }
                 //将order_sub_id等于最小值的处方加入到finalList中，并将order_sub_id_flag改为true表明已经处理过
@@ -523,7 +524,7 @@ public class PharmacistPrescCheckService {
                     if(prescInfo.isOrder_sub_id_flag() || "".equals(prescInfo.getOrder_sub_id())){
                         continue;
                     }
-                    if(Long.parseLong(prescInfo.getOrder_sub_id()) == min2){
+                    if(new BigDecimal(prescInfo.getOrder_sub_id()).equals(min2)){
                         //给成组的处方加上左侧方括号
                         if(tempList.size() > 1){
                             if(x == 0){
@@ -568,10 +569,10 @@ public class PharmacistPrescCheckService {
                     }
                 }
                 //将min2改为-1，进行下一次寻找order_sub_id的最小值
-                min2 = -1;
+                min2 = new BigDecimal(-1);
             }
             //将min改为-1，进行下一次寻找order_id的最小值
-            min = -1;
+            min = new BigDecimal(-1);
         }
 
         return finalList;
@@ -590,7 +591,7 @@ public class PharmacistPrescCheckService {
      */
     public List<PrescInfo> sortgroupPresInfo(List<PrescInfo> list,String flag){
         List<PrescInfo> result = new ArrayList<PrescInfo>();
-        Map<Long,List<PrescInfo>> map = new HashMap<Long, List<PrescInfo>>();
+        Map<BigDecimal,List<PrescInfo>> map = new HashMap<BigDecimal, List<PrescInfo>>();
         for(PrescInfo prescInfo : list){
             String s_id = "";
             // 区分按照group_id分组还是按照order_no分组
@@ -606,12 +607,12 @@ public class PharmacistPrescCheckService {
                 s_id = prescInfo.getOrder_id().replaceAll("[^\\d]+", "");
             }
             // 遍历list，将一组的医嘱存入同一个list中
-            if(!map.containsKey(Long.parseLong(s_id))){
+            if(!map.containsKey(new BigDecimal(s_id))){
                 List<PrescInfo> tempList = new ArrayList<PrescInfo>();
                 tempList.add(prescInfo);
-                map.put(Long.parseLong(s_id),tempList);
+                map.put(new BigDecimal(s_id),tempList);
             }else{
-                map.get(Long.parseLong(s_id)).add(prescInfo);
+                map.get(new BigDecimal(s_id)).add(prescInfo);
             }
         }
 
