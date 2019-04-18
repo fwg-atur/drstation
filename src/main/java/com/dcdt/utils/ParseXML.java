@@ -15,6 +15,13 @@ public class ParseXML {
     CheckPresOutput checkPresOutput = new CheckPresOutput();
     CheckPharmacist checkPharmacist = new CheckPharmacist();
 
+    //医生站过滤非法xml
+    public boolean filter(String xml){
+        if(!xml.contains("CheckInput"))
+            return false;
+        return true;
+    }
+
     //解析审核结果xml
     public void parseXML(String xml){
         if(xml == null || xml.length() == 0){

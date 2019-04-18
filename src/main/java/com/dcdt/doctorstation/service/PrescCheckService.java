@@ -8,6 +8,7 @@ import com.dcdt.doctorstation.entity.CheckMessage;
 import com.dcdt.doctorstation.entity.CheckResults;
 import com.dcdt.utils.CommonUtil;
 import com.dcdt.utils.HttpUtil;
+import com.dcdt.utils.ParseXML;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class PrescCheckService {
     private String groupFlag;
 
     private CacheService cacheService;
+    private ParseXML parseXML = new ParseXML();
+
 
     private static final Logger logger = Logger.getLogger(PrescCheckService.class);
 
@@ -42,14 +45,18 @@ public class PrescCheckService {
      * @return 返回审核结果标识（flag,presId）,不包括审核结果字符串
      */
     public CheckMessage checkPresc(int tag, String data) {
+        CheckMessage checkMessage = new CheckMessage();
         String url = checkServerUrl + "?tag=" + tag;
+        if(!parseXML.filter(data)){
+            return checkMessage;
+        }
         data = data.replace("&nbsp;"," ");
         String checkJson = "";
         checkJson = HttpUtil.sendPost(url, data);
 //        String checkJson = getTestJson();
         logger.debug(checkJson);
 
-        CheckMessage checkMessage = new CheckMessage();
+
 
         if(checkJson == null || checkJson.equals("")){
             checkMessage.setHasProblem(-2);
