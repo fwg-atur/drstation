@@ -84,7 +84,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapDoc);
         try {
-            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheckForTest", data, adduserok);
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", data, adduserok);
         }catch (e){
             return -3;
         }

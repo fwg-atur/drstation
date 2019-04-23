@@ -53,7 +53,7 @@ public class PrescCheckService {
         data = data.replace("&nbsp;"," ");
         String checkJson = "";
         checkJson = HttpUtil.sendPost(url, data);
-//        String checkJson = getTestJson();
+//        checkJson = getTestJson();
         logger.debug(checkJson);
 
 
@@ -128,6 +128,66 @@ public class PrescCheckService {
         return res;
     }
 
+/*
+    public String getTestJson(){
+        String res = "{\n" +
+                "    \"doctor\": {\n" +
+                "        \"USER_ID\": \"1150\",\n" +
+                "        \"NAME\": \"徐杰\",\n" +
+                "        \"POSITION\": \"主治医师\",\n" +
+                "        \"DEPT_CODE\": \"重症医学科\",\n" +
+                "        \"DEPT_NAME\": \"重症医学科\"\n" +
+                "    },\n" +
+                "    \"patient\": {\n" +
+                "        \"NAME\": \"柳巨武\",\n" +
+                "        \"ID\": \"0000689061\",\n" +
+                "        \"GENDER\": \"男\",\n" +
+                "        \"BIRTH\": \"19630413\",\n" +
+                "        \"WEIGHT\": \"\",\n" +
+                "        \"HEIGHT\": \"\",\n" +
+                "        \"ALERGY_DRUGS\": \"\",\n" +
+                "        \"PREGNANT\": \"否\",\n" +
+                "        \"LACT\": \"否\",\n" +
+                "        \"HEPATICAL\": \"\",\n" +
+                "        \"RENAL\": \"\",\n" +
+                "        \"PANCREAS\": \"\",\n" +
+                "        \"VISIT_ID\": \"\",\n" +
+                "        \"PATIENT_PRES_ID\": \"77704\",\n" +
+                "        \"IDENTITY_TYPE\": \"\",\n" +
+                "        \"FEE_TYPE\": \"自费\",\n" +
+                "        \"SCR\": \"\",\n" +
+                "        \"SCR_UNIT\": \"\",\n" +
+                "        \"GESTATION_AGE\": \"\",\n" +
+                "        \"PRETERM_BIRTH\": \"\",\n" +
+                "        \"DRUG_HISTORY\": \"\",\n" +
+                "        \"FAMILY_DISEASE_HISTORY\": \"\",\n" +
+                "        \"GENETIC_DISEASE\": \"\",\n" +
+                "        \"MEDICARE_01\": \"\",\n" +
+                "        \"MEDICARE_02\": \"\",\n" +
+                "        \"MEDICARE_03\": \"\",\n" +
+                "        \"MEDICARE_04\": \"\",\n" +
+                "        \"MEDICARE_05\": \"\",\n" +
+                "        \"WARD_CODE\": \"\",\n" +
+                "        \"WARD_NAME\": \"\",\n" +
+                "        \"BED_NO\": \"\",\n" +
+                "        \"INPATIENT_NO\": \"\"\n" +
+                "    },\n" +
+                "    \"diagnosis\": {\n" +
+                "        \"DIAGNOSISES\": \"创伤性蛛网膜下腔出血\"\n" +
+                "    },\n" +
+                "    \"advices\": [],\n" +
+                "    \"checkInfoMap\": null,\n" +
+                "    \"output\": \"\",\n" +
+                "    \"presDate\": null,\n" +
+                "    \"presID\": null,\n" +
+                "    \"highestWarningLevelVirtual\": 0,\n" +
+                "    \"HIGHEST_WARNING_LEVEL\": 0,\n" +
+                "    \"WARNING_COUNT\": 0,\n" +
+                "    \"TAG\": \"1\"\n" +
+                "}";
+        return res;
+    }
+*/
     /**
      * @param checkJson
      */
@@ -135,19 +195,26 @@ public class PrescCheckService {
         Gson g = new Gson();
 //        checkJson=getTestJson();
         CheckResults results = g.fromJson(checkJson, CheckResults.class);
-        if(results.getCheckInfoMap() == null){
-            CheckMessage message = new CheckMessage();
-            message.setHasProblem(-2);
-            return message;
-        }
-        results.setAdvices(sortgroupAdvice(results.getAdvices(),groupFlag));
-
         String presId = results.getPatient().getPATIENT_PRES_ID();
         if(presId == null || "".equals(presId)){
             presId = CommonUtil.getPresIdWithTime(results.getPatient().getID());
         }else{
             presId = CommonUtil.getPresIdWithTime(presId);
         }
+
+        if(results.getCheckInfoMap() == null){
+            CheckMessage message = new CheckMessage();
+            if(results.getAdvices() != null && results.getAdvices().size() != 0) {
+                message.setHasProblem(-2);
+            }else{
+                message.setPresId(presId);
+                message.setHasProblem(0);
+            }
+            return message;
+        }
+        results.setAdvices(sortgroupAdvice(results.getAdvices(),groupFlag));
+
+
         int warnLevel = results.getHIGHEST_WARNING_LEVEL();
 
         //缓存审核结果,等到进入审核结果页面时再读取记录显示
