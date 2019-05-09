@@ -372,8 +372,8 @@ public class ParseXML {
         Object doctorObject = root.getChild("Doctor");
         Element doctorElement = (Element) doctorObject;
         Doctor doctor = new Doctor();
-        doctor.setNAME(doctorElement.getAttributeValue("NAME"));
         doctor.setPOSITION(doctorElement.getAttributeValue("POSITION"));
+        doctor.setNAME(doctorElement.getAttributeValue("NAME"));
         doctor.setUSER_ID(doctorElement.getAttributeValue("USER_ID"));
         doctor.setDEPT_NAME(doctorElement.getAttributeValue("DEPT_NAME"));
         doctor.setDEPT_CODE(doctorElement.getAttributeValue("DEPT_CODE"));
