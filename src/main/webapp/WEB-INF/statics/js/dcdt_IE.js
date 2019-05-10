@@ -29,7 +29,6 @@ var checkServerIp;
 var checkServerPort;
 
 function testCheck(tag) {
-    writeReg();
     var dcdtXml = document.getElementById("dcdt").value;
     DoctorCheck(tag, dcdtXml,1);
 }
@@ -41,6 +40,7 @@ function testCheck(tag) {
  * @constructor
  */
 function DoctorCheck(tag, xml, inHosFlag) {
+    writeReg();
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
@@ -750,7 +750,7 @@ function writeReg(){
     for(var i=1;i<=4;++i) {
         var path = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\"+i+"\\1406";
         var curValue = WshShell.RegRead(path);
-        alert(curValue);
+        // alert(curValue);
         if (curValue != 0) {
             WshShell.RegWrite(path, "0", "REG_DWORD");
         }
