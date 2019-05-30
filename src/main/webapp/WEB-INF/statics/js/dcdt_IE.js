@@ -30,25 +30,26 @@ var checkServerPort;
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    DoctorCheck(tag, dcdtXml,1);
+    DoctorCheck(tag, dcdtXml,'inp');
 }
 /**
  *
  * @param tag
  * @param xml
  * @param inHosFlag 住院门诊标识，1住院，0门诊 。默认使用住院医生站。
+ * 常德人民医院inHosFlag中，inp住院，onp门诊
  * @constructor
  */
 function DoctorCheck(tag, xml, inHosFlag) {
     writeReg();
     if (inHosFlag == undefined) {
-        inHosFlag = 1;
+        inHosFlag = 'inp';
     }
-    if (inHosFlag == 0) {
+    if (inHosFlag == 'onp') {
         checkServerIp = checkServerIpOutHos;
         checkServerPort = cheServerPortOutHos;
         return sendCheck(tag, xml, checkServerIpOutHos, cheServerPortOutHos);
-    } else if (inHosFlag == 1) {
+    } else if (inHosFlag == 'inp') {
         checkServerIp = checkServerIpInHos;
         checkServerPort = cheServerPortInHos;
         return sendCheck(tag, xml, checkServerIpInHos, cheServerPortInHos);
@@ -750,7 +751,7 @@ function writeReg(){
     for(var i=1;i<=4;++i) {
         var path = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\Zones\\"+i+"\\1406";
         var curValue = WshShell.RegRead(path);
-        // alert(curValue);
+        alert(curValue);
         if (curValue != 0) {
             WshShell.RegWrite(path, "0", "REG_DWORD");
         }
