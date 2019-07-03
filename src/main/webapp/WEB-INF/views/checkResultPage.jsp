@@ -215,10 +215,8 @@
 
         function showProgressBar() {
             var checkResultElem = document.getElementById("checkResult");
-
-            timeout = window.setInterval("run()", 1000);
-
             checkResultElem.innerHTML = progress_bar.replace('@{longestWaitTime}',waitTimeSeconds);
+            timeout = window.setInterval('run()', 1000);
             showdiv();
         }
 
@@ -249,7 +247,7 @@
             if (analyzeData(checkData).presState == 0) {
                 stop_flag = true;
                 window.clearInterval(checkInterveneState);
-            } else if (analyzeData(checkData).presState == 3) {
+            } else if (analyzeData(checkData).presState == 3 || analyzeData(checkData).presState == 4 || analyzeData(checkData).presState == 5) {
                 nextOrBack(0);
             }
         }
@@ -381,8 +379,8 @@
 
         function run() {
             var bar = document.getElementById("bar");
-            var total = document.getElementById("total");
-            bar.style.width = parseFloat(bar.style.width) + 3.33 + "%";
+//            var total = document.getElementById("total");
+            bar.style.width = parseFloat(bar.style.width) + (100/waitTimeSeconds) + "%";
 
             var currentWaitTime = document.getElementById("currentWaitTime");
             currentWaitTime.innerText = parseInt(currentWaitTime.innerText) + 1;
@@ -398,7 +396,7 @@
                 return;
             }
 
-            if (parseInt(bar.style.width) >= 99) {
+            if (parseFloat(bar.style.width) >= 99) {
                 clearAllInterval();
                 hidediv();
                 nextOrBack(0)
