@@ -247,7 +247,11 @@
             if (analyzeData(checkData).presState == 0) {
                 stop_flag = true;
                 window.clearInterval(checkInterveneState);
-            } else if (analyzeData(checkData).presState == 3 || analyzeData(checkData).presState == 4 || analyzeData(checkData).presState == 5) {
+            }
+            //presState=3,医生点击下一步，但没有分配给审方药师审核
+            //presState=4,审方药师审核超时
+            //presState=5,允许发药
+            else if (analyzeData(checkData).presState == 3 || analyzeData(checkData).presState == 4 || analyzeData(checkData).presState == 5) {
                 nextOrBack(0);
             }
         }
@@ -380,6 +384,9 @@
         function run() {
             var bar = document.getElementById("bar");
 //            var total = document.getElementById("total");
+            if(waitTimeSeconds < 1){
+                waitTimeSeconds = 1;
+            }
             bar.style.width = parseFloat(bar.style.width) + (100/waitTimeSeconds) + "%";
 
             var currentWaitTime = document.getElementById("currentWaitTime");
