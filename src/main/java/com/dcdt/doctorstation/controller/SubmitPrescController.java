@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
+
 /**
  * Created by LiRong on 2017/6/20.
  */
@@ -54,7 +56,7 @@ public class SubmitPrescController {
      */
     @ResponseBody
     @RequestMapping("/sendCheckForTest")
-    public CheckMessage sendCheckForTest(int tag, String xml) {
+    public CheckMessage sendCheckForTest(int tag, String xml) throws IOException {
         return service.checkPrescForTest(tag, xml);
     }
 
