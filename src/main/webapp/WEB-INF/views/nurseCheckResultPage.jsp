@@ -29,7 +29,7 @@
         /*
          * val:0下一步,-1返回修改
          * */
-        function nextOrBack(val) {
+        function nextOrBackNurse(val) {
             var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/nurseSubmit/setRetValue";
             var arg = 'presId=1&retVal=' + val;
             var xmlhttp;
@@ -155,9 +155,9 @@
                     <%--<input id="sort_serious" type="button" onclick="sortBySerious()" value="按严重程度排序"/>--%>
 
                     <%--<input id="export" type="button" onclick="next()" value="导出word"/>--%>
-                    <input id="cancel" type="button" onclick="nextOrBack(-1)" value="取消"/>
+                    <input id="cancel" type="button" onclick="nextOrBackNurse(-1)" value="取消"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <input id="confirm" type="button" onclick="nextOrBack(0)" value="确认"/>
+                    <input id="confirm" type="button" onclick="nextOrBackNurse(0)" value="确认"/>
                 </div>
             </div>
         </div>

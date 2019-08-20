@@ -249,7 +249,7 @@
 
         function run() {
             var bar = document.getElementById("bar");
-            var total = document.getElementById("total");
+//            var total = document.getElementById("total");
             bar.style.width = parseInt(bar.style.width) + 1 + "%";
 
             if (stop_flag == true) {
@@ -266,7 +266,7 @@
             if (parseInt(bar.style.width) >= 100) {
                 clearAllInterval();
                 hidediv();
-                nextOrBack(0)
+                nextOrBackPharmacist(0)
                 return;
             }
         }
@@ -286,7 +286,7 @@
         /*
          * val:0下一步,-1返回修改
          * */
-        function nextOrBack(val) {
+        function nextOrBackPharmacist(val) {
             var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/setRetValue";
             var arg = 'presId=' + pharmacistPresId + '&retVal=' + val;
             var xmlhttp;
@@ -431,9 +431,9 @@
 
                 <%--<input id="help" type="button" value="帮助"/>--%>
                 <input id="interfere" class="long" type="button" value="实施干预" onclick="drawInterfereInfoElem()"/>
-                <input id="back" class="long" type="button" onclick="nextOrBack(-1)" value="返回修改"/>
+                <input id="back" class="long" type="button" onclick="nextOrBackPharmacist(-1)" value="返回修改"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="next" class="long" type="button" onclick="nextOrBack(0)" value="继续保存"/>
+                <input id="next" class="long" type="button" onclick="nextOrBackPharmacist(0)" value="继续保存"/>
             </div>
             </div>
         </div>

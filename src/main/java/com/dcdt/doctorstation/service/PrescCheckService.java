@@ -2,10 +2,7 @@ package com.dcdt.doctorstation.service;
 
 import com.dcdt.cache.CheckResultCache;
 import com.dcdt.cache.RetValCache;
-import com.dcdt.doctorstation.entity.Advice;
-import com.dcdt.doctorstation.entity.CheckInfo;
-import com.dcdt.doctorstation.entity.CheckMessage;
-import com.dcdt.doctorstation.entity.CheckResults;
+import com.dcdt.doctorstation.entity.*;
 import com.dcdt.utils.CommonUtil;
 import com.dcdt.utils.HttpUtil;
 import com.dcdt.utils.ParseXML;
@@ -17,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by LiRong on 2017/6/20.
@@ -71,6 +65,36 @@ public class PrescCheckService {
         }
         putXML2Cache(checkMessage.getPresId(), data);
         return checkMessage;
+    }
+
+
+    public CheckMessage_BZ checkPresc_BZ(int tag, String data) {
+        CheckMessage_BZ checkMessage_bz = new CheckMessage_BZ();
+        String url = checkServerUrl + "?tag=" + tag;
+        if(!parseXML.filter(data)){
+            return checkMessage_bz;
+        }
+        data = data.replace("&nbsp;"," ");
+        String checkJson = "";
+        checkJson = HttpUtil.sendPost(url, data);
+//        checkJson = getTestJson();
+        logger.debug(checkJson);
+
+
+
+//        if(checkJson == null || checkJson.equals("")){
+//            checkMessage.setHasProblem(-2);
+//            return checkMessage;
+//        }
+//
+//        if (tag == 2) return checkMessage;
+
+        checkMessage_bz = handleCheckJson_bz(checkJson);
+//        if(checkMessage.getHasProblem() == -2){
+//            return checkMessage;
+//        }
+        putXML2Cache(checkMessage_bz.getPresId(), data);
+        return checkMessage_bz;
     }
 
     private void putXML2Cache(String presId, String xml) {
@@ -193,7 +217,6 @@ public class PrescCheckService {
      */
     protected CheckMessage handleCheckJson(String checkJson) {
         Gson g = new Gson();
-//        checkJson=getTestJson();
         CheckResults results = g.fromJson(checkJson, CheckResults.class);
         String presId = results.getPatient().getPATIENT_PRES_ID();
         if(presId == null || "".equals(presId)){
@@ -230,6 +253,53 @@ public class PrescCheckService {
         return message;
     }
 
+
+    protected CheckMessage_BZ handleCheckJson_bz(String checkJson) {
+        Gson g = new Gson();
+        CheckResults results = g.fromJson(checkJson, CheckResults.class);
+        String presId = results.getPatient().getPATIENT_PRES_ID();
+        if(presId == null || "".equals(presId)){
+            presId = CommonUtil.getPresIdWithTime(results.getPatient().getID());
+        }else{
+            presId = CommonUtil.getPresIdWithTime(presId);
+        }
+
+        if(results.getCheckInfoMap() == null){
+            CheckMessage_BZ message = new CheckMessage_BZ();
+            if(results.getAdvices() != null && results.getAdvices().size() != 0) {
+
+            }else{
+                message.setPresId(presId);
+                message.setHasProblem(0);
+                message.setState(1);
+                message.setRetXml("<CheckResult STATE=\"0\" STYLE=\"\" CHECK_PHARMACIST_CODE=\"\" CHECK_PHARMACIST_NAME=\"\" CHECK_STATE=\"\" />");
+                CheckResultCache.putCheckState(presId,message);
+            }
+            return message;
+        }
+        results.setAdvices(sortgroupAdvice(results.getAdvices(),groupFlag));
+
+
+        int warnLevel = results.getHIGHEST_WARNING_LEVEL();
+
+        //缓存审核结果,等到进入审核结果页面时再读取记录显示
+        if (warnLevel != 0) {
+            CheckResultCache.putCheckResult(presId, results);
+        }
+
+        //处理审核信息
+        CheckMessage_BZ message = new CheckMessage_BZ();
+        message.setPresId(presId);
+        message.setHasProblem(warnLevel == 0 ? 0 : 1);
+        if(warnLevel == 0){
+            message.setState(1);
+            message.setRetXml("<CheckResult STATE=\"0\" STYLE=\"\" CHECK_PHARMACIST_CODE=\"\" CHECK_PHARMACIST_NAME=\"\" CHECK_STATE=\"\" />");
+        }
+        CheckResultCache.putCheckState(presId,message);
+        return message;
+    }
+
+
     public String toJson(CheckResults checkResults) {
         Gson gson = new Gson();
         return gson.toJson(checkResults);
@@ -261,6 +331,29 @@ public class PrescCheckService {
         return RetValCache.removeRetVal(presId);
     }
 
+    public void putRetCache_bz(String presId, CheckMessage_BZ message) {
+        CheckResultCache.putCheckState(presId, message);
+    }
+
+    //从缓存中取出相应的CheckMessage
+    public CheckMessage_BZ getRetCache_bz(String presId){
+        return CheckResultCache.findCheckState(presId);
+    }
+
+    public void putRetValue_bz(String presId, String message) {
+        RetValCache.putRetVal_bz(presId, message);
+    }
+
+    //根据presId获取缓存中的返回字符串
+    public String findRetValue_bz(String presId){
+        if(RetValCache.containsKey_bz(presId)){
+            return RetValCache.removeRetVal_bz(presId);
+        }else{
+            String retXml = "<CheckResult STATE=\"-1\" STYLE=\"\" CHECK_PHARMACIST_CODE=\"\" CHECK_PHARMACIST_NAME=\"\" CHECK_STATE=\"\" />";
+            return retXml;
+        }
+    }
+
     private boolean notBackOrNext(String presId) {
         return !RetValCache.containsKey(presId);
     }
@@ -274,6 +367,7 @@ public class PrescCheckService {
         String url = checkServerUrl + "?tag=3";
 //        String presIdWithTime = CommonUtil.getPresIdWithTime(presId);
         String data = cacheService.getXMLFromCache(presId, presId);
+        logger.debug(url+" "+data);
         HttpUtil.sendPost(url, data);
         return presId;
     }

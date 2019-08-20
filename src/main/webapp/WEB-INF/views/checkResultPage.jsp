@@ -29,6 +29,7 @@
     <script type="text/javascript">
         var checkServerIp = '${config.drStationServerIp}';
         var cheServerPost = '${config.drStationServerPort}';
+        var bz_flag = '${config.bz_flag}';
         //药品说明书链接
         var disUrl = '${config.drugDescriptionURL}';
         var presId = '${presId}';
@@ -50,6 +51,8 @@
         var advises = checkResultJson.advices;
         var patient = checkResultJson.patient;
         var doctor = checkResultJson.doctor;
+        var pharmacistCode;
+        var pharmacistName;
 
         /*查询干预状态时，轮询停止标识。如果查询结果为零，则停止轮询*/
         var stop_flag = false;
@@ -132,9 +135,33 @@
                 sendQuitMessage(val);
             }
             changeDirectCloseFlag();
+            var url;
+            var arg;
+            if(-2 == val){
+                var retXml = "<CheckResult STATE=\"-1\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\""+"干预成功"+"\" TAG=\"\" />";
+                saveCheckMessage(retXml);
+            }else{
+                url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/setRetValue";
+                arg = 'presId=' + presId + '&retVal=' + val;
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    //  IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    // IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.open("POST", url, false);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+                xmlhttp.send(arg);
+            }
+            clearAllInterval();
+            window.close();
+        }
 
-            var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/setRetValue";
-            var arg = 'presId=' + presId + '&retVal=' + val;
+        function saveCheckMessage(message) {
+            var url = "http://" + checkServerIp + ":" + cheServerPost + "/DCStation/submit/setRetValue_bz";
+            var arg = 'presId=' + presId + '&message=' + message;
             var xmlhttp;
             if (window.XMLHttpRequest) {
                 //  IE7+, Firefox, Chrome, Opera, Safari
@@ -146,9 +173,6 @@
             xmlhttp.open("POST", url, false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
             xmlhttp.send(arg);
-
-            clearAllInterval();
-            window.close();
         }
 
         function drawCheckResultElem(url) {
@@ -177,7 +201,7 @@
         function showdiv() {
             document.getElementById("bg").style.display = "block";
             document.getElementById("show").style.display = "block";
-            // document.getElementById("closeButton").style.display = "block";
+//             document.getElementById("closeButton").style.display = "block";
         }
 
         function hidediv() {
@@ -243,22 +267,50 @@
         function checkIsPass() {
             var args = getRequestMessage('1');
             var checkData = sendAjaxRequest(checkInterveneStateURL, args);
-
-            if (analyzeData(checkData).presState == 0) {
+            var presState = analyzeData(checkData).presState;
+            if (0 == presState) {
                 stop_flag = true;
                 window.clearInterval(checkInterveneState);
             }
             //presState=3,医生点击下一步，但没有分配给审方药师审核
             //presState=4,审方药师审核超时
             //presState=5,允许发药
-            else if (analyzeData(checkData).presState == 3 || analyzeData(checkData).presState == 4 || analyzeData(checkData).presState == 5) {
-                nextOrBack(0);
+            else if (3 == presState || 4 == presState || 5 == presState) {
+                //bz_flag值为1表示是滨医附院
+                if(0 == bz_flag){
+                    nextOrBack(0);
+                }else {
+                    pharmacistCode = analyzeData(checkData).checkPharmacistCode;
+                    pharmacistName = analyzeData(checkData).checkPharmacistName;
+                    var retXml;
+                    if (3 == presState) {
+                        retXml = "<CheckResult STATE=\"0\" STYLE=\"Machine\" CHECK_PHARMACIST_CODE=\"\" CHECK_PHARMACIST_NAME=\"\" CHECK_STATE=\"\" TAG=\"\" />";
+                    } else if (4 == presState) {
+                        retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualTimeOut\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\"\" TAG=\"\" />"
+                    } else if (5 == presState) {
+                        retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\"未沟通发药\" TAG=\"\"  />"
+                    }
+                    saveCheckMessage(retXml);
+                }
+
             }
+
+
         }
 
         function analyzeDataForState(data) {
-            var reg = /[\s\S]* PRES_STATE=['"]([\s\S]*?)['"][\s\S]*/ig;
+            var reg = /[\s\S]*PRES_STATE=['"]([\s\S]*?)['"][\s\S]*/ig;
             return parseInt(data.replace(reg, "$1"));
+        }
+
+        function analyzeDataForPharmacistCode(data) {
+            var reg = /[\s\S]*CHECK_PHARMACIST_CODE=['"]([\s\S]*?)['"][\s\S]*/ig;
+            return data.replace(reg, "$1");
+        }
+
+        function analyzeDataForPharmacistName(data) {
+            var reg = /[\s\S]*CHECK_PHARMACIST_NAME=['"]([\s\S]*?)['"][\s\S]*/ig;
+            return data.replace(reg, "$1");
         }
 
         //查询药师消息
@@ -278,6 +330,18 @@
             return messageList;
         }
 
+        //从药师多条消息中获取PresState
+        function analyzeDataForStateFromMessage(data) {
+            var dataList = data.split("Output");
+            var msgReg = /[\s\S]*PRES_STATE=['"]([\s\S]*?)['"][\s\S]*/ig;
+            for (index in dataList) {
+                var presState = parseInt(dataList[index].replace(msgReg, "$1"));
+                if (!isNaN(presState)) {
+                    return presState;
+                }
+            }
+        }
+
         function analyzeData(data) {
             var funReg = /[\s\S]*FUN=['"]([\s\S]*?)['"][\s\S]*/ig;
             var funNumber = parseInt(data.replace(funReg, "$1"));
@@ -289,8 +353,15 @@
                 switch (funNumber) {
                     case 1:
                         responseData.presState = analyzeDataForState(data);
+                        pharmacistCode = analyzeDataForPharmacistCode(data);
+                        responseData.checkPharmacistCode = pharmacistCode;
+                        pharmacistName = analyzeDataForPharmacistName(data)
+                        responseData.checkPharmacistName = pharmacistName;
                         break;
                     case 2:
+                        responseData.presState = analyzeDataForStateFromMessage(data);
+                        responseData.checkPharmacistCode = pharmacistCode;
+                        responseData.checkPharmacistName = pharmacistName;
                         responseData.messageList = analyzeDataForMessage(data);
                         break;
                 }
@@ -325,7 +396,26 @@
         function checkPharmMessage() {
             var args = getRequestMessage('2');
             var data = sendAjaxRequest(checkInterveneMessageURL, args);
-            var messageList = analyzeData(data).messageList;
+            var retData = analyzeData(data);
+            var messageList = retData.messageList;
+            var presState = retData.presState;
+            var pharmacistCode = retData.checkPharmacistCode;
+            var pharmacistName = retData.checkPharmacistName;
+            var retXml;
+
+            //6表示医生双签字，7表示药师同意医生观点
+            if(6 == presState || 7 == presState){
+                if(6 == presState){
+                    retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\""+"双签字"+"\" TAG=\"\" />";
+                }else if(7 == presState){
+                    retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\""+"同意医生"+"\" TAG=\"\" />";
+                }
+                saveCheckMessage(retXml);
+            }
+//            //不是以上两种情况，后序操作可能为返回修改，将结果存入缓存
+//            else{
+//                retXml = "<CheckResult STATE=\"-1\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\"干预成功\" TAG=\"\" />"
+//            }
 
             printPharmMessageList(messageList);
         }

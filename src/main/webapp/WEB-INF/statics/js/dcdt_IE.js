@@ -30,7 +30,8 @@ var checkServerPort;
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    DoctorCheck(tag, dcdtXml,1);
+    // DoctorCheck(tag, dcdtXml,1);
+    Check_BZRM(tag,dcdtXml);
 }
 /**
  *
@@ -42,7 +43,7 @@ function testCheck(tag) {
  */
 function DoctorCheck(tag, xml, inHosFlag) {
     if(getOS() != "Win7") {
-        writeReg();
+        // writeReg();
     }
     if (inHosFlag == undefined) {
         inHosFlag = 1;
@@ -793,7 +794,129 @@ function getOS() {
 //
 // }
 
+/**
+ * ***********************************      滨医附院bs医生站接口开始       ***************
+ */
+//Check函数和之前的函数一样，复用之前的函数
+//门诊住院标识默认门诊，之后可以改成参数传入
+function testBZ(tag) {
+    var dcdtXml = document.getElementById("dcdt").value;
+    var ret = Check_BZRM(tag,dcdtXml);
+    alert(ret);
+}
 
+function Check(tag,xml) {
+    return DoctorCheck(tag,xml,0);
+}
 
+//Check_BZRM返回值为xml
+function Check_BZRM(tag,xml) {
+    return DoctorCheck_BZ(tag,xml,0);
+}
+
+function DoctorCheck_BZ(tag,xml,inHosFlag) {
+    if (inHosFlag == undefined) {
+        inHosFlag = 0;
+    }
+    if (inHosFlag == 0) {
+        checkServerIp = checkServerIpOutHos;
+        checkServerPort = cheServerPortOutHos;
+        return sendCheck_BZ(tag, xml, checkServerIpOutHos, cheServerPortOutHos);
+    } else if (inHosFlag == 1) {
+        checkServerIp = checkServerIpInHos;
+        checkServerPort = cheServerPortInHos;
+        return sendCheck_BZ(tag, xml, checkServerIpInHos, cheServerPortInHos);
+    } else {
+        // alert("error:未识别的住院标识！");
+    }
+}
+
+function sendCheck_BZ(tag, xml, checkServerIp, cheServerPort) {
+    var iWidth = '1000px';
+    var iHeight = '547px';
+    var xmlhttp;
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
+
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    var t1;
+    function adduserok() {
+        if (t1)
+            clearTimeout(t1);
+    }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        // alert("请求服务超时！");
+    }
+    if(xmlhttp) {
+        t1 = setTimeout(connecttoFail, timeStrapDoc);
+        try {
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck_BZ", data, adduserok);
+        }catch (e){
+            // return -3;
+        }
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    var checkData = xmlhttp.responseText;
+    // if(checkData == ""){
+    //     return -3;
+    // }
+    var check = eval("(" + checkData + ")");
+
+    //预审没有问题，his继续调用Check(2,xml)
+    if (check.hasProblem == 0) {
+        return check.retXml;
+    }
+    else if (check.hasProblem == 1) {
+        var url = "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+
+        if (navigator.userAgent.indexOf("Chrome") > 0) {
+            var winOption = "height=" + iHeight + ",width=" + iWidth + "," +
+                "top=50,left=50,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,fullscreen=0";
+            window.open(url, window, winOption);
+        } else {
+            window.showModalDialog(url, '',
+                'resizable:yes;scroll:yes;status:no;' +
+                'dialogWidth=' + iWidth +
+                ';dialogHeight=' + iHeight +
+                ';center=yes;help=yes');
+        }
+    }
+
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/getRetValue_bz", false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send('presId=' + check.presId)
+
+    var retData = xmlhttp.responseText;
+    return retData;
+}
+
+function CheckSingle(xml) {
+    var res = Check("1",xml);
+    if(res == 0){
+        Check("2",xml);
+        return 0;
+    }else{
+        return res;
+    }
+}
+
+//说明书函数已经实现，可以直接调用
+function Specification(code) {
+    return openDiscribLinked(code);
+}
+
+/**
+ * *************************************    滨医bs医生站接口结束     *************************
+ */
 
 

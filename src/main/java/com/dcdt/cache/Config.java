@@ -53,6 +53,10 @@ public class Config {
     @Value("${groupFlag}")
     private String groupFlag;
 
+    @Value("${bz_flag}")
+    private int bz_flag;
+
+
     public String getDrStationServerIp() {
         return drStationServerIp;
     }
@@ -115,5 +119,13 @@ public class Config {
 
     public void setGroupFlag(String groupFlag) {
         this.groupFlag = groupFlag;
+    }
+
+    public int getBz_flag() {
+        return bz_flag;
+    }
+
+    public void setBz_flag(int bz_flag) {
+        this.bz_flag = bz_flag;
     }
 }

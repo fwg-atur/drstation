@@ -1,7 +1,9 @@
 package com.dcdt.doctorstation.controller;
 
+import com.dcdt.cache.CheckResultCache;
 import com.dcdt.cache.Config;
 import com.dcdt.doctorstation.entity.CheckMessage;
+import com.dcdt.doctorstation.entity.CheckMessage_BZ;
 import com.dcdt.doctorstation.entity.CheckPresInput;
 import com.dcdt.doctorstation.entity.CheckResults;
 import com.dcdt.doctorstation.service.CacheService;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * Created by LiRong on 2017/6/20.
@@ -32,6 +37,12 @@ public class SubmitPrescController {
     @RequestMapping("/sendCheck")
     public CheckMessage sendCheck(int tag, String xml) {
         return service.checkPresc(tag, xml);
+    }
+
+    @ResponseBody
+    @RequestMapping("/sendCheck_BZ")
+    public CheckMessage_BZ sendCheck_bz(int tag, String xml) {
+        return service.checkPresc_BZ(tag, xml);
     }
 
     @ResponseBody
@@ -91,6 +102,18 @@ public class SubmitPrescController {
     @RequestMapping("/getRetValue")
     public int getRetValue(String presId) {
         return service.findRetValue(presId);
+    }
+
+    @ResponseBody
+    @RequestMapping("/setRetValue_bz")
+    public void setRetValue_bz(String presId, String message) {
+        service.putRetValue_bz(presId, message);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getRetValue_bz")
+    public String getRetValue_bz(String presId) {
+        return service.findRetValue_bz(presId);
     }
 
     @Autowired
