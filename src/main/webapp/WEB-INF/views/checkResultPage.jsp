@@ -137,7 +137,7 @@
             changeDirectCloseFlag();
             var url;
             var arg;
-            if(-2 == val){
+            if(1 == bz_flag && -2 == val){
                 var retXml = "<CheckResult STATE=\"-1\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\""+"干预成功"+"\" TAG=\"\" />";
                 saveCheckMessage(retXml);
             }else{
@@ -277,9 +277,7 @@
             //presState=5,允许发药
             else if (3 == presState || 4 == presState || 5 == presState) {
                 //bz_flag值为1表示是滨医附院
-                if(0 == bz_flag){
-                    nextOrBack(0);
-                }else {
+                if(1 == bz_flag){
                     pharmacistCode = analyzeData(checkData).checkPharmacistCode;
                     pharmacistName = analyzeData(checkData).checkPharmacistName;
                     var retXml;
@@ -291,6 +289,8 @@
                         retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\"未沟通发药\" TAG=\"\"  />"
                     }
                     saveCheckMessage(retXml);
+                }else {
+                    nextOrBack(0);
                 }
 
             }
@@ -402,21 +402,17 @@
             var pharmacistCode = retData.checkPharmacistCode;
             var pharmacistName = retData.checkPharmacistName;
             var retXml;
-
-            //6表示医生双签字，7表示药师同意医生观点
-            if(6 == presState || 7 == presState){
-                if(6 == presState){
-                    retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\""+"双签字"+"\" TAG=\"\" />";
-                }else if(7 == presState){
-                    retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\""+"同意医生"+"\" TAG=\"\" />";
+            if(1 == bz_flag) {
+                //6表示医生双签字，7表示药师同意医生观点
+                if (6 == presState || 7 == presState) {
+                    if (6 == presState) {
+                        retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\"" + pharmacistCode + "\" CHECK_PHARMACIST_NAME=\"" + pharmacistName + "\" CHECK_STATE=\"" + "双签字" + "\" TAG=\"\" />";
+                    } else if (7 == presState) {
+                        retXml = "<CheckResult STATE=\"0\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\"" + pharmacistCode + "\" CHECK_PHARMACIST_NAME=\"" + pharmacistName + "\" CHECK_STATE=\"" + "同意医生" + "\" TAG=\"\" />";
+                    }
+                    saveCheckMessage(retXml);
                 }
-                saveCheckMessage(retXml);
             }
-//            //不是以上两种情况，后序操作可能为返回修改，将结果存入缓存
-//            else{
-//                retXml = "<CheckResult STATE=\"-1\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\""+pharmacistCode+"\" CHECK_PHARMACIST_NAME=\""+pharmacistName+"\" CHECK_STATE=\"干预成功\" TAG=\"\" />"
-//            }
-
             printPharmMessageList(messageList);
         }
 
