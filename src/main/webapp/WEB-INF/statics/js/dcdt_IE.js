@@ -797,21 +797,22 @@ function getOS() {
 /**
  * ***********************************      滨医附院bs医生站接口开始       ***************
  */
-//Check函数和之前的函数一样，复用之前的函数
-//门诊住院标识默认门诊，之后可以改成参数传入
+
 function testBZ(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    var ret = Check_BZRM(tag,dcdtXml);
+    var ret = Check_BZRM(tag,dcdtXml,0);
     alert(ret);
 }
 
-function Check(tag,xml) {
-    return DoctorCheck(tag,xml,0);
+//Check函数和之前的函数一样，复用之前的函数
+//inHosFlag为门诊住院标识，0为门诊，1为住院
+function Check(tag,xml,inHosFlag) {
+    return DoctorCheck(tag,xml,inHosFlag);
 }
 
 //Check_BZRM返回值为xml
-function Check_BZRM(tag,xml) {
-    return DoctorCheck_BZ(tag,xml,0);
+function Check_BZRM(tag,xml,inHosFlag) {
+    return DoctorCheck_BZ(tag,xml,inHosFlag);
 }
 
 function DoctorCheck_BZ(tag,xml,inHosFlag) {
@@ -920,3 +921,16 @@ function Specification(code) {
  */
 
 
+/**
+ * *************************************    鄱阳bs药师站接口开始     *************************
+ */
+//说明书函数增加tag参数
+function openDiscribLinked_py(tag,code){
+    if("1" != tag){
+        tag = "1";
+    }
+    return openDiscribLinked(code);
+}
+/**
+ * *************************************    鄱阳bs药师站接口结束     *************************
+ */
