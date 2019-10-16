@@ -1,6 +1,7 @@
 package com.dcdt.utils;
 
 import com.dcdt.doctorstation.entity.*;
+import com.dcdt.doctorstation.service.PharmacistPrescCheckService;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -651,6 +652,97 @@ public class ParseXML {
         return pharmacistInfo;
     }
 
+
+    //解析BZ接口审核结果xml
+    public  List<Order>  parseXML_BZ(String xml){
+        if(xml == null || xml.length() == 0){
+            return null;
+        }
+        Document document = null;
+
+        int index = xml.indexOf("OrderList");
+        if(index != -1) {
+            xml = xml.substring(index-1);
+        }
+        try {
+            document = XmlUtil.readDocumentFromStr(xml.trim());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Element root = document.getRootElement();
+
+        List<Order> orderList = new ArrayList<Order>();
+        for(Object orderObject:root.getChildren("Order")) {
+            Order order = new Order();
+            Element orderElement = (Element) orderObject;
+            order.setBED_NO(orderElement.getAttributeValue("BED_NO"));
+            order.setPATIENT_ID(orderElement.getAttributeValue("PATIENT_ID"));
+            order.setVISIT_ID(orderElement.getAttributeValue("VISIT_ID"));
+            order.setPATIENT_NAME(orderElement.getAttributeValue("PATIENT_NAME"));
+            order.setDOCTOR_ID(orderElement.getAttributeValue("DOCTOR_ID"));
+            order.setDOCTOR_NAME(orderElement.getAttributeValue("DOCTOR_NAME"));
+            order.setDRUG_NAME(orderElement.getAttributeValue("DRUG_NAME"));
+            order.setDRUG_SPEC(orderElement.getAttributeValue("DRUG_SPEC"));
+            order.setORDER_TYPE(orderElement.getAttributeValue("ORDER_TYPE"));
+            order.setSTART_TIME(orderElement.getAttributeValue("START_TIME"));
+            order.setADMINISTRATION(orderElement.getAttributeValue("ADMINISTRATION"));
+            order.setFREQUENCY(orderElement.getAttributeValue("FREQUENCY"));
+            order.setDOSAGE(orderElement.getAttributeValue("DOSAGE"));
+            order.setUSE_TIME(orderElement.getAttributeValue("USE_TIME"));
+            order.setPROBLEM_TYPE(orderElement.getAttributeValue("PROBLEM_TYPE"));
+            order.setPROBLEM_LEVEL(orderElement.getAttributeValue("PROBLEM_LEVEL"));
+            order.setDRUG_STATE(orderElement.getAttributeValue("DRUG_STATE"));
+            order.setGROUP_ID(orderElement.getAttributeValue("GROUP_ID"));
+            order.setINPATIENT_NO(orderElement.getAttributeValue("INPATIENT_NO"));
+
+
+            Object presInfoObject = orderElement.getChild("PresInfo");
+            Element presInfoElement = (Element) presInfoObject;
+            PrescInfo prescInfo = new PrescInfo();
+            prescInfo.setGroup_id(presInfoElement.getAttributeValue("GROUP_ID"));
+            prescInfo.setOrder_id(presInfoElement.getAttributeValue("ORDER_ID"));
+            prescInfo.setOrder_sub_id(presInfoElement.getAttributeValue("ORDER_SUB_ID"));
+            prescInfo.setDrug_lo_id(presInfoElement.getAttributeValue("DRUG_LO_ID"));
+            prescInfo.setDrug_lo_name(presInfoElement.getAttributeValue("DRUG_LO_NAME"));
+            prescInfo.setGanyu_state(presInfoElement.getAttributeValue("GANYU_STATE"));
+            prescInfo.setGanyu_info(presInfoElement.getAttributeValue("GANYU_INFO"));
+            prescInfo.setMedication_flag(presInfoElement.getAttributeValue("MEDICATION_FLAG"));
+
+            List<CheckInfo> checkInfos = new ArrayList<CheckInfo>();
+            for (Object checkInfoObject : presInfoElement.getChildren("CheckInfo")) {
+                Element checkInfoElement = (Element) checkInfoObject;
+                CheckInfo checkInfo = new CheckInfo();
+                checkInfo.setCOLOR(checkInfoElement.getAttributeValue("COLOR"));
+                checkInfo.setNAME(checkInfoElement.getAttributeValue("NAME"));
+                checkInfo.setWARNING_LEVEL(checkInfoElement.getAttributeValue("WARNING_LEVEL"));
+                checkInfo.setWARNING_INFO(checkInfoElement.getAttributeValue("WARNING_INFO"));
+                checkInfo.setREF_SOURCE(checkInfoElement.getAttributeValue("REF_SOURCE"));
+                checkInfo.setYPMC(checkInfoElement.getAttributeValue("YPMC"));
+                checkInfo.setJSXX(checkInfoElement.getAttributeValue("JSXX"));
+                checkInfo.setZYJL(checkInfoElement.getAttributeValue("ZYJL"));
+                checkInfo.setTYSM(checkInfoElement.getAttributeValue("TYSM"));
+                checkInfo.setLCSY(checkInfoElement.getAttributeValue("LCSY"));
+                if ("慎用".equals(checkInfo.getWARNING_LEVEL())) {
+                    checkInfo.setREGULAR_WARNING_LEVEL("1");
+                } else if ("禁忌".equals(checkInfo.getWARNING_LEVEL()) || "禁用".equals(checkInfo.getWARNING_LEVEL())) {
+                    checkInfo.setREGULAR_WARNING_LEVEL("2");
+                } else if ("强制阻断".equals(checkInfo.getWARNING_LEVEL())) {
+                    checkInfo.setREGULAR_WARNING_LEVEL("-1");
+                } else {
+                    checkInfo.setREGULAR_WARNING_LEVEL("0");
+                }
+                checkInfos.add(checkInfo);
+            }
+            prescInfo.setCheckInfos(checkInfos);
+            order.setPrescInfo(prescInfo);
+            orderList.add(order);
+        }
+
+        return orderList;
+    }
+
+
     //药师站获取最高警示级别
     public int getPharHighestWarningLevel(List<PrescInfo> prescInfos){
         int level = 0;
@@ -671,6 +763,64 @@ public class ParseXML {
             }
         }
         return level;
+    }
+
+
+    /**
+     * add by Yikmat   2019.10.10
+     * BZ药师站获取最高警示级别,问题类别
+     */
+    public ProblemInfo getPharHighestWarningLevel_BZ(PrescInfo prescInfo){
+        ProblemInfo problemInfo = new ProblemInfo();
+        int level = 0;
+        String problem_type = "";
+        String problem_level = "";
+        if(prescInfo.getCheckInfos() != null && prescInfo.getCheckInfos().size() != 0){
+            for(CheckInfo checkInfo : prescInfo.getCheckInfos()){
+//                if("用药监测".equals(checkInfo.getNAME())){
+//                    continue;
+//                }else
+                if(("慎用".equals(checkInfo.getWARNING_LEVEL())||"提示".equals(checkInfo.getWARNING_LEVEL())) && level == 0){
+                    level = 1;
+                    problem_type = checkInfo.getNAME();
+                    problem_level = checkInfo.getWARNING_LEVEL();
+                }else if(("禁忌".equals(checkInfo.getWARNING_LEVEL())||"禁用".equals(checkInfo.getWARNING_LEVEL())) && (level == 0 || level ==1)){
+                    level = 2;
+                    problem_type = checkInfo.getNAME();
+                    problem_level = checkInfo.getWARNING_LEVEL();
+                }else if(("强制阻断".equals(checkInfo.getWARNING_LEVEL()) || "强制登记".equals(checkInfo.getWARNING_LEVEL()))){
+                    level = 3;
+                    problem_type = checkInfo.getNAME();
+                    problem_level = checkInfo.getWARNING_LEVEL();
+                }
+            }
+        }
+        problemInfo.setProblem_level(level);
+        problemInfo.setProblem_level_name(problem_level);
+        problemInfo.setProblem_type(problem_type);
+        return problemInfo;
+    }
+
+    /**
+     * add by Yikmat   2019.10.10
+     * BZ药师站返回相应的数字
+     */
+    public int getRegularWarnLevel_BZ(String warningLevel) {
+        int warn = 0;
+        if ("提示".equals(warningLevel)) {
+            warn = 1;
+        } else if ("慎用".equals(warningLevel)) {
+            warn = 1;
+        } else if ("禁忌".equals(warningLevel)) {
+            warn = 2;
+        } else if ("禁用".equals(warningLevel)) {
+            warn = 2;
+        } else if ("强制阻断".equals(warningLevel)) {
+            warn = 3;
+        } else if ("强制登记".equals(warningLevel)) {
+            warn = 3;
+        }
+        return warn;
     }
 
     public CheckPresInput getCheckPresInput() {
@@ -695,5 +845,50 @@ public class ParseXML {
 
     public void setCheckPharmacist(CheckPharmacist checkPharmacist) {
         this.checkPharmacist = checkPharmacist;
+    }
+
+
+    public static void main(String[] args) {
+        String xml = "<OrderList>\n" +
+                "    <Order BED_NO=\"001\" PATIENT_ID=\"000358649700\" VISIT_ID=\"2\" PATIENT_NAME=\"孙健之次子\" DOCTOR_ID=\"10645\" DOCTOR_NAME=\"李秋菊\" DRUG_NAME=\"多种微量元素注射液\" DRUG_SPEC=\"10ml/支\" ORDER_TYPE=\"临时\" START_TIME=\"20190923\" ADMINISTRATION=\"静点\" FREQUENCY=\"ONCE\" DOSAGE=\"0.5ml\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"63384822\" INPATIENT_NO=\"413076\">\n" +
+                "        <PresInfo ORDER_ID=\"63384830\" ORDER_SUB_ID=\"4\" GROUP_ID=\"63384822\" DRUG_LO_ID=\"20022700\" DRUG_LO_NAME=\"多种微量元素注射液\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"/>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"001\" PATIENT_ID=\"000358649700\" VISIT_ID=\"2\" PATIENT_NAME=\"孙健之次子\" DOCTOR_ID=\"10645\" DOCTOR_NAME=\"李秋菊\" DRUG_NAME=\"脂溶性维生素注射液（Ⅱ）\" DRUG_SPEC=\"10ml/支\" ORDER_TYPE=\"临时\" START_TIME=\"20190923\" ADMINISTRATION=\"静点\" FREQUENCY=\"ONCE\" DOSAGE=\"2.5ml\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"63384822\" INPATIENT_NO=\"413076\">\n" +
+                "        <PresInfo ORDER_ID=\"63384824\" ORDER_SUB_ID=\"1\" GROUP_ID=\"63384822\" DRUG_LO_ID=\"00196200\" DRUG_LO_NAME=\"脂溶性维生素注射液（Ⅱ）\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"/>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"001\" PATIENT_ID=\"000358649700\" VISIT_ID=\"2\" PATIENT_NAME=\"孙健之次子\" DOCTOR_ID=\"10645\" DOCTOR_NAME=\"李秋菊\" DRUG_NAME=\"葡萄糖注射液\" DRUG_SPEC=\"50% 10g 20ml/支\" ORDER_TYPE=\"临时\" START_TIME=\"20190923\" ADMINISTRATION=\"静点\" FREQUENCY=\"ONCE\" DOSAGE=\"32ml\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"63384822\" INPATIENT_NO=\"413076\">\n" +
+                "        <PresInfo ORDER_ID=\"63384835\" ORDER_SUB_ID=\"1\" GROUP_ID=\"63384822\" DRUG_LO_ID=\"20121100\" DRUG_LO_NAME=\"葡萄糖注射液\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"/>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"001\" PATIENT_ID=\"000358649700\" VISIT_ID=\"2\" PATIENT_NAME=\"孙健之次子\" DOCTOR_ID=\"10645\" DOCTOR_NAME=\"李秋菊\" DRUG_NAME=\"小儿复方氨基酸注射液(18AA-I)\" DRUG_SPEC=\"6.74g:100ml/袋\" ORDER_TYPE=\"临时\" START_TIME=\"20190923\" ADMINISTRATION=\"静点\" FREQUENCY=\"ONCE\" DOSAGE=\"56ml\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"63384822\" INPATIENT_NO=\"413076\">\n" +
+                "        <PresInfo ORDER_ID=\"63384826\" ORDER_SUB_ID=\"2\" GROUP_ID=\"63384822\" DRUG_LO_ID=\"20128200\" DRUG_LO_NAME=\"小儿复方氨基酸注射液(18AA-I)\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"/>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"001\" PATIENT_ID=\"000358649700\" VISIT_ID=\"2\" PATIENT_NAME=\"孙健之次子\" DOCTOR_ID=\"10645\" DOCTOR_NAME=\"李秋菊\" DRUG_NAME=\"氯化钾注射液\" DRUG_SPEC=\"1.5g 10ml/支\" ORDER_TYPE=\"临时\" START_TIME=\"20190923\" ADMINISTRATION=\"静点\" FREQUENCY=\"ONCE\" DOSAGE=\"1.3ml\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"63384822\" INPATIENT_NO=\"413076\">\n" +
+                "        <PresInfo ORDER_ID=\"63384835\" ORDER_SUB_ID=\"2\" GROUP_ID=\"63384822\" DRUG_LO_ID=\"20097100\" DRUG_LO_NAME=\"氯化钾注射液\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\">\n" +
+                "            <CheckInfo COLOR=\"黄色\" NAME=\"用法用量\" WARNING_LEVEL=\"慎用\" WARNING_INFO=\"单次剂量超限。药品成分氯化钾的浓度超限。规定的浓度上限为：3.4mg/ml。计算得到的浓度值为：6.0938mg/ml。组号为：63384822。【浓度】钾浓度不超过3.4g/L(45mmol/L)。\" REF_SOURCE=\"15%氯化钾注射液说明书-中国大冢制药有限公司\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/>\n" +
+                "        </PresInfo>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"001\" PATIENT_ID=\"000358649700\" VISIT_ID=\"2\" PATIENT_NAME=\"孙健之次子\" DOCTOR_ID=\"10645\" DOCTOR_NAME=\"李秋菊\" DRUG_NAME=\"中/长链脂肪乳注射液(C8-24)\" DRUG_SPEC=\"20% 250ml/瓶\" ORDER_TYPE=\"临时\" START_TIME=\"20190923\" ADMINISTRATION=\"静点\" FREQUENCY=\"ONCE\" DOSAGE=\"38ml\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"63384822\" INPATIENT_NO=\"413076\">\n" +
+                "        <PresInfo ORDER_ID=\"63384822\" ORDER_SUB_ID=\"1\" GROUP_ID=\"63384822\" DRUG_LO_ID=\"00299600\" DRUG_LO_NAME=\"中/长链脂肪乳注射液(C8-24)\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\">\n" +
+                "            <CheckInfo COLOR=\"红色\" NAME=\"用法用量\" WARNING_LEVEL=\"强制阻断\" WARNING_INFO=\"使用频次超限。药品说明书规定的每日最大使用频次为1。处方的每日频次为2。医院用法用量中的规则编码：770\" REF_SOURCE=\"药品说明书及医院相关规定\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/>\n" +
+                "        </PresInfo>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"001\" PATIENT_ID=\"000358649700\" VISIT_ID=\"2\" PATIENT_NAME=\"孙健之次子\" DOCTOR_ID=\"10645\" DOCTOR_NAME=\"李秋菊\" DRUG_NAME=\"浓氯化钠注射液\" DRUG_SPEC=\"1g 10ml/支\" ORDER_TYPE=\"临时\" START_TIME=\"20190923\" ADMINISTRATION=\"静点\" FREQUENCY=\"ONCE\" DOSAGE=\"2.4ml\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"63384822\" INPATIENT_NO=\"413076\">\n" +
+                "        <PresInfo ORDER_ID=\"63384832\" ORDER_SUB_ID=\"5\" GROUP_ID=\"63384822\" DRUG_LO_ID=\"20031400\" DRUG_LO_NAME=\"浓氯化钠注射液\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"/>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"001\" PATIENT_ID=\"000358649700\" VISIT_ID=\"2\" PATIENT_NAME=\"孙健之次子\" DOCTOR_ID=\"10645\" DOCTOR_NAME=\"李秋菊\" DRUG_NAME=\"注射用水溶性维生素\" DRUG_SPEC=\"1瓶 /瓶\" ORDER_TYPE=\"临时\" START_TIME=\"20190923\" ADMINISTRATION=\"静点\" FREQUENCY=\"ONCE\" DOSAGE=\"0.05瓶\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"63384822\" INPATIENT_NO=\"413076\">\n" +
+                "        <PresInfo ORDER_ID=\"63384828\" ORDER_SUB_ID=\"3\" GROUP_ID=\"63384822\" DRUG_LO_ID=\"20078000\" DRUG_LO_NAME=\"注射用水溶性维生素\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"/>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"222\" PATIENT_ID=\"1000710510\" VISIT_ID=\"1\" PATIENT_NAME=\"繁蓓\" DOCTOR_ID=\"0465\" DOCTOR_NAME=\"俞雨生\" DRUG_NAME=\"培哚普利叔丁胺片☆(施维雅)[市公乙]\" DRUG_SPEC=\"8mg\" ORDER_TYPE=\"临时\" START_TIME=\"20190926\" ADMINISTRATION=\"口服\" FREQUENCY=\"2/日\" DOSAGE=\"8mg\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"01569458160820694600\" INPATIENT_NO=\"111\">\n" +
+                "        <PresInfo ORDER_ID=\"01569458160820694600\" ORDER_SUB_ID=\"1\" GROUP_ID=\"01569458160820694600\" DRUG_LO_ID=\"1504724TA1\" DRUG_LO_NAME=\"培哚普利叔丁胺片☆(施维雅)[市公乙]\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\">\n" +
+                "            <CheckInfo COLOR=\"黄色\" NAME=\"用法用量\" WARNING_LEVEL=\"慎用\" WARNING_INFO=\"单日极量超限。药品说明书规定的单日极量为8mg。处方单次剂量为8mg，给药频次为：2次每1日。医院用法用量中的规则编码：770\" REF_SOURCE=\"药品说明书及医院相关规定\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/>\n" +
+                "            <CheckInfo COLOR=\"红色\" NAME=\"用法用量\" WARNING_LEVEL=\"强制阻断\" WARNING_INFO=\"使用频次超限。药品说明书规定的每日最大使用频次为1。处方的每日频次为2。医院用法用量中的规则编码：770\" REF_SOURCE=\"药品说明书及医院相关规定\" YPMC=\"\" JSXX=\"\" ZYJL=\"\" TYSM=\"\" LCSY=\"\"/>\n" +
+                "        </PresInfo>\n" +
+                "    </Order>\n" +
+                "    <Order BED_NO=\"222\" PATIENT_ID=\"1000710510\" VISIT_ID=\"1\" PATIENT_NAME=\"繁蓓\" DOCTOR_ID=\"0465\" DOCTOR_NAME=\"俞雨生\" DRUG_NAME=\"新养肾丸☆[公.1][乙10]\" DRUG_SPEC=\"60g*60\" ORDER_TYPE=\"临时\" START_TIME=\"20190926\" ADMINISTRATION=\"口服\" FREQUENCY=\"2/日\" DOSAGE=\"3g\" USE_TIME=\"2019-07-26 15:59:00\" PROBLEM_TYPE=\"\" PROBLEM_LEVEL=\"\" DRUG_STATE=\"\" GROUP_ID=\"01569458160820693912\" INPATIENT_NO=\"111\">\n" +
+                "        <PresInfo ORDER_ID=\"01569458160820693912\" ORDER_SUB_ID=\"1\" GROUP_ID=\"01569458160820693912\" DRUG_LO_ID=\"3050326PL1\" DRUG_LO_NAME=\"新养肾丸☆[公.1][乙10]\" GANYU_STATE=\"未干预\" GANYU_INFO=\"\"/>\n" +
+                "    </Order>\n" +
+                "</OrderList>";
+        ;
+        new PharmacistPrescCheckService().handleCheckXml_BZ(new ParseXML().parseXML_BZ(xml));
     }
 }

@@ -56,6 +56,9 @@ public class Config {
     @Value("${bz_flag}")
     private int bz_flag;
 
+    @Value("${medicalRecordURL}")
+    private String medicalRecordURL;
+
 
     public String getDrStationServerIp() {
         return drStationServerIp;
@@ -127,5 +130,13 @@ public class Config {
 
     public void setBz_flag(int bz_flag) {
         this.bz_flag = bz_flag;
+    }
+
+    public String getMedicalRecordURL() {
+        return medicalRecordURL;
+    }
+
+    public void setMedicalRecordURL(String medicalRecordURL) {
+        this.medicalRecordURL = medicalRecordURL;
     }
 }

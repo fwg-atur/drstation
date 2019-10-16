@@ -1,0 +1,126 @@
+<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 100%;
+                height: 100%;background-color: black;z-index: 1001; -moz-opacity: 0.7;opacity: .70;
+                filter: alpha(opacity=70);">
+</div>
+
+<style type="text/css">
+    .pharInfo-button{
+        margin-left: 70px;
+    }
+</style>
+<div id="show" style="display: none;position: absolute;margin:auto;
+                top: 0; left: 0; bottom: 0; right: 0;width: 900px;
+                height: 550px;padding: 20px 35px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;">
+    <!--<div style="text-align: center;font-weight: bold">处方干预</div>-->
+    <!--<br>-->
+    <div class="main-content">
+        <div class="inner-main-content">
+            <div class="head-top">
+                <div class="mid-head">住院医嘱干预</div>
+            </div>
+
+            <!--信息框-->
+            <div class="info-area" style="margin-top: 5px">
+                <div class="pharInfo-button" style="">
+                    <label>医生姓名：
+                        <input type="text" style="width: 100px" readonly="readonly" name="doctorName" value="@(DOCTOR_NAME)">
+                    </label>
+                </div>
+                <div class="pharInfo-button">
+                    <label>药师姓名：
+                        <input type="text" style="width: 100px" readonly="readonly" name="patientName" value="@(PHARMACIST_NAME)">
+                    </label>
+                </div>
+                <div class="pharInfo-button">
+                    <label>药师工号：
+                        <input type="text" style="width: 100px" readonly="readonly" name="doctorId" value="@(PHARMACIST_ID)">
+                    </label>
+                </div>
+            </div>
+            <div class="info-area" style="margin-top: 10px">
+                <div class="pharInfo-button" style="margin-left: 85px;">
+                    <label>患者ID：
+                        <input type="text" style="width: 100px;" readonly="readonly" name="pharmacistName" value="@(PATIENT_ID)">
+                    </label>
+                </div>
+                <div class="pharInfo-button" style="margin-left: 55px;">
+                    <label>患者住院号：
+                        <input type="text" style="width: 100px" readonly="readonly" name="VISIT_ID" value="@(VISIT_ID)">
+                    </label>
+                </div>
+                <div class="pharInfo-button">
+                    <label>患者姓名：
+                        <input type="text" style="width: 100px" readonly="readonly" name="PATIENT_NAME" value="@(PATIENT_NAME)">
+                    </label>
+                </div>
+            </div>
+            <div class="info-area" style="margin-top: 10px">
+                <div class="pharInfo-button">
+                    <label>联系电话：
+                        <input type="text" style="width: 100px" readonly="readonly" name="PATIENT_PHONE" value="@(PATIENT_PHONE)">
+                    </label>
+                </div>
+
+            </div>
+
+            <!--调阅档案按钮和提示文字-->
+            <div  style="padding-top: 5px;width: 880px;margin: 0 auto;font-size: 13px;height: 90px;">
+                <div style="float: left;height: 85px;line-height:85px;width: 100px;">
+                    <input id="" style="height: 25px;width: 70px;margin-left: 15px;" type="button" value="病历调阅" onclick="openEMRLinked(PATIENT_ID_CLICK,VISIT_ID_CLICK)"/>
+                </div>
+                <div style="float: right;width: 750px;color: blue;">
+                    1.系统自动填充用药干预的主要信息。<br>
+                    2.如果医嘱存在多个问题，而药师希望只针对部分问题进行干预中，则可以在问题详情中剪切、或按CTXL+X键删除不相关的问题。<br>
+                    3.如果药师有意见或建议，则在药师意见中编辑。<br>
+                    4.如果药师希望干预，则点击提交按钮。如果不干预，则点击返回按钮。<br>
+                    5.如果点击病历调阅按钮，则可以查看患者的电子病历。<br>
+                </div>
+
+            </div>
+
+            <!--问题详情框-->
+                <div style="width: 840px;margin-left: 20px;margin-top: 10px;">
+                    <div class="head-info-sm" ><p>问题详情</p></div>
+                    <div  contentEditable="true"  style="overflow-x: auto;overflow-y: auto;height: 150px;width: 838px;border: 1px solid #d0d2d1;">
+                        <div id="error_detail">
+                            <div class="errorDetailDiv">【问题药品】&nbsp;@(drug_name)</div>
+                            <div class="errorDetailDiv">【警示信息】&nbsp;@(warning_info)</div>
+                            <div class="errorDetailDiv">【参考信息】&nbsp;@(ref_source)</div>
+                        </div>
+                        <!--<table id="error_detail">-->
+                            <!--<tr>-->
+                                <!--<td>[问题药品]&nbsp;@(drug_name)</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<td id="warning_info">[警示信息]&nbsp;@(warning_info)</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<td>[参考信息]&nbsp;@(ref_source)</td>-->
+                            <!--</tr>-->
+                        <!--</table>-->
+                    </div>
+                </div>
+
+
+                <!--药师意见框-->
+                <div style="width: 840px;margin-left: 20px;margin-top: 10px;">
+                <div class="head-info-sm" ><p>药师意见</p></div>
+                <textarea class="problemDescribe" contentEditable="true" id="problemDescribe" style="overflow-x: auto;overflow-y: auto;height:150px;width: 834px;font-size: 16px">
+                </textarea>
+                </div>
+                <!--<div style="width: 840px;margin-left: 20px;margin-top: 10px;border: 1px solid #d0d2d1;">-->
+                    <!--<div class="head-info-sm"><p>药师意见</p></div>-->
+                    <!--<div class="problemDescribe" contentEditable="true" id="problemDescribe" style="overflow-x: auto;overflow-y: auto;height:150px">-->
+                    <!--</div>-->
+                <!--</div>-->
+
+
+
+
+            <div class="button-area" style="clear: both">
+                <input type="button" value="返回" onclick="hidediv()"/>
+                <input id="next" type="button" onclick="sendIntefere()" value="提交"/>
+            </div>
+        </div>
+    </div>
+</div>

@@ -332,3 +332,11 @@ table .problemTypeTable {
     overflow: auto;
 }
 
+
+
+/*------------------------------------------------add  by  yikmat-------------------------------------------*/
+.input_style{
+    width: 24%;
+    margin: 2%;
+    height: 25px;
+}

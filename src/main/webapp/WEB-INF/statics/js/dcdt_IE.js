@@ -934,3 +934,116 @@ function openDiscribLinked_py(tag,code){
 /**
  * *************************************    鄱阳bs药师站接口结束     *************************
  */
+
+/**
+ * *************************************    滨医bs药师站接口开始     *************************
+ */
+
+
+// 页面测试药师站
+function testPharmacistCheckBZ(){
+    var dcdtXml = document.getElementById("dcdt").value;
+    var pharmacistInfo = document.getElementById("pharmacistInfo").value;
+    CheckWingBZ(dcdtXml,pharmacistInfo);
+}
+
+/**
+ * 滨州人民医院 药师站调用函数
+ * @param xml
+ * @constructor
+ */
+function CheckWingBZ(xml,pharmacistInfo) {
+    // return sendPharmacistCheck_BZRM(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
+    return sendPharmacistCheck_BZRM(xml, pharmacistInfo, checkServerIpInHos, cheServerPortInHos);
+}
+
+
+function sendPharmacistCheck_BZRM(xml,pharmacistInfo,checkServerIp, checkServerPort){
+    var iWidth = '1000px';
+    var iHeight = '700px';
+    var xmlhttp;
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'pharmacistInfo=' + pharmacistInfo;;
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    var t1;
+    function adduserok(xmlhttp) {
+        if (t1)
+            clearTimeout(t1);
+    }
+    function connecttoFail() {
+        if (xmlhttp)
+            xmlhttp.abort();
+        // alert("请求服务超时！");
+    }
+    if(xmlhttp) {
+        t1 = setTimeout(connecttoFail, timeStrapPhar);
+        try {
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck_BZ", data, adduserok);
+            // ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheckForTest", data, adduserok);
+        }catch (e){
+            return -3;
+        }
+    }else {
+        alert("Init xmlhttprequest fail");
+    }
+
+    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck", false);
+    //     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    // xmlhttp.send(data);
+
+    var result = "";
+    var checkData = xmlhttp.responseText;
+    if(checkData == ""){
+        result = "<OrderList STATE=\"-3\" />";
+        return result;
+    }
+    var check = eval("(" + checkData + ")");
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        result = "<OrderList STATE=\"-2\" />";
+        return result;
+    } else if (check.hasProblem == 0) {
+        if(t1){
+            clearTimeout(t1);
+        }
+        result = "<OrderList STATE=\"0\" />";
+        // alert(result);
+        return result;
+    }else {
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage_BZ?presId=" + check.presId + '&type=3&random=' + Math.random();
+
+        if(navigator.userAgent.indexOf("Chrome") >0 ){
+            var winOption = "height="+iHeight+",width="+iWidth+"," +
+                "top=50,left=50,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,fullscreen=0";
+            window.open(url,window, winOption);
+        } else {
+            window.showModalDialog(url, '',
+                'resizable:yes;scroll:yes;status:no;' +
+                'dialogWidth=' + iWidth +
+                ';dialogHeight=' + iHeight +
+                ';center=yes;help=yes');
+        }
+        if(t1){
+            clearTimeout(t1);
+        }
+    }
+
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/getRetValue_bz", false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send('presId=' + check.presId);
+    var data = xmlhttp.responseText;
+
+
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/removePharmacistCheckResult_BZ", false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send('presId=' + check.presId);
+
+   // alert(data);
+    return data;
+}
