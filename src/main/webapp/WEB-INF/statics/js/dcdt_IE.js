@@ -804,11 +804,11 @@ function testBZ(tag) {
     alert(ret);
 }
 
-//Check函数和之前的函数一样，复用之前的函数
+//DoctorCheck函数和之前的函数一样，复用之前的函数
 //inHosFlag为门诊住院标识，0为门诊，1为住院
-function Check(tag,xml,inHosFlag) {
-    return DoctorCheck(tag,xml,inHosFlag);
-}
+// function DoctorCheck(tag,xml,inHosFlag) {
+//     return DoctorCheck(tag,xml,inHosFlag);
+// }
 
 //Check_BZRM返回值为xml
 function Check_BZRM(tag,xml,inHosFlag) {
@@ -901,10 +901,10 @@ function sendCheck_BZ(tag, xml, checkServerIp, cheServerPort) {
     return retData;
 }
 
-function CheckSingle(tag,xml) {
-    var res = Check(tag,"1",xml);
+function CheckSingle(xml,inHosFlag) {
+    var res = Check("1",xml,inHosFlag);
     if(res == 0){
-        Check(tag,"2",xml);
+        Check("2",xml,inHosFlag);
         return 0;
     }else{
         return res;
@@ -912,9 +912,9 @@ function CheckSingle(tag,xml) {
 }
 
 //说明书函数已经实现，可以直接调用
-function Specification(code) {
-    return openDiscribLinked(code);
-}
+// function Specification(code) {
+//     return openDiscribLinked(code);
+// }
 
 /**
  * *************************************    滨医bs医生站接口结束     *************************
