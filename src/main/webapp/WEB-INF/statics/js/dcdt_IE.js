@@ -901,10 +901,10 @@ function sendCheck_BZ(tag, xml, checkServerIp, cheServerPort) {
     return retData;
 }
 
-function CheckSingle(xml) {
-    var res = Check("1",xml);
+function CheckSingle(tag,xml) {
+    var res = Check(tag,"1",xml);
     if(res == 0){
-        Check("2",xml);
+        Check(tag,"2",xml);
         return 0;
     }else{
         return res;
