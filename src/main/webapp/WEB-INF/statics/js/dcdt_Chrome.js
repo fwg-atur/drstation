@@ -83,6 +83,10 @@ function getRetValUrl() {
     return "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/getRetValue";
 }
 
+function getRetValUrl_BZ() {
+    return "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/getRetValue_bz";
+}
+
 function checkIsQuit() {
     var url = getRetValUrl();
     var data = 'presId=' + presId;
@@ -105,10 +109,40 @@ function checkIsQuit() {
 
     if (checkData == 0) {
         window.clearInterval(checkIsQuitState);
-        check_for_next()
+        check_for_next();
     } else if (checkData == -1) {
         window.clearInterval(checkIsQuitState);
         check_for_back();
+    }
+}
+
+function checkIsQuit_BZ() {
+    var url = getRetValUrl_BZ();
+    var data = 'presId=' + presId;
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send(data);
+
+    var checkData = xmlhttp.responseText;
+    // alert(checkData);
+
+    // var check = eval("(" + checkData + ")");
+
+    if(checkData.indexOf("STATE=\"-1\"") != -1){
+        window.clearInterval(checkIsQuitState);
+        check_for_back();
+    } else if (checkData.indexOf("STATE=\"0\"") != -1) {
+        window.clearInterval(checkIsQuitState);
+        check_for_next();
     }
 }
 
@@ -210,6 +244,10 @@ function getSendCheckUrl() {
     return "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck";
 }
 
+function getSendCheckUrl_BZ() {
+    return "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck_BZ";
+}
+
 function getCheckResultPageUrl(check) {
     return "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
 }
@@ -247,21 +285,23 @@ function DoctorCheckForChrome(tag, xml) {
     }
 }
 
-function drawCheckResultElem(url) {
-    var checkResultElem = document.getElementById("checkResult");
-    checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
-    document.getElementById("checkResultButton").click();
-    showdiv();
-}
-
 function showdiv() {
     document.getElementById("bg").style.display = "block";
     document.getElementById("show").style.display = "block";
 }
 
 function hidediv() {
-    document.getElementById("bg").style.display = 'none';
-    document.getElementById("show").style.display = 'none';
+    // document.getElementById("checkResult").style.display = "none";
+    document.getElementById("bg").style.display = "none";
+    document.getElementById("show").style.display = "none";
+}
+
+
+function drawCheckResultElem(url) {
+    var checkResultElem = document.getElementById("checkResult");
+    checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+    document.getElementById("checkResultButton").click();
+    showdiv();
 }
 
 function check_for_next() {
@@ -565,3 +605,69 @@ function nurseCheckIsQuit() {
         pharmacistCheck_for_back();
     }
 }
+
+/*****************************      滨医医生站接口开始       **************************
+ * 
+ */
+//DoctorCheck函数和之前的函数一样，复用之前的函数
+//inHosFlag为门诊住院标识，0为门诊，1为住院
+// function DoctorCheck() {
+//
+// }
+function testBZ(tag) {
+    var dcdtXml = document.getElementById("dcdt").value;
+    var ret = Check_BZRM(tag,dcdtXml,test_next,1,test_back,2,0);
+    // alert(ret);
+}
+
+function Check_BZRM(tag,xml,next_func_name,next_func_args,back_func_name,back_func_args,inHosFlag) {
+    if(setInHosFlag(inHosFlag) == -4){
+        return -4;
+    }else {
+        loacl_next_func(next_func_name, next_func_args, back_func_name, back_func_args);
+        return DoctorCheckForChrome_BZ(tag, xml);
+    }
+}
+
+function DoctorCheckForChrome_BZ(tag,xml) {
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'tag=' + tag;
+    var url = getSendCheckUrl_BZ();
+    var checkData = sendAjaxRequestForDoc(data, url);
+
+    var check = eval("(" + checkData + ")");
+    if (check.hasProblem == 0) {
+        if(t1){
+            clearTimeout(t1);
+        }
+        global_next_func_name(global_next_func_args);
+        return check.retXml;
+    } else if (check.hasProblem == 1) {
+        if(t1){
+            clearTimeout(t1);
+        }
+        var url = getCheckResultPageUrl(check);
+        presId = check.presId;
+        drawCheckResultElem(url);
+        checkIsQuitState = window.setInterval("checkIsQuit_BZ()", 500);
+        // return check.retXml;
+    }
+
+}
+
+function CheckSingle(xml,next_func_name,next_func_args,back_func_name,back_func_args,inHosFlag) {
+    var res = DoctorCheck("1",xml,next_func_name,next_func_args,back_func_name,back_func_args,inHosFlag);
+    if(res == 0){
+        DoctorCheck("2",xml,next_func_name,next_func_args,back_func_name,back_func_args,inHosFlag);
+        return 0;
+    }else{
+        return res;
+    }
+}
+
+//说明书函数已经实现，可以直接调用
+// function openDiscribLinked() {
+//
+// }
+/*****************************      滨医医生站接口结束       **************************
+ *
+ */

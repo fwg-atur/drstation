@@ -77,8 +77,8 @@
 </div>
 </body>
 
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_Chrome.js"></script>--%>
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js" charset="utf-8"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_Chrome.js"></script>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js" charset="utf-8"></script>--%>
 <%--<script type="text/javascript" src="/DCStation/js/dcdt_IE.js"></script>--%>
 <%--<script type="text/javascript"--%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>

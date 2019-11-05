@@ -9,13 +9,13 @@
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-var cheServerPortInHos = "80";
+var checkServerPortInHos = "80";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var cheServerPortOutHos = "80";
+var checkServerPortOutHos = "80";
 //说明书地址
 var disUrl = 'http://192.168.11.67:8040/DCStation/home/index?drugCode=@code@';
 //医生站超时返回的最长时间(毫秒)
@@ -50,19 +50,19 @@ function DoctorCheck(tag, xml, inHosFlag) {
     }
     if (inHosFlag == 0) {
         checkServerIp = checkServerIpOutHos;
-        checkServerPort = cheServerPortOutHos;
-        return sendCheck(tag, xml, checkServerIpOutHos, cheServerPortOutHos);
+        checkServerPort = checkServerPortOutHos;
+        return sendCheck(tag, xml, checkServerIpOutHos, checkServerPortOutHos);
     } else if (inHosFlag == 1) {
         checkServerIp = checkServerIpInHos;
-        checkServerPort = cheServerPortInHos;
-        return sendCheck(tag, xml, checkServerIpInHos, cheServerPortInHos);
+        checkServerPort = checkServerPortInHos;
+        return sendCheck(tag, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
         return -4;
     }
 }
 
-function sendCheck(tag, xml, checkServerIp, cheServerPort) {
+function sendCheck(tag, xml, checkServerIp, checkServerPort) {
     var iWidth = '1000px';
     var iHeight = '547px';
     var xmlhttp;
@@ -89,7 +89,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapDoc);
         try {
-            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck", data, adduserok);
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck", data, adduserok);
         }catch (e){
             return -3;
         }
@@ -99,7 +99,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
 
 
 
-    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheckForTest", false);
+    // xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheckForTest", false);
     // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     // xmlhttp.send(data);
 
@@ -109,13 +109,13 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
     }
     var check = eval("(" + checkData + ")");
 
-    // var url = "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck";
+    // var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck";
     // var checkData;
     // var check;
     //
     // $.ajax({
     //     type: 'POST',
-    //     url: "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck",
+    //     url: "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck",
     //     async: true,
     //     data: data,
     //     contentType: 'text/plain',
@@ -156,7 +156,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
         return 0;
     }
     else if (check.hasProblem == 1) {
-        var url = "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
 
         if (navigator.userAgent.indexOf("Chrome") > 0) {
             var winOption = "height=" + iHeight + ",width=" + iWidth + "," +
@@ -171,7 +171,7 @@ function sendCheck(tag, xml, checkServerIp, cheServerPort) {
         }
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/getRetValue", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/getRetValue", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send('presId=' + check.presId);
 
@@ -207,6 +207,48 @@ function drawCheckResultElem(url) {
     document.getElementById("checkResultButton").click();
     showdiv();
 }
+
+/*
+ * val:0下一步,-1返回修改
+ * */
+function nextOrBack(val, needSendMessage) {
+    if (needSendMessage != undefined && needSendMessage == true) {
+        sendQuitMessage(val);
+    }
+    changeDirectCloseFlag();
+    var url;
+    var arg;
+    if(1 == bz_flag && -2 == val) {
+        var retXml = "<CheckResult STATE=\"-1\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\"" + pharmacistCode + "\" CHECK_PHARMACIST_NAME=\"" + pharmacistName + "\" CHECK_STATE=\"" + "干预成功" + "\" TAG=\"\" />";
+        saveCheckMessage(retXml);
+    }else if(1 == bz_flag && -1 == val){
+        var retXml = "<CheckResult STATE=\"-1\" STYLE=\"\" CHECK_PHARMACIST_CODE=\"\" CHECK_PHARMACIST_NAME=\"\" CHECK_STATE=\"\" />";
+        saveCheckMessage(retXml);
+    }else{
+        url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/setRetValue";
+        arg = 'presId=' + presId + '&retVal=' + val;
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            //  IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("POST", url, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+        xmlhttp.send(arg);
+    }
+    clearAllInterval();
+    window.close();
+}
+
+function clearAllInterval() {
+    window.clearInterval(timeout);
+    window.clearInterval(checkInterveneState);
+    window.clearInterval(checkInterveneMessage);
+}
+
 
 function showdiv() {
     document.getElementById("bg").style.display = "block";
@@ -258,18 +300,18 @@ function PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
     }
     if(cpFlag == 1){
         if (inHosFlag == 0) {
-            return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
+            return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpOutHos, checkServerPortOutHos);
         } else if (inHosFlag == 1) {
-            return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
+            return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
         } else {
             // alert("error:未识别的住院标识！");
             return -4;
         }
     }else {
         if (inHosFlag == 0) {
-            return sendPharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
+            return sendPharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpOutHos, checkServerPortOutHos);
         } else if (inHosFlag == 1) {
-            return sendPharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
+            return sendPharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
         } else {
             // alert("error:未识别的住院标识！");
             return -4;
@@ -282,9 +324,9 @@ function PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosF
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
+        return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpOutHos, checkServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
+        return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
         return -4;
@@ -475,9 +517,9 @@ function PharmacistCheck_CP(visitDate,pharmacistInfo,xml,inHosFlag) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpOutHos, cheServerPortOutHos);
+        return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpOutHos, checkServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
+        return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
         return -4;
@@ -489,9 +531,9 @@ function PharmacistCheckSilent_CP(xml,inHosFlag) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendPharmacistCheckSilent_CP(xml, checkServerIpOutHos, cheServerPortOutHos);
+        return sendPharmacistCheckSilent_CP(xml, checkServerIpOutHos, checkServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendPharmacistCheckSilent_CP(xml, checkServerIpInHos, cheServerPortInHos);
+        return sendPharmacistCheckSilent_CP(xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
         return -4;
@@ -665,9 +707,9 @@ function NurseCheck(xml, inHosFlag) {
         inHosFlag = 1;
     }
     if (inHosFlag == 0) {
-        return sendNurseCheck(xml, checkServerIpOutHos, cheServerPortOutHos);
+        return sendNurseCheck(xml, checkServerIpOutHos, checkServerPortOutHos);
     } else if (inHosFlag == 1) {
-        return sendNurseCheck(xml, checkServerIpInHos, cheServerPortInHos);
+        return sendNurseCheck(xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
         return -4;
@@ -821,18 +863,18 @@ function DoctorCheck_BZ(tag,xml,inHosFlag) {
     }
     if (inHosFlag == 0) {
         checkServerIp = checkServerIpOutHos;
-        checkServerPort = cheServerPortOutHos;
-        return sendCheck_BZ(tag, xml, checkServerIpOutHos, cheServerPortOutHos);
+        checkServerPort = checkServerPortOutHos;
+        return sendCheck_BZ(tag, xml, checkServerIpOutHos, checkServerPortOutHos);
     } else if (inHosFlag == 1) {
         checkServerIp = checkServerIpInHos;
-        checkServerPort = cheServerPortInHos;
-        return sendCheck_BZ(tag, xml, checkServerIpInHos, cheServerPortInHos);
+        checkServerPort = checkServerPortInHos;
+        return sendCheck_BZ(tag, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
     }
 }
 
-function sendCheck_BZ(tag, xml, checkServerIp, cheServerPort) {
+function sendCheck_BZ(tag, xml, checkServerIp, checkServerPort) {
     var iWidth = '1000px';
     var iHeight = '547px';
     var xmlhttp;
@@ -859,7 +901,7 @@ function sendCheck_BZ(tag, xml, checkServerIp, cheServerPort) {
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapDoc);
         try {
-            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/sendCheck_BZ", data, adduserok);
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck_BZ", data, adduserok);
         }catch (e){
             // return -3;
         }
@@ -878,7 +920,7 @@ function sendCheck_BZ(tag, xml, checkServerIp, cheServerPort) {
         return check.retXml;
     }
     else if (check.hasProblem == 1) {
-        var url = "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
+        var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/checkResultPage?presId=" + check.presId + '&random=' + Math.random();
 
         if (navigator.userAgent.indexOf("Chrome") > 0) {
             var winOption = "height=" + iHeight + ",width=" + iWidth + "," +
@@ -886,14 +928,14 @@ function sendCheck_BZ(tag, xml, checkServerIp, cheServerPort) {
             window.open(url, window, winOption);
         } else {
             window.showModalDialog(url, '',
-                'resizable:yes;scroll:yes;status:no;' +
-                'dialogWidth=' + iWidth +
-                ';dialogHeight=' + iHeight +
-                ';center=yes;help=yes');
-        }
+                    'resizable:yes;scroll:yes;status:no;' +
+                    'dialogWidth=' + iWidth +
+                    ';dialogHeight=' + iHeight +
+                    ';center=yes;help=yes');
+            }
     }
 
-    xmlhttp.open("POST", "http://" + checkServerIp + ":" + cheServerPort + "/DCStation/submit/getRetValue_bz", false);
+    xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/getRetValue_bz", false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send('presId=' + check.presId)
 
@@ -902,9 +944,9 @@ function sendCheck_BZ(tag, xml, checkServerIp, cheServerPort) {
 }
 
 function CheckSingle(xml,inHosFlag) {
-    var res = Check("1",xml,inHosFlag);
+    var res = DoctorCheck("1",xml,inHosFlag);
     if(res == 0){
-        Check("2",xml,inHosFlag);
+        DoctorCheck("2",xml,inHosFlag);
         return 0;
     }else{
         return res;
