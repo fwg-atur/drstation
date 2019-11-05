@@ -262,7 +262,7 @@
                 "</Request>";
 
             //发送
-            sendPharmacistInterfere(interfereInputXML)
+            sendPharmacistInterfere(interfereInputXML,2)
             //使用table来存储时使用
 //             for (var i = 0; i < trs.rows.length; i++) {
 //                 if (trs.rows[i].cells[1].innerText.indexOf(problemNameList[j]) >= 0){
@@ -476,6 +476,7 @@
 
         #drugTable th{
             font-size: 14px;
+            background-color:steelblue ;
         }
 
         #drugTable  td{
@@ -493,7 +494,7 @@
 <div>
     <div>
         <div class="main-content">
-            <div class="inner-main-content">
+            <div class="inner-main-content" style="height: 700px;">
                 <div class="head-top">
                     <div class="head-top left-head"></div>
                     <div class="head-top right-head">|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;合理用药实时审核Web端</div>

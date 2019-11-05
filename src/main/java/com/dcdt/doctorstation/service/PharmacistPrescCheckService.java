@@ -333,7 +333,7 @@ public class PharmacistPrescCheckService {
         if(RetValCache.containsKey_bz(presId)){
             return RetValCache.removeRetVal_bz(presId);
         }else{
-            String retXml = "<OrderList STATE=\"-1\" />";
+            String retXml = "<OrderList STATE=\"-2\" />";
             return retXml;
         }
     }

@@ -380,7 +380,7 @@
                         </thead>
                     </table>
                 </div>
-                <div class="table-area-content">
+                <div class="table-area-content" style="height: 220px;">
                     <table class="main-table">
                         <tbody>
                         <c:forEach var="item" items="${pharmacistCheckResult.checkPresOutput.prescInfos}">
@@ -407,7 +407,7 @@
             </div>
 
             <div class="info-area">
-                <div class="down-detail-info left-area">
+                <div class="down-detail-info left-area" style="height: 130px;">
                     <div class="head-info-sm"><p>干预操作说明</p></div>
                     <div class="down-detail-content-left" style="margin-top: -30px">
                         实施干预步骤：<br/>①鼠标左键单击要干预的药品的问题；<br/> ②点击“汇总”按钮；<br/> ③如果有多个问题要干预，则重复步骤①和②；<br/>④点击“实施干预”按钮。
