@@ -32,8 +32,7 @@ var checkServerPort;
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    // DoctorCheck(tag, dcdtXml,1);
-    Check_BZRM(tag,dcdtXml);
+    DoctorCheck(tag, dcdtXml,1);
 }
 /**
  *

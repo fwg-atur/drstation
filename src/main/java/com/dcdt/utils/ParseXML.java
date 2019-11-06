@@ -464,6 +464,37 @@ public class ParseXML {
         return checkPresInput;
     }
 
+    //解析鄱阳药师站传入的xml
+    public CheckPresInput parseInputXml_PY(String xml){
+        CheckPresInput checkPresInput = new CheckPresInput();
+        Document document = null;
+        try {
+            document = XmlUtil.readDocumentFromStr(xml.trim());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Element root = document.getRootElement();
+        Patient patient = new Patient();
+        patient.setID(root.getAttributeValue("PATIENT_ID"));
+        patient.setVISIT_ID(root.getAttributeValue("VISIT_ID"));
+        patient.setPATIENT_PRES_ID(root.getAttributeValue("PATIENT_PRES_ID"));
+        checkPresInput.setPatient(patient);
+        List<Advice> advices = new ArrayList<Advice>();
+        Object advicesObject = root.getChild("Advices");
+        Element advicesElement = (Element) advicesObject;
+        for(Object adviceObject : advicesElement.getChildren("Advice")) {
+            Element adviceElement = (Element) adviceObject;
+            Advice advice = new Advice();
+            advice.setPRES_ID(adviceElement.getAttributeValue("PRES_ID"));
+            advice.setDRUG_LO_ID(adviceElement.getAttributeValue("DRUG_CODE"));
+            advice.setORDER_NO(adviceElement.getAttributeValue("ORDER_NO"));
+            advice.setORDER_SUB_NO(adviceElement.getAttributeValue("ORDER_SUB_NO"));
+            advices.add(advice);
+        }
+        checkPresInput.setAdvices(advices);
+        return checkPresInput;
+    }
+
     //解析护士站xml
     public List<Check> parseNurseCheckXml(String xml){
         List<Check> res = new ArrayList<Check>();
@@ -889,6 +920,16 @@ public class ParseXML {
                 "    </Order>\n" +
                 "</OrderList>";
         ;
-        new PharmacistPrescCheckService().handleCheckXml_BZ(new ParseXML().parseXML_BZ(xml));
+
+        String xml_py = "<CheckPatient PATIENT_ID=\"2019043813\" VISIT_ID=\"1\" PATIENT_PRES_ID=\"2019043812_1\">\n" +
+                "    <Advices>\n" +
+                "\t  <Advice PRES_ID=\"2019043812_1\" DRUG_CODE=\"Y000027405\" ORDER_NO=\"1\" ORDER_SUB_NO=\"1\" />\n" +
+                "\t  <Advice PRES_ID=\"2019043812_1\" DRUG_CODE=\"Y000027289\" ORDER_NO=\"1\" ORDER_SUB_NO=\"2\" />\n" +
+                "\t  <Advice PRES_ID=\"2019043812_1\" DRUG_CODE=\"Y000028436\" ORDER_NO=\"2\" ORDER_SUB_NO=\"1\" />\n" +
+                "\t  <Advice PRES_ID=\"2019043812_1\" DRUG_CODE=\"Y000024064\" ORDER_NO=\"2\" ORDER_SUB_NO=\"2\" />\n" +
+                "    </Advices>\n" +
+                "</CheckPatient>";
+        new ParseXML().parseInputXml_PY(xml_py);
+//        new PharmacistPrescCheckService().handleCheckXml_BZ(new ParseXML().parseXML_BZ(xml));
     }
 }

@@ -45,9 +45,10 @@
                 </textarea>
                 </form>
                 <p>
-                    <%--<button onclick="testBZ(1);">预审处方 »</button>--%>
-                    <button onclick="testBZ(1);">预审处方 »</button>
+                    <button onclick="testCheck(1);">预审处方 »</button>
                     <button onclick="testCheck(2);">提交处方 »</button>
+                    <button onclick="testBZ(1);">预审处方（滨州人民医院） »</button>
+                    <button onclick="testBZ(2);">提交处方（滨州人民医院） »</button>
                     <button onclick="openDiscribLinked('MED00003');">药品说明书 »</button>
                 </p>
             </div>
@@ -77,8 +78,8 @@
 </div>
 </body>
 
-<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_Chrome.js"></script>
-<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js" charset="utf-8"></script>--%>
+<%--<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_Chrome.js"></script>--%>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/dcdt_IE.js" charset="utf-8"></script>
 <%--<script type="text/javascript" src="/DCStation/js/dcdt_IE.js"></script>--%>
 <%--<script type="text/javascript"--%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/jquery.min.js"></script>

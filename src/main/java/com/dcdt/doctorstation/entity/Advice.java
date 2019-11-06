@@ -48,6 +48,9 @@ public class Advice {
 
     private String kh;
 
+    //鄱阳
+    private String drug_code;
+
     //在排序时用到的辅助字段，标识order_no是否已经处理过
     private boolean order_no_flag;
     //在排序时用到的辅助字段，标识order_sub_no是否已经处理过
@@ -430,6 +433,14 @@ public class Advice {
 
     public void setSELF_DRUG(String SELF_DRUG) {
         this.SELF_DRUG = SELF_DRUG;
+    }
+
+    public String getDrug_code() {
+        return drug_code;
+    }
+
+    public void setDrug_code(String drug_code) {
+        this.drug_code = drug_code;
     }
 }
 
