@@ -9,13 +9,15 @@
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-var cheServerPortInHos = "8080";
+// var cheServerPortInHos = "8080";
+var checkServerPortInHos = "8080";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var cheServerPortOutHos = "8080";
+// var cheServerPortOutHos = "8080";
+var checkServerPortOutHos = "8080";
 //说明书地址
 var disUrl = 'http://192.168.11.67:8040/DCStation/home/index?drugCode=@code@';
 //医生站超时返回的最长时间(毫秒)
@@ -1002,7 +1004,7 @@ function testPharmacistCheckBZ(){
  */
 function CheckWingBZ(xml,pharmacistInfo) {
     // return sendPharmacistCheck_BZRM(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, cheServerPortInHos);
-    return sendPharmacistCheck_BZRM(xml, pharmacistInfo, checkServerIpInHos, cheServerPortInHos);
+    return sendPharmacistCheck_BZRM(xml, pharmacistInfo, checkServerIpInHos, checkServerPortInHos);
 }
 
 

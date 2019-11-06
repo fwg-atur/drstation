@@ -16,7 +16,7 @@ var checkServerPortInHos = "80";
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var cheServerPortOutHos = "80";
+var checkServerPortOutHos = "80";
 
 //医生站超时返回的最长时间(毫秒)
 var timeStrapDoc = 5000;
@@ -70,7 +70,7 @@ function setInHosFlag(inHosFlag) {
     }
     if (inHosFlag == 0) {
         checkServerIp = checkServerIpOutHos;
-        checkServerPort = cheServerPortOutHos;
+        checkServerPort = checkServerPortOutHos;
         return 0;
     } else if (inHosFlag == 1) {
         checkServerIp = checkServerIpInHos;
@@ -649,7 +649,7 @@ function CheckWingBZ(xml, pharmacistInfo, next_func_name, next_fun_args, back_fu
 
 function PharmacistCheckForChrome_BZ(xml, pharmacistInfo) {
     var data = "xml=" + encodeURIComponent(xml) + '&' + 'pharmacistInfo=' + pharmacistInfo;
-    var url = "http://" + checkServerIpInHos + ":" + cheServerPortInHos + "/DCStation/pharmacistSubmit/sendPharmacistCheck_BZ";
+    var url = "http://" + checkServerIpInHos + ":" + checkServerPortInHos + "/DCStation/pharmacistSubmit/sendPharmacistCheck_BZ";
     var checkData = sendAjaxRequestForPhar(data, url);
 
 
@@ -674,7 +674,7 @@ function PharmacistCheckForChrome_BZ(xml, pharmacistInfo) {
         if(t1){
             clearTimeout(t1);
         }
-        var url = "http://" + checkServerIpInHos + ":" + cheServerPortInHos + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage_BZ?presId=" + check.presId + '&type=3&random=' + Math.random();
+        var url = "http://" + checkServerIpInHos + ":" + checkServerPortInHos + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage_BZ?presId=" + check.presId + '&type=3&random=' + Math.random();
         pharmacist_presId_bz = check.presId;
         drawPharmacistCheckResultElem_bz(url);
         pharmacistCheckIsQuitState = window.setInterval("pharmacistCheckIsQuit_bz()", 500);
@@ -691,7 +691,7 @@ function drawPharmacistCheckResultElem_bz(url) {
 }
 
 function pharmacistCheckIsQuit_bz() {
-    var url = "http://" + checkServerIpInHos + ":" + cheServerPortInHos + "/DCStation/pharmacistSubmit/getRetValue_bz";
+    var url = "http://" + checkServerIpInHos + ":" + checkServerPortInHos + "/DCStation/pharmacistSubmit/getRetValue_bz";
     var data = 'presId=' + pharmacist_presId_bz;
     var xmlhttp;
     if (window.XMLHttpRequest) {
