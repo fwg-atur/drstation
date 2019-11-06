@@ -22,6 +22,11 @@ public class PharmacistSubmitPresController{
     private PharmacistPrescCheckService service;
     private Config config;
 
+
+    /**
+     * 用于原药师站 以及 鄱阳精简版药师站
+     *  0 原药师站； 1 鄱阳药师站
+     */
     @ResponseBody
     @RequestMapping("/sendPharmacistCheck")
     public CheckMessage sendPharmacistCheck(String patientID,String visitDate,String pharmacistInfo,String xml) {
