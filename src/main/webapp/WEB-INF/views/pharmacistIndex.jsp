@@ -85,7 +85,8 @@
                     </textarea>
                 </form>
                 <p>
-                    <button onclick="testPharmacistCheckBZ()" class="btn btn-primary btn-large">检查 »</button>
+                    <button onclick="testPharmacistCheckBZ()" class="btn btn-primary btn-large">滨州药师站检查 »</button>
+                    <button onclick="testPharmacistCheck()" class="btn btn-primary btn-large">原药师站检查 »</button>
                     <button onclick="testPharmacistCheckSilent(1)" class="btn btn-primary btn-large">静默检查 »</button>
                     <%--<button onclick="testCheck(2);" class="btn btn-primary btn-large">提交处方 »</button>--%>
                 </p>
