@@ -35,7 +35,19 @@ var checkResultTemp =
     'top: 0; left: 0; bottom: 0; right: 0;width: 1000px;' +
     'height: 580px;padding: 8px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;' +
     '">' +
-    '<iframe src="about:blank" name="showPlace" frameborder=0 height=600 width=1000 marginheight=0 marginwidth=0 scrolling=no></iframe>' +
+    '<iframe src="about:blank" name="showPlace" frameborder=0 height=580 width=1000 marginheight=0 marginwidth=0 scrolling=no></iframe>' +
+    '</div>' +
+    '<a style="display: none" id="checkResultButton" href="@(url)"target="showPlace">在左框中打开链接</a>';
+
+var pharmacistCheckResultTemp =
+    '<div id="bg" style="display: none;position: absolute;top: 0%;left: 0%;width: 100%;' +
+    'height: 100%;background-color: black;z-index: 1001; -moz-opacity: 0.7;opacity: .70;' +
+    'filter: alpha(opacity=70);"></div>' +
+    '<div id="show" style=" display: none;position: absolute;margin:auto;' +
+    'top: 0; left: 0; bottom: 0; right: 0;width: 1000px;' +
+    'height: 700px;padding: 8px;border: 8px solid #E8E9F7;background-color: white;z-index: 1002;' +
+    '">' +
+    '<iframe src="about:blank" name="showPlace" frameborder=0 height=700 width=1000 marginheight=0 marginwidth=0 scrolling=no></iframe>' +
     '</div>' +
     '<a style="display: none" id="checkResultButton" href="@(url)"target="showPlace">在左框中打开链接</a>';
 
@@ -454,7 +466,7 @@ function PharmacistCheckSilentForChrome(tag, patientID, visitDate, pharmacistInf
 
 function drawPharmacistCheckResultElem(url) {
     var checkResultElem = document.getElementById("checkResult");
-    checkResultElem.innerHTML = checkResultTemp.replace('@(url)', url);
+    checkResultElem.innerHTML = pharmacistCheckResultTemp.replace('@(url)', url);
     document.getElementById("checkResultButton").click();
     showdiv();
 }
@@ -511,7 +523,10 @@ function test_pharmacistBack(val) {
     alert("pharmacistBack:" + val);
 }
 
-function sendPharmacistInterfere(xml) {
+/**
+ * type等于1，是药师站；type等于2，是滨州药师站
+ */
+function sendPharmacistInterfere(xml,type) {
     var data = "xml=" + encodeURIComponent(xml);
     var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistInterfere";
     var checkData = sendAjaxRequestForPhar(data, url);
@@ -522,10 +537,12 @@ function sendPharmacistInterfere(xml) {
         alert("干预成功！");
         hidediv();
         //禁止点击下一步
-        $("#next").attr('disabled', 'disabled');
-        $("#next").css('background-image', 'url(http://' + checkServerIp +':'+ checkServerPort + '/DCStation/image/nextdisabled.png)');
-        $("#next").css('background-repeat', 'no-repeat');
-        $("#next").css('background-position', 'center');
+        if(type==1) {
+            $("#next").attr('disabled', 'disabled');
+            $("#next").css('background-image', 'url(http://' + checkServerIp + ':' + checkServerPort + '/DCStation/image/nextdisabled.png)');
+            $("#next").css('background-repeat', 'no-repeat');
+            $("#next").css('background-position', 'center');
+        }
     }
 }
 
@@ -606,8 +623,134 @@ function nurseCheckIsQuit() {
     }
 }
 
+
+/**
+ * ***********************************************************    滨医bs药师站接口开始     **********************************************************
+ */
+var pharmacist_global_next_func_name_bz ;
+var pharmacist_global_next_func_args_bz ;
+var pharmacist_global_back_func_name_bz ;
+var pharmacist_global_back_func_args_bz ;
+
+
+function testPharmacistCheckBZ(tag) {
+    var dcdtXml = document.getElementById("dcdt").value;
+    var pharmacistInfo = document.getElementById("pharmacistInfo").value;
+    CheckWingBZ(dcdtXml,pharmacistInfo,test_pharmacistNext_bz, 1, test_pharmacistBack_bz, 2);
+}
+
+
+
+function CheckWingBZ(xml, pharmacistInfo, next_func_name, next_fun_args, back_func_name, back_func_args) {
+        local_next_func_pharmacist_bz(next_func_name, next_fun_args, back_func_name, back_func_args);
+        return PharmacistCheckForChrome_BZ(xml, pharmacistInfo);
+}
+
+
+function PharmacistCheckForChrome_BZ(xml, pharmacistInfo) {
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'pharmacistInfo=' + pharmacistInfo;
+    var url = "http://" + checkServerIpInHos + ":" + cheServerPortInHos + "/DCStation/pharmacistSubmit/sendPharmacistCheck_BZ";
+    var checkData = sendAjaxRequestForPhar(data, url);
+
+
+    if(checkData == -3||checkData ==""){
+        result = "<OrderList STATE=\"-3\" />";
+        return result;
+    }
+    var check = eval("(" + checkData + ")");
+    if(check.hasProblem == -2){
+        // alert("请求中间层服务异常！");
+        result = "<OrderList STATE=\"-2\" />";
+        return result;
+    } else if (check.hasProblem == 0){
+        if(t1){
+            clearTimeout(t1);
+        }
+        // result = "<OrderList STATE=\"0\" />";
+        // alert(result);
+        // return result;
+        pharmacistCheck_for_next_bz();
+    }else {
+        if(t1){
+            clearTimeout(t1);
+        }
+        var url = "http://" + checkServerIpInHos + ":" + cheServerPortInHos + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage_BZ?presId=" + check.presId + '&type=3&random=' + Math.random();
+        pharmacist_presId_bz = check.presId;
+        drawPharmacistCheckResultElem_bz(url);
+        pharmacistCheckIsQuitState = window.setInterval("pharmacistCheckIsQuit_bz()", 500);
+    }
+
+}
+
+
+function drawPharmacistCheckResultElem_bz(url) {
+    var checkResultElem = document.getElementById("checkResult");
+    checkResultElem.innerHTML = pharmacistCheckResultTemp.replace('@(url)', url);
+    document.getElementById("checkResultButton").click();
+    showdiv();
+}
+
+function pharmacistCheckIsQuit_bz() {
+    var url = "http://" + checkServerIpInHos + ":" + cheServerPortInHos + "/DCStation/pharmacistSubmit/getRetValue_bz";
+    var data = 'presId=' + pharmacist_presId_bz;
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        //  IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST", url, false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
+    xmlhttp.send(data);
+
+    var checkData = xmlhttp.responseText;
+    // checkData = eval("(" + checkData + ")");
+
+    if (checkData == "<OrderList STATE=\"-1\" />") {
+        window.clearInterval(pharmacistCheckIsQuitState);
+        pharmacistCheck_for_back_bz();
+    } else if (checkData != "<OrderList STATE=\"-2\" />") {
+        window.clearInterval(pharmacistCheckIsQuitState);
+        pharmacistCheck_for_next_bz();
+    }
+
+}
+
+function pharmacistCheck_for_next_bz(){
+    hidediv();
+    pharmacist_global_next_func_name_bz(pharmacist_global_next_func_args_bz);
+}
+
+function pharmacistCheck_for_back_bz(){
+    hidediv();
+    pharmacist_global_back_func_name_bz(pharmacist_global_back_func_args_bz);
+}
+
+function local_next_func_pharmacist_bz(next_func_name, next_func_args, back_func_name, back_func_args) {
+    pharmacist_global_next_func_name_bz = eval(next_func_name);
+    pharmacist_global_next_func_args_bz = next_func_args;
+    pharmacist_global_back_func_name_bz = eval(back_func_name);
+    pharmacist_global_back_func_args_bz = back_func_args;
+}
+
+
+function test_pharmacistNext_bz(val) {
+    alert("pharmacistNext:" + val);
+}
+
+function test_pharmacistBack_bz(val) {
+    alert("pharmacistBack:" + val);
+}
+
+
+
+/**
+ * *************************************   滨医bs药师站接口结束   *************************
+ */
 /*****************************      滨医医生站接口开始       **************************
- * 
+ *
  */
 //DoctorCheck函数和之前的函数一样，复用之前的函数
 //inHosFlag为门诊住院标识，0为门诊，1为住院

@@ -9,13 +9,13 @@
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-var checkServerPortInHos = "80";
+var cheServerPortInHos = "8080";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var checkServerPortOutHos = "80";
+var cheServerPortOutHos = "8080";
 //说明书地址
 var disUrl = 'http://192.168.11.67:8040/DCStation/home/index?drugCode=@code@';
 //医生站超时返回的最长时间(毫秒)
@@ -485,7 +485,10 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     }
 }
 
-function sendPharmacistInterfere(xml){
+/**
+ * type等于1，是药师站；type等于2，是滨州药师站
+ */
+function sendPharmacistInterfere(xml,type){
     var data = "xml=" + encodeURIComponent(xml);
     if (window.XMLHttpRequest) {
         //  IE7+, Firefox, Chrome, Opera, Safari
@@ -504,10 +507,13 @@ function sendPharmacistInterfere(xml){
         alert("干预成功！");
         hidediv();
         //禁止点击下一步
-        $("#next").attr('disabled', 'disabled');
-        $("#next").css('background-image', 'url(http://' + checkServerIp +':'+ checkServerPort + '/DCStation/image/nextdisabled.png)');
-        $("#next").css('background-repeat', 'no-repeat');
-        $("#next").css('background-position', 'center');
+        if(type==1){
+            $("#next").attr('disabled', 'disabled');
+            $("#next").css('background-image', 'url(http://' + checkServerIp +':'+ checkServerPort + '/DCStation/image/nextdisabled.png)');
+            $("#next").css('background-repeat', 'no-repeat');
+            $("#next").css('background-position', 'center');
+        }
+
     }
     return checkData;
 }
@@ -1004,7 +1010,7 @@ function sendPharmacistCheck_BZRM(xml,pharmacistInfo,checkServerIp, checkServerP
     var iWidth = '1000px';
     var iHeight = '700px';
     var xmlhttp;
-    var data = "xml=" + encodeURIComponent(xml) + '&' + 'pharmacistInfo=' + pharmacistInfo;;
+    var data = "xml=" + encodeURIComponent(xml) + '&' + 'pharmacistInfo=' + pharmacistInfo;
     if (window.XMLHttpRequest) {
         //  IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp = new XMLHttpRequest();
@@ -1089,3 +1095,7 @@ function sendPharmacistCheck_BZRM(xml,pharmacistInfo,checkServerIp, checkServerP
    // alert(data);
     return data;
 }
+
+/**
+ * *************************************    滨医bs药师站接口结束     *************************
+ */

@@ -248,6 +248,7 @@ table.main-table td {
     left: 22%;
     width: 53%;
     height: 49%;
+    /*height: 600px!important;*/
     padding: 8px;
     border: 8px solid #E8E9F7;
     background-color: white;

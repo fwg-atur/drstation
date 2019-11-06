@@ -17,16 +17,18 @@
 }
 
 .table-area-content {
-    width: 907px;
+    /*width: 907px;*/
+    width: 1050px;
     height: 140px;
     _height: 120px;
-    margin-left: 50px;
+    margin-left: 9px;
     _margin-left: 47px;
     overflow: auto;
 }
 
 table.main-table {
-    width: 890px;
+    /*width: 890px;*/
+    width: 980px;
     border: 1px #d0d2d1;
     border-collapse: collapse;
 }
@@ -34,7 +36,8 @@ table.main-table {
 table.main-table-head {
     border: 1px #d0d2d1;
     border-collapse: collapse;
-    width: 890px;
+    /*width: 890px;*/
+    width: 980px;
     height: 40px;
     margin: 0 auto;
 }
@@ -130,7 +133,8 @@ table.main-table td {
 
 .detail-info {
     margin-top: 5px;
-    width: 410px;
+    /*width: 410px;*/
+    width: 450px;
     height: 170px;
     _height: 190px;
     background-color: #ffffff;
@@ -160,7 +164,8 @@ table.main-table td {
 
 .down-detail-info {
     margin-top: 10px;
-    width: 439px;
+    /*width: 439px;*/
+    width: 470px;
     height: 130px;
     _height: 150px;
     /*background-color: #f3fbfd;*/
@@ -189,7 +194,7 @@ table.main-table td {
 }
 
 .info-area {
-    width: 890px;
+    width: 980px;
     margin: 0 auto;
     font-size: 16px;
 }
@@ -329,3 +334,36 @@ table .problemTypeTable {
     overflow: auto;
 }
 
+/*------------------------------------------------add  by  yikmat-------------------------------------------*/
+.input_style{
+    width: 24%;
+    margin: 2%;
+    height: 25px;
+}
+
+table.doctor-table-head {
+    background-color: #edebec;
+    border: 1px #d0d2d1;
+    border-collapse: collapse;
+    width: 890px;
+    height: 40px;
+    margin: 0 auto;
+    /*margin-left: 55px;*/
+}
+
+table.doctor-table-head th {
+    padding: 8px;
+    border: 1px solid #d0d2d1;
+    height: 40px;
+    color: #015587;
+    /*font-family: SourceHanSansCN-Bold, serif;*/
+    font-size: 16px;
+
+    width: 75px;
+    _width: 75px;
+}
+
+table.doctor-table-head td {
+    height: 30px;
+    border: 1px solid #d0d2d1;
+}
