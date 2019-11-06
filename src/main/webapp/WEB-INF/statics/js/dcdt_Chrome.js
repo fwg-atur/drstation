@@ -10,13 +10,13 @@
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-var cheServerPortInHos = "8080";
+var checkServerPortInHos = "80";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var cheServerPortOutHos = "8080";
+var cheServerPortOutHos = "80";
 
 //医生站超时返回的最长时间(毫秒)
 var timeStrapDoc = 5000;
@@ -62,7 +62,7 @@ function setInHosFlag(inHosFlag) {
         return 0;
     } else if (inHosFlag == 1) {
         checkServerIp = checkServerIpInHos;
-        checkServerPort = cheServerPortInHos;
+        checkServerPort = checkServerPortInHos;
         return 0;
     } else {
         // alert("error:未识别的住院标识！");
