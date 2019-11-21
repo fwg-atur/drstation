@@ -9,15 +9,15 @@
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-// var cheServerPortInHos = "8080";
-var checkServerPortInHos = "80";
+var checkServerPortInHos = "8081";
+// var checkServerPortInHos = "80";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-// var cheServerPortOutHos = "8080";
-var checkServerPortOutHos = "80";
+var checkServerPortOutHos = "8081";
+// var checkServerPortOutHos = "80";
 //说明书地址
 var disUrl = 'http://192.168.11.67:8040/DCStation/home/index?drugCode=@code@';
 //医生站超时返回的最长时间(毫秒)
@@ -59,7 +59,6 @@ function DoctorCheck(tag, xml, inHosFlag) {
         return sendCheck(tag, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
-        alert(-4);
         return -4;
     }
 }
@@ -147,7 +146,6 @@ function sendCheck(tag, xml, checkServerIp, checkServerPort) {
         if (xmlhttp)
             xmlhttp.abort();
         // alert("请求中间层服务异常！");
-        alert(-2);
         return -2;
     }
     else if (tag == 2 || check.hasProblem == 0) {
@@ -333,7 +331,6 @@ function PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosF
         return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
-        // alert(-4);
         return -4;
     }
 }
@@ -378,13 +375,11 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
 
     var checkData = xmlhttp.responseText;
     if(checkData == ""){
-        // alert(-3);
         return -3;
     }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
-        // alert(-2);
         return -2;
     } else if (check.hasProblem == 0) {
         if(t1){
@@ -462,18 +457,15 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
-        // alert(-2);
         return -2;
     }else if (check.hasProblem == 0) {
         // alert("返回值为：0");
-        // alert(0);
         if(t1){
             clearTimeout(t1);
         }
         return 0;
     }else if(check.hasProblem == 1) {
         // alert("返回值为：1");
-        // alert(1);
         if(t1){
             clearTimeout(t1);
         }
@@ -488,7 +480,6 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     }
     else if (check.hasProblem == -1) {
         // alert("返回值为：-1");
-        // alert(-1);
         if(t1){
             clearTimeout(t1);
         }
@@ -539,7 +530,6 @@ function PharmacistCheck_CP(visitDate,pharmacistInfo,xml,inHosFlag) {
         return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
-        // alert(-4);
         return -4;
     }
 }
@@ -554,7 +544,6 @@ function PharmacistCheckSilent_CP(xml,inHosFlag) {
         return sendPharmacistCheckSilent_CP(xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
-        alert(-4);
         return -4;
     }
 }
@@ -604,13 +593,11 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
-        // alert(-2);
         return -2;
     }else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
-        // alert(0);
         return 0;
     }else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
@@ -678,27 +665,23 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
 
     var checkData = xmlhttp.responseText;
     if(checkData == ""){
-        // alert(-3);
         return -3;
     }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
-        // alert(-2);
         return -2;
     }else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
         // alert("返回值为：0");
-        // alert(0);
         return 0;
     }else if(check.hasProblem == 1) {
         if(t1){
             clearTimeout(t1);
         }
         // alert("返回值为：1");
-        // alert(1);
         return 1;
     }
     else if(check.hasProblem == 2) {
@@ -706,7 +689,6 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
             clearTimeout(t1);
         }
         // alert("返回值为：2");
-        // alert(2);
         return 2;
     }
     else if (check.hasProblem == -1) {
@@ -714,7 +696,6 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
             clearTimeout(t1);
         }
         // alert("返回值为：-1");
-        // alert(-1);
         return -1;
     }
 }
