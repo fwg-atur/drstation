@@ -996,6 +996,9 @@
 //            var retXml = "<CheckResult STATE=\"2\" STYLE=\"ManualNormal\" CHECK_PHARMACIST_CODE=\"" + pharmacistCode + "\" CHECK_PHARMACIST_NAME=\"" + pharmacistName + "\" CHECK_STATE=\"\" TAG=\"\" />";
 //            saveCheckMessage(retXml);
         }else{
+            if(0 == bz_flag && -2 == val){
+                val = -1;
+            }
             url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/setRetValue";
             arg = 'presId=' + presId + '&retVal=' + val;
             var xmlhttp;
