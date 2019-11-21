@@ -336,9 +336,13 @@ table .problemTypeTable {
 
 /*------------------------------------------------add  by  yikmat-------------------------------------------*/
 .input_style{
-    width: 24%;
-    margin: 2%;
-    height: 25px;
+    /*width: 20%;*/
+    /*margin: 2%;*/
+    /*height: 25px;*/
+    width: 115px;
+    margin: 5px;
+    height: 28px;
+    /*float: left;*/
 }
 
 table.doctor-table-head {

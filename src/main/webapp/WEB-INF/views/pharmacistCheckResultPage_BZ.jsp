@@ -506,20 +506,21 @@
                         <div class="detail-content-left" style="padding: 10px;_padding:20px 10px;">
                             <table id="button-part">
 
-                                    <div style="height: 60px;line-height: 60px;padding-left: 20px;">
+                                    <div style="height: 60px;line-height: 60px;width: 460px;float: left">
+                                        <%--padding-left: 20px--%>
 
-                                    <input style="" id="" class="input_style" type="button" value="按床号升序排列" onclick="sortDrug(1)"  target=""/>
+                                    <input style="" id=""  class="input_style" type="button" value="按床号升序排列" onclick="sortDrug(1)"  target=""/>
                                     <%--<a style="" id="" class="input_style" type="button" value="按床号升序排列" href=sortDrug(1)  target=""/>--%>
 
                                     <input id="" class="input_style" type="button" value="按姓名升序排列" onclick="sortDrug(2)"/>
 
-                                    <input style="width: 36%" id="" class="input_style" type="button" value="按问题严重程度升序排列" onclick="sortDrug(5)"/>
+                                    <input style="width: 166px" id="" class="input_style" type="button" value="按问题严重程度升序排列" onclick="sortDrug(5)"/>
                                     </div>
 
-                                    <div style="height: 60px;line-height: 60px;padding-left: 20px;">
+                                    <div style="height: 60px;line-height: 60px;float: left;width: 460px">
                                     <input id="" class="input_style" type="button" value="按床号降序排列" onclick="sortDrug(2)"/>
                                     <input id="" class="input_style" type="button" onclick="sortDrug(4)" value="按姓名降序排列"/>
-                                    <input  style="width: 36%" id="" class="input_style" type="button" onclick="sortDrug(6)" value="按问题严重程度降序排列"/>
+                                    <input  style="width: 166px" id="" class="input_style" type="button" onclick="sortDrug(6)" value="按问题严重程度降序排列"/>
                                     </div>
                             </table>
                         </div>
@@ -570,7 +571,7 @@
                                 <c:forEach items="${orderInfo.orderList}" var="item">
                                     <tr>
                                         <td style="width:5%;">${item.BED_NO}</td>
-                                        <td style="width:5%;cursor:pointer;"><a onclick="openEMRLinked('${item.PATIENT_ID}','${item.VISIT_ID}')">${item.VISIT_ID}</a></td>
+                                        <td style="width:5%;cursor:pointer;"><a onclick="openEMRLinked('${item.PATIENT_ID}','${item.VISIT_ID}')">${item.INPATIENT_NO}</a></td>
                                         <td style="width:7%;">${item.PATIENT_NAME}</td>
                                         <td style="width:13%;cursor:pointer;">  <a onclick="openDiscribLinked('${item.prescInfo.drug_lo_id}')">${item.prescInfo.kh}${item.DRUG_NAME}</a></td>
                                         <td style="width:5%;">${item.DRUG_SPEC}</td>

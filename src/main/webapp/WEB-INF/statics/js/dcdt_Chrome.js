@@ -10,13 +10,13 @@
  * @type {string}
  */
 var checkServerIpInHos = "localhost";
-var checkServerPortInHos = "80";
+var checkServerPortInHos = "8080";
 /**
  * 门诊医生站ip，端口
  * @type {string}
  */
 var checkServerIpOutHos = "localhost";
-var checkServerPortOutHos = "80";
+var checkServerPortOutHos = "8080";
 
 //医生站超时返回的最长时间(毫秒)
 var timeStrapDoc = 5000;
