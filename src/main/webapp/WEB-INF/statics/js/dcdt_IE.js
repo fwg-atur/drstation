@@ -32,7 +32,7 @@ var checkServerPort;
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    DoctorCheck(tag, dcdtXml,1);
+    DoctorCheck(tag, dcdtXml,0);
 }
 /**
  *
@@ -267,13 +267,14 @@ function openDiscribLinked(code) {
     window.open(urlTemp, '药品说明书', ' left=0,top=0,width=' + (screen.availWidth - 10) + ',height=' + (screen.availHeight - 50) + ',scrollbars,resizable=yes,toolbar=no');
 }
 
-//药师站
+//药师站测试页面调用函数
 function testPharmacistCheck(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
     var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
+    var result = PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,dcdtXml,0);
+    alert(result)
 }
 
 function testPharmacistCheckSilent(tag) {
@@ -281,7 +282,7 @@ function testPharmacistCheckSilent(tag) {
     var visitDate = document.getElementById("visitDate").value;
     var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,dcdtXml,1);
+    PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,dcdtXml,0);
 }
 
 //药师站昌平
@@ -289,12 +290,12 @@ function testPharmacistCheck_CP() {
     var visitDate = document.getElementById("visitDate").value;
     var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck_CP(visitDate,pharmacistInfo,dcdtXml,1);
+    PharmacistCheck_CP(visitDate,pharmacistInfo,dcdtXml,0);
 }
 
 function testPharmacistCheckSilent_CP() {
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheckSilent_CP(dcdtXml,1);
+    PharmacistCheckSilent_CP(dcdtXml,0);
 }
 
 function PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
@@ -308,8 +309,6 @@ function PharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,inHosFlag) {
             return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
         } else {
             // alert("error:未识别的住院标识！");
-            al
-            
             return -4;
         }
     }else {
@@ -334,7 +333,7 @@ function PharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,inHosF
         return sendPharmacistCheckSilent(tag, patientID, visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
-        alert(-4);
+        // alert(-4);
         return -4;
     }
 }
@@ -379,13 +378,13 @@ function sendPharmacistCheck(tag,patientID,visitDate,pharmacistInfo,xml,checkSer
 
     var checkData = xmlhttp.responseText;
     if(checkData == ""){
-        alert(-3);
+        // alert(-3);
         return -3;
     }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
-        alert(-2);
+        // alert(-2);
         return -2;
     } else if (check.hasProblem == 0) {
         if(t1){
@@ -463,18 +462,18 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
-        alert(-2);
+        // alert(-2);
         return -2;
     }else if (check.hasProblem == 0) {
         // alert("返回值为：0");
-        alert(0);
+        // alert(0);
         if(t1){
             clearTimeout(t1);
         }
         return 0;
     }else if(check.hasProblem == 1) {
         // alert("返回值为：1");
-        alert(1);
+        // alert(1);
         if(t1){
             clearTimeout(t1);
         }
@@ -489,7 +488,7 @@ function sendPharmacistCheckSilent(tag,patientID,visitDate,pharmacistInfo,xml,ch
     }
     else if (check.hasProblem == -1) {
         // alert("返回值为：-1");
-        alert(-1);
+        // alert(-1);
         if(t1){
             clearTimeout(t1);
         }
@@ -540,7 +539,7 @@ function PharmacistCheck_CP(visitDate,pharmacistInfo,xml,inHosFlag) {
         return sendPharmacistCheck_CP(visitDate, pharmacistInfo, xml, checkServerIpInHos, checkServerPortInHos);
     } else {
         // alert("error:未识别的住院标识！");
-        alert(-4);
+        // alert(-4);
         return -4;
     }
 }
@@ -605,13 +604,13 @@ function sendPharmacistCheck_CP(visitDate,pharmacistInfo,xml,checkServerIp, chec
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
-        alert(-2);
+        // alert(-2);
         return -2;
     }else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
-        alert(0);
+        // alert(0);
         return 0;
     }else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage?presId=" + check.presId + '&random=' + Math.random();
@@ -679,27 +678,27 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
 
     var checkData = xmlhttp.responseText;
     if(checkData == ""){
-        alert(-3);
+        // alert(-3);
         return -3;
     }
     var check = eval("(" + checkData + ")");
     if(check.hasProblem == -2){
         // alert("请求中间层服务异常！");
-        alert(-2);
+        // alert(-2);
         return -2;
     }else if (check.hasProblem == 0) {
         if(t1){
             clearTimeout(t1);
         }
         // alert("返回值为：0");
-        alert(0);
+        // alert(0);
         return 0;
     }else if(check.hasProblem == 1) {
         if(t1){
             clearTimeout(t1);
         }
         // alert("返回值为：1");
-        alert(1);
+        // alert(1);
         return 1;
     }
     else if(check.hasProblem == 2) {
@@ -707,7 +706,7 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
             clearTimeout(t1);
         }
         // alert("返回值为：2");
-        alert(2);
+        // alert(2);
         return 2;
     }
     else if (check.hasProblem == -1) {
@@ -715,14 +714,14 @@ function sendPharmacistCheckSilent_CP(xml,checkServerIp, checkServerPort) {
             clearTimeout(t1);
         }
         // alert("返回值为：-1");
-        alert(-1);
+        // alert(-1);
         return -1;
     }
 }
 
 function testNurseCheck() {
     var dcdtXml = document.getElementById("dcdt").value;
-    NurseCheck(dcdtXml,1);
+    NurseCheck(dcdtXml,0);
 }
 /**
  *
@@ -1014,7 +1013,8 @@ function openDiscribLinked_py(tag,code){
 function testPharmacistCheckBZ(){
     var dcdtXml = document.getElementById("dcdt").value;
     var pharmacistInfo = document.getElementById("pharmacistInfo").value;
-    CheckWingBZ(dcdtXml,pharmacistInfo);
+    var result = CheckWingBZ(dcdtXml,pharmacistInfo);
+    alert(result)
 }
 
 /**
@@ -1057,7 +1057,7 @@ function sendPharmacistCheck_BZRM(xml,pharmacistInfo,checkServerIp, checkServerP
             ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheck_BZ", data, adduserok);
             // ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/sendPharmacistCheckForTest", data, adduserok);
         }catch (e){
-            return -3;
+            return "<OrderList STATE=\"-4\" />";
         }
     }else {
         alert("Init xmlhttprequest fail");
@@ -1083,7 +1083,7 @@ function sendPharmacistCheck_BZRM(xml,pharmacistInfo,checkServerIp, checkServerP
             clearTimeout(t1);
         }
         result = "<OrderList STATE=\"0\" />";
-        alert(result);
+        // alert(result);
         return result;
     }else {
         var url = "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/pharmacistSubmit/pharmacistCheckResultPage_BZ?presId=" + check.presId + '&type=3&random=' + Math.random();
@@ -1114,7 +1114,28 @@ function sendPharmacistCheck_BZRM(xml,pharmacistInfo,checkServerIp, checkServerP
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send('presId=' + check.presId);
 
-    alert(data);
+    // alert(data);\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return data;
 }
 

@@ -61,7 +61,7 @@ var t1;
 
 function testCheck(tag) {
     var dcdtXml = document.getElementById("dcdt").value;
-    DoctorCheck(tag, dcdtXml, test_next, 1, test_back, 2, 1);
+    DoctorCheck(tag, dcdtXml, test_next, 1, test_back, 2, 0);
 }
 
 function setInHosFlag(inHosFlag) {
@@ -370,14 +370,14 @@ function testPharmacistCheck(tag) {
     var visitDate = document.getElementById("visitDate").value;
     var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheck(tag, patientID, visitDate, pharmacistInfo, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
+    PharmacistCheck(tag, patientID, visitDate, pharmacistInfo, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 0);
 }
 function testPharmacistCheckSilent(tag) {
     var patientID = document.getElementById("patientID").value;
     var visitDate = document.getElementById("visitDate").value;
     var pharmacistInfo = document.getElementById("pharmacistInfo").value;
     var dcdtXml = document.getElementById("dcdt").value;
-    PharmacistCheckSilent(tag, patientID, visitDate,pharmacistInfo, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 1);
+    PharmacistCheckSilent(tag, patientID, visitDate,pharmacistInfo, dcdtXml, test_pharmacistNext, 1, test_pharmacistBack, 2, 0);
 }
 
 function PharmacistCheck(tag, patientID, visitDate, pharmacistInfo, xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {
@@ -548,7 +548,7 @@ function sendPharmacistInterfere(xml,type) {
 
 function testNurseCheck() {
     var dcdtXml = document.getElementById("dcdt").value;
-    NurseCheck(dcdtXml, test_next, 1, test_back, 2, 1);
+    NurseCheck(dcdtXml, test_next, 1, test_back, 2, 0);
 }
 
 function NurseCheck(xml, next_func_name, next_fun_args, back_func_name, back_func_args, inHosFlag) {

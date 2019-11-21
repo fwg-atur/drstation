@@ -37,6 +37,9 @@ public class PharmacistPrescCheckService {
     @Value("${cpPharmacistCheckUrl}")
     private String cpPharmacistCheckUrl;
 
+    @Value("${bzPharmacistCheckUrl}")
+    private String bzPharmacistCheckUrl;
+
     @Value("${groupFlag}")
     private String groupFlag;
 
@@ -804,7 +807,7 @@ public class PharmacistPrescCheckService {
      * @return 返回审核结果标识（flag,presId）,不包括审核结果字符串
      */
     public CheckMessage checkPharmacistPresc_BZ(String xml,String pharmacistInfoXML) {
-        String url = pharmacistCheckServerUrl ;
+        String url = bzPharmacistCheckUrl ;
         xml = xml.replace("&nbsp;"," ");
         CheckMessage message = new CheckMessage();
         String checkXml = HttpUtil.sendPost(url, xml);
