@@ -21,11 +21,11 @@ var checkServerPortOutHos = "8081";
 //说明书地址
 var disUrl = 'http://192.168.11.67:8040/DCStation/home/index?drugCode=@code@';
 //医生站超时返回的最长时间(毫秒)
-var timeStrapDoc = 5000;
+var timeStrapDoc = 4000;
 //药师站超时返回的最长时间(毫秒)
-var timeStrapPhar = 5000;
-//区分昌平药师站，1为昌平，0为其他，默认0
-var cpFlag = 0;
+var timeStrapPhar = 4000;
+//区分昌平药师站，1为昌平，0为其他，默认1
+var cpFlag = 1;
 
 var checkServerIp;
 var checkServerPort;
@@ -43,6 +43,10 @@ function testCheck(tag) {
  * @constructor
  */
 function DoctorCheck(tag, xml, inHosFlag) {
+    //过滤预审空处方
+    if(tag == 1 && xml.indexOf("DRUG_LO_ID") == -1){
+        return 0;
+    }
     if(getOS() != "Win7") {
         // writeReg();
     }
@@ -90,15 +94,13 @@ function sendCheck(tag, xml, checkServerIp, checkServerPort) {
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapDoc);
         try {
-            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck", data, adduserok);
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck", data,adduserok());
         }catch (e){
             return -3;
         }
     }else {
         alert("Init xmlhttprequest fail");
     }
-
-
 
     // xmlhttp.open("POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheckForTest", false);
     // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
@@ -1095,28 +1097,7 @@ function sendPharmacistCheck_BZRM(xml,pharmacistInfo,checkServerIp, checkServerP
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded;");
     xmlhttp.send('presId=' + check.presId);
 
-    // alert(data);\
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // alert(data);
     return data;
 }
 
