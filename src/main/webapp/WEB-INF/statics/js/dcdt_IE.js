@@ -47,9 +47,7 @@ function DoctorCheck(tag, xml, inHosFlag) {
     if(tag == 1 && xml.indexOf("DRUG_LO_ID") == -1){
         return 0;
     }
-    if(getOS() != "Win7") {
-        // writeReg();
-    }
+    writeReg();
     if (inHosFlag == undefined) {
         inHosFlag = 1;
     }
@@ -94,7 +92,7 @@ function sendCheck(tag, xml, checkServerIp, checkServerPort) {
     if(xmlhttp) {
         t1 = setTimeout(connecttoFail, timeStrapDoc);
         try {
-            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck", data,adduserok());
+            ajax(xmlhttp, "POST", "http://" + checkServerIp + ":" + checkServerPort + "/DCStation/submit/sendCheck", data,adduserok);
         }catch (e){
             return -3;
         }
